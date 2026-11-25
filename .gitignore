@@ -5,8 +5,8 @@ Thumbs.db
 .venv/
 venv/
 # Root raw research CSVs (live production cache lives in data/)
-kodex_*_nav.csv
-tiger_*_nav.csv
-freesis_*.csv
-backtest_result_kosdaq150.csv
-paths_to_15pct_equities.csv
+/kodex_*_nav.csv
+/tiger_*_nav.csv
+/freesis_*.csv
+/backtest_result_kosdaq150.csv
+/paths_to_15pct_equities.csv
