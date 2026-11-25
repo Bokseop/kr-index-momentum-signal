@@ -416,6 +416,7 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict):
                 "k200_mom6m": round(float(mk2) * 100, 1) if not np.isnan(mk2) else None,
                 "kq_mom6m": round(float(mkq) * 100, 1) if not np.isnan(mkq) else None,
                 "kelly_f": round(raw_f, 2),
+                "is_asset_switch": bool(new_asset != prev_asset),
             })
 
         cur_asset, cur_w = new_asset, new_w
@@ -510,6 +511,22 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict):
             "kelly_target_pct": k_w,
         }
 
+    # 자산별 10.4년 보유 일수 및 누적 수익 기여도 집계
+    asset_days = {"k200": 0, "kq": 0, "kofr": 0}
+    asset_cum = {"k200": 1.0, "kq": 1.0, "kofr": 1.0}
+    for i in range(n):
+        a_i, _ = holdings_hist[i]
+        asset_days[a_i] += 1
+        if i > 0:
+            a_prev, _ = holdings_hist[i - 1]
+            asset_cum[a_prev] *= (1.0 + rets[i])
+
+    # 종목 전환(자산 변경) 전용 이력도 별도 보관 (2016~2026 코스닥150 전환 포함)
+    switch_only_events = []
+    for ev in events:
+        if ev.get("is_asset_switch"):
+            switch_only_events.append(ev)
+
     # 차트용 주간 샘플링 (5영업일 + 마지막 날)
     dd_s = (eq_s / eq_s.cummax() - 1.0) * 100.0
     sample_idx = list(range(0, n, 5))
@@ -540,6 +557,15 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict):
         "k200": asset_live_info("k200", k200_c, m_k200, st_k200, mu_k2, vol_k2, fstar_k2),
         "kq": asset_live_info("kq", kq_c, m_kq, st_kq, mu_kq, vol_kq, fstar_kq),
         "kofr_nav": round(float(data["kofr"].loc[ld, "nav_close"]), 1) if ld in data["kofr"].index else 110000.0,
+        "asset_breakdown": {
+            k: {
+                "name": ETF_META[k]["name"],
+                "days": asset_days[k],
+                "pct": round(asset_days[k] / n * 100, 1),
+                "cum_ret_pct": round((asset_cum[k] - 1.0) * 100, 1),
+            }
+            for k in ["k200", "kq", "kofr"]
+        },
         "metrics": {
             "bt_start": bt_idx[0].strftime("%Y-%m-%d"),
             "bt_end": ld.strftime("%Y-%m-%d"),
@@ -557,7 +583,8 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict):
             "total_switches": len(events),
         },
         "yearly": yearly,
-        "recent_events": events[-15:][::-1],
+        "recent_events": events[-20:][::-1],
+        "switch_events": switch_only_events[-20:][::-1],
         "series": {
             "strategy": [round(float(eq[j]) / 1e4, 1) for j in sample_idx],
             "dd_pct": [round(float(dd_s.iloc[j]), 2) for j in sample_idx],
@@ -687,9 +714,9 @@ def build_interactive_html(payload: dict) -> str:
       <div class="sel-group">
         <div class="sel-label">2. 베팅 방식 (포지션 사이징) 선택</div>
         <div class="btn-row" id="kellyBtns">
-          <button class="seg-btn" data-kelly="half">하프 켈리 (0.5x 권장)</button>
-          <button class="seg-btn" data-kelly="quarter">쿼터 켈리 (0.25x 방어)</button>
-          <button class="seg-btn" data-kelly="full">풀 켈리 (1.0x 공격)</button>
+          <button class="seg-btn" data-kelly="full">풀 켈리 (1.0x 권장)</button>
+          <button class="seg-btn" data-kelly="half">하프 켈리 (0.5x 안정)</button>
+          <button class="seg-btn" data-kelly="quarter">쿼터 켈리 (0.25x 초방어)</button>
           <button class="seg-btn" data-kelly="fixed">고정 100% (기본)</button>
         </div>
         <div class="sel-desc" id="kellyDesc">-</div>
@@ -757,7 +784,14 @@ def build_interactive_html(payload: dict) -> str:
 
     <!-- 최근 매매 / 비중조절 이력 -->
     <div class="card section">
-      <h2 id="eventsTitle">🔄 최근 시그널 · 켈리 비중조절 이력 (최근 15회)</h2>
+      <div class="action-head" style="margin-bottom:10px;">
+        <h2 id="eventsTitle" style="margin:0;">🔄 최근 시그널 · 켈리 비중조절 이력</h2>
+        <div class="btn-row" id="evFilterBtns">
+          <button class="seg-btn active" data-ev="switches">종목 전환만 보기 (코스닥150 포함)</button>
+          <button class="seg-btn" data-ev="all">켈리 비중조절 포함 전체</button>
+        </div>
+      </div>
+      <div class="kpi-strip" id="breakdownStrip" style="margin-bottom:12px;"></div>
       <div style="overflow-x:auto;">
         <table>
           <thead>
@@ -788,7 +822,8 @@ def build_interactive_html(payload: dict) -> str:
   <script>
     const DATA = {payload_json};
     let selMa = 100;
-    let selKelly = "half"; // 기본 권장: MA100 + 하프 켈리
+    let selKelly = "full"; // 기본 권장: MA100 + 축소추정 풀 켈리 (초과샤프 1.25)
+    let evFilter = "switches"; // 기본: 종목 전환(코스닥150 포함) 먼저 보기
     let eqChartInst = null;
     let ddChartInst = null;
 
@@ -911,9 +946,25 @@ def build_interactive_html(payload: dict) -> str:
         }});
       }});
 
-      // Recent Events
-      document.getElementById("eventsTitle").textContent = `🔄 최근 시그널 · 켈리 비중조절 이력 (${{s.title}}, 최근 15회)`;
-      document.getElementById("eventsTbody").innerHTML = s.recent_events.map(ev => `
+      // Asset Breakdown & Recent Events
+      const ab = s.asset_breakdown;
+      document.getElementById("breakdownStrip").innerHTML = ["k200", "kq", "kofr"].map(k => {{
+        const b = ab[k];
+        const cls = b.cum_ret_pct >= 0 ? "pos" : "neg";
+        return `
+          <div class="stat-card" style="background:#f9fafb;">
+            <div class="stat-label">${{b.name}} 10.4년 보유</div>
+            <div class="stat-val" style="font-size:17px;">${{b.days.toLocaleString()}}일 (${{b.pct}}%)</div>
+            <div class="stat-sub">보유 구간 누적 수익: <strong class="${{cls}}">${{b.cum_ret_pct >= 0 ? '+' : ''}}${{b.cum_ret_pct.toFixed(1)}}%</strong></div>
+          </div>
+        `;
+      }}).join("");
+
+      document.querySelectorAll("#evFilterBtns .seg-btn").forEach(b => b.classList.toggle("active", b.dataset.ev === evFilter));
+      const evList = evFilter === "switches" ? s.switch_events : s.recent_events;
+      const modeLbl = evFilter === "switches" ? "종목 전환 이력" : "켈리 비중조절 포함 전체 이력";
+      document.getElementById("eventsTitle").textContent = `🔄 ${{modeLbl}} (${{s.title}}, 최근 ${{evList.length}}회)`;
+      document.getElementById("eventsTbody").innerHTML = evList.map(ev => `
         <tr>
           <td>${{ev.date}}</td>
           <td>${{ev.from}} &rarr; <strong>${{ev.to}}</strong></td>
@@ -1028,6 +1079,9 @@ def build_interactive_html(payload: dict) -> str:
     document.querySelectorAll("#kellyBtns .seg-btn").forEach(btn => {{
       btn.addEventListener("click", () => {{ selKelly = btn.dataset.kelly; renderAll(); }});
     }});
+    document.querySelectorAll("#evFilterBtns .seg-btn").forEach(btn => {{
+      btn.addEventListener("click", () => {{ evFilter = btn.dataset.ev; renderAll(); }});
+    }});
     document.getElementById("capInput").addEventListener("input", () => renderCalculator(getStrat(selMa, selKelly)));
 
     renderAll();
@@ -1035,6 +1089,95 @@ def build_interactive_html(payload: dict) -> str:
 </body>
 </html>
 """
+
+
+def send_ntfy_notification(strategies: dict):
+    """
+    ntfy.sh 무료 스마트폰 푸시 알림 발송 (GitHub Actions Secret: NTFY_TOPIC 사용).
+    - 발송 조건:
+      1) 매매/비중 변경 시그널 발생 시 (action_code != 'HOLD') -> 긴급(priority 4) 즉시 푸시
+      2) 월말 정기 리밸런싱 D-1 (bdays_to_rebal == 1) -> 사전 리마인드(priority 3) 푸시
+      3) 매주 월요일 아침 (KST 요일 == 0) -> 주간 정상작동 요약(priority 2) 푸시
+      4) 수동 테스트 실행 (env NTFY_FORCE_SEND=true) -> 즉시 테스트 푸시
+    """
+    topic = os.environ.get("NTFY_TOPIC", "").strip()
+    if not topic:
+        print("[알림] NTFY_TOPIC 환경변수가 없어 푸시 발송을 건너뜁니다.")
+        return
+
+    strat_id = os.environ.get("NTFY_STRATEGY_ID", "ma100_full").strip() or "ma100_full"
+    s = strategies.get(strat_id) or strategies["ma100_full"]
+    force_send = os.environ.get("NTFY_FORCE_SEND", "false").lower() in ("1", "true", "yes")
+    now_kst = dt.datetime.utcnow() + dt.timedelta(hours=9)
+    is_monday = (now_kst.weekday() == 0)
+
+    is_signal = (s["action_code"] != "HOLD")
+    is_rebal_eve = (s["bdays_to_rebal"] == 1)
+
+    if not (is_signal or is_rebal_eve or is_monday or force_send):
+        print(f"[알림] {s['title']} 오늘 매매 없음(HOLD) -> 푸시 생략")
+        return
+
+    dashboard_url = "https://bokseop.github.io/kr-index-momentum-signal/"
+    alloc = s["allocation"]
+    pos_txt = (
+        "KODEX KOFR금리액티브 100%"
+        if s["holding_key"] == "kofr"
+        else f"{s['holding_name']}({s['holding_ticker']}) {s['equity_weight_pct']}%"
+             + (f" + KOFR {alloc['kofr_pct']}%" if alloc["kofr_pct"] > 0 else "")
+    )
+
+    if is_signal:
+        priority = 4
+        tags = ["rotating_light", "chart_with_upwards_trend"]
+        title = f"[매매 시그널] {s['action_title']}"
+    elif force_send:
+        priority = 3
+        tags = ["white_check_mark", "bell"]
+        title = f"[테스트 알림] {s['title']} 연결 완료"
+    elif is_rebal_eve:
+        priority = 3
+        tags = ["calendar", "chart_with_upwards_trend"]
+        title = f"[월말 D-1] 내일({s['next_rebal_date']}) 정기 리밸런싱 예정"
+    else:
+        priority = 2
+        tags = ["bar_chart"]
+        title = f"[주간 리포트] {s['title']} 정상 감시 중"
+
+    k2 = s["k200"]
+    kq = s["kq"]
+    msg = (
+        f"기준일: {s['as_of_date']} ({s['title']})\n"
+        f"오늘 포지션: {pos_txt}\n"
+        f"액션: {s['action_title']} ({s['action_detail']})\n"
+        f"──────────────\n"
+        f"KODEX 200: 6M {k2['mom_6m_pct']:+.1f}% | MA{s['ma_len']} {k2['disp_pct']:+.1f}% ({'ON' if k2['trend_on'] else 'OFF'})\n"
+        f"코스닥150: 6M {kq['mom_6m_pct']:+.1f}% | MA{s['ma_len']} {kq['disp_pct']:+.1f}% ({'ON' if kq['trend_on'] else 'OFF'})\n"
+        f"다음 월말 리밸런싱: {s['next_rebal_date']} (D-{s['bdays_to_rebal']}영업일)"
+    )
+
+    payload = {
+        "topic": topic,
+        "title": title,
+        "message": msg,
+        "priority": priority,
+        "tags": tags,
+        "click": dashboard_url,
+        "actions": [
+            {"action": "view", "label": "대시보드 열기", "url": dashboard_url}
+        ],
+    }
+    try:
+        r = requests.post(
+            "https://ntfy.sh",
+            data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+            headers={"Content-Type": "application/json; charset=utf-8"},
+            timeout=15,
+        )
+        r.raise_for_status()
+        print(f"[알림 발송 완료] ntfy 푸시 전송 성공 (HTTP {r.status_code}, priority={priority})")
+    except Exception as e:
+        print(f"[알림 경고] ntfy 발송 실패: {e}")
 
 
 def main():
@@ -1046,7 +1189,7 @@ def main():
         aligned_data[key] = reconstruct_total_return_nav(raw)
         print(f"  - {meta['name']} ({meta['ticker']}): {len(aligned_data[key])}영업일 (최신 거래일: {aligned_data[key].index[-1].strftime('%Y-%m-%d')})")
 
-    print("[2/3] 12개 전략 조합 계산 중 (MA100/80/60 × 고정100%/하프켈리/쿼터켈리/풀켈리)...")
+    print("[2/3] 12개 전략 조합 계산 중 (MA100/80/60 × 고정100%/풀켈리/하프켈리/쿼터켈리)...")
     strategies = {}
     order = []
     bench = None
@@ -1059,22 +1202,21 @@ def main():
                 bench = b
 
     now_kst = (dt.datetime.utcnow() + dt.timedelta(hours=9)).strftime("%Y-%m-%d %H:%M:%S KST")
-    default_s = strategies["ma100_half"]
+    default_s = strategies["ma100_full"]
     payload = {
         "generated_at_kst": now_kst,
         "as_of_date": default_s["as_of_date"],
-        "default_strategy_id": "ma100_half",
+        "default_strategy_id": "ma100_full",
         "strategy_order": order,
         "benchmark": bench,
         "strategies": strategies,
     }
 
     print("[3/3] 인터랙티브 대시보드(docs/index.html) & JSON(docs/latest_signal.json) 발행 중...")
-    # JSON 파일은 차트 시계열 제외 요약본 + 기본/대안 전부 포함 (가볍고 API 친화적)
     slim_json = {
         "generated_at_kst": now_kst,
         "as_of_date": default_s["as_of_date"],
-        "default_strategy_id": "ma100_half",
+        "default_strategy_id": "ma100_full",
         "strategies": {
             k: {kk: vv for kk, vv in v.items() if kk != "series"}
             for k, v in strategies.items()
@@ -1089,13 +1231,16 @@ def main():
     with open(html_path, "w", encoding="utf-8") as f:
         f.write(html)
 
+    # ntfy 푸시 알림 체크 및 발송
+    send_ntfy_notification(strategies)
+
     print("\n" + "=" * 92)
     print(f" [해법 1 + 켈리 베팅 실시간 시그널] 기준 거래일: {default_s['as_of_date']} (일반계좌 · 1x 비과세)")
     print("=" * 92)
-    print(f" ▶ 기본 권장(MA100 + 하프 켈리): {default_s['holding_name']} ({default_s['holding_ticker']}) {default_s['equity_weight_pct']}% | KOFR {default_s['allocation']['kofr_pct']}%")
+    print(f" ▶ 기본 권장(MA100 + 풀 켈리): {default_s['holding_name']} ({default_s['holding_ticker']}) {default_s['equity_weight_pct']}% | KOFR {default_s['allocation']['kofr_pct']}%")
     print(f" ▶ 오늘 액션: {default_s['action_title']} ({default_s['action_detail']})")
     print("-" * 92)
-    for sid in ["ma100_fixed", "ma100_half", "ma100_quarter", "ma100_full", "ma80_half", "ma60_half"]:
+    for sid in ["ma100_fixed", "ma100_full", "ma100_half", "ma100_quarter", "ma80_full", "ma60_full"]:
         st = strategies[sid]
         m = st["metrics"]
         print(f" - {st['title']:22s} | 세후CAGR {m['cagr_pct']:+6.2f}% | MDD {m['mdd_pct']:5.1f}% | 칼마 {m['calmar']:.2f} | 16~24 {m['p25_cagr_pct']:+5.1f}%/{m['p25_mdd_pct']:.0f}% | 오늘: {st['holding_name']} {st['equity_weight_pct']}%")

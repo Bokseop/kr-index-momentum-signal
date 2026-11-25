@@ -5,6 +5,22 @@ on:
     # 평일 오전 08:40 KST (UTC 23:40, 일~목) — KOFIA DIS 전일 종가 기준가 공시 직후 실행
     - cron: "40 23 * * 0-4"
   workflow_dispatch:
+    inputs:
+      test_notify:
+        description: "ntfy 스마트폰 테스트 푸시 즉시 발송 여부"
+        type: boolean
+        default: true
+      strategy_id:
+        description: "알림 기준 전략 (기본: ma100_full)"
+        type: choice
+        default: "ma100_full"
+        options:
+          - ma100_full
+          - ma100_half
+          - ma100_quarter
+          - ma100_fixed
+          - ma80_full
+          - ma60_full
 
 permissions:
   contents: write
@@ -26,7 +42,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Solution 1 Live Signal Engine
+      - name: Run Solution 1 Live Signal Engine & ntfy Notification
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          NTFY_STRATEGY_ID: ${{ github.event.inputs.strategy_id || 'ma100_full' }}
+          NTFY_FORCE_SEND: ${{ github.event.inputs.test_notify || 'false' }}
         run: python signal_domestic_2index.py
 
       - name: Commit and push updated signal dashboard
