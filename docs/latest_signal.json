@@ -1,5 +1,5 @@
 {
-  "generated_at_kst": "2026-11-25 15:07:00 KST",
+  "generated_at_kst": "2026-11-25 16:13:20 KST",
   "as_of_date": "2026-11-24",
   "default_strategy_id": "ma100_half",
   "strategies": {
@@ -9,7 +9,7 @@
       "kelly_id": "fixed",
       "kelly_label": "고정 100%",
       "kelly_frac": null,
-      "kelly_desc": "선정 지수에 100% 고정 투자 (기본 해법 1)",
+      "kelly_desc": "선정 지수에 100% 고정 투자 (최고 수익, MDD -30%)",
       "title": "MA100 + 고정 100%",
       "as_of_date": "2026-11-24",
       "holding_key": "kofr",
@@ -45,9 +45,9 @@
         "below_streak": 83,
         "trend_on": false,
         "pass_all": false,
-        "ann_excess_mu_pct": -90.73,
-        "ann_vol_60d_pct": 50.6,
-        "raw_kelly_f": -3.54,
+        "ann_excess_mu_pct": 7.0,
+        "ann_vol_60d_pct": 63.83,
+        "raw_kelly_f": 0.17,
         "kelly_target_pct": 100
       },
       "kq": {
@@ -64,9 +64,9 @@
         "below_streak": 33,
         "trend_on": false,
         "pass_all": false,
-        "ann_excess_mu_pct": -94.7,
-        "ann_vol_60d_pct": 53.45,
-        "raw_kelly_f": -3.32,
+        "ann_excess_mu_pct": 4.4,
+        "ann_vol_60d_pct": 67.45,
+        "raw_kelly_f": 0.1,
         "kelly_target_pct": 100
       },
       "kofr_nav": 110884.6,
@@ -149,7 +149,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 0.3,
           "kq_mom6m": -10.1,
-          "kelly_f": -0.01
+          "kelly_f": 0.41
         },
         {
           "date": "2024-08-02",
@@ -167,7 +167,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 10.9,
           "kq_mom6m": 5.9,
-          "kelly_f": 5.36
+          "kelly_f": 1.98
         },
         {
           "date": "2024-03-29",
@@ -176,7 +176,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 19.3,
           "kq_mom6m": 20.6,
-          "kelly_f": 8.66
+          "kelly_f": 1.86
         },
         {
           "date": "2024-02-29",
@@ -185,7 +185,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 6.4,
           "kq_mom6m": -3.6,
-          "kelly_f": 3.93
+          "kelly_f": 2.2
         },
         {
           "date": "2024-01-17",
@@ -203,7 +203,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 6.6,
           "kq_mom6m": 1.4,
-          "kelly_f": 3.13
+          "kelly_f": 2.26
         },
         {
           "date": "2023-09-21",
@@ -221,7 +221,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 2.5,
           "kq_mom6m": 4.6,
-          "kelly_f": 1.66
+          "kelly_f": 0.91
         },
         {
           "date": "2022-01-05",
@@ -239,7 +239,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": -7.6,
           "kq_mom6m": 4.0,
-          "kelly_f": 2.34
+          "kelly_f": 2.06
         },
         {
           "date": "2021-10-05",
@@ -257,7 +257,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 2.3,
           "kq_mom6m": 9.8,
-          "kelly_f": 7.45
+          "kelly_f": 2.15
         },
         {
           "date": "2021-08-12",
@@ -270,547 +270,13 @@
         }
       ]
     },
-    "ma100_half": {
-      "id": "ma100_half",
-      "ma_len": 100,
-      "kelly_id": "half",
-      "kelly_label": "하프 켈리 (0.5x)",
-      "kelly_frac": 0.5,
-      "kelly_desc": "연속 켈리 f*의 50% 적용 (변동성 급등 시 자동 비중 축소, 권장)",
-      "title": "MA100 + 하프 켈리 (0.5x)",
-      "as_of_date": "2026-11-24",
-      "holding_key": "kofr",
-      "holding_name": "KODEX KOFR금리액티브",
-      "holding_ticker": "423160",
-      "equity_weight_pct": 0,
-      "allocation": {
-        "k200_pct": 0,
-        "kq_pct": 0,
-        "kofr_pct": 100
-      },
-      "prev_allocation": {
-        "k200_pct": 0,
-        "kq_pct": 0,
-        "kofr_pct": 100
-      },
-      "action_code": "HOLD",
-      "action_title": "오늘 매매 없음 (기존 포지션 유지)",
-      "action_detail": "기존 비중 유지",
-      "next_rebal_date": "2026-11-30",
-      "bdays_to_rebal": 4,
-      "k200": {
-        "name": "KODEX 200",
-        "ticker": "069500",
-        "nav_close": 78663.2,
-        "adj_close": 111976.4,
-        "ret_1d_pct": 6.54,
-        "mom_6m_pct": -41.59,
-        "ma_nav": 101652.9,
-        "stop_nav": 100636.3,
-        "disp_pct": -22.62,
-        "above_streak": 0,
-        "below_streak": 83,
-        "trend_on": false,
-        "pass_all": false,
-        "ann_excess_mu_pct": -90.73,
-        "ann_vol_60d_pct": 50.6,
-        "raw_kelly_f": -3.54,
-        "kelly_target_pct": 0
-      },
-      "kq": {
-        "name": "KODEX 코스닥150",
-        "ticker": "229200",
-        "nav_close": 10948.0,
-        "adj_close": 11717.9,
-        "ret_1d_pct": 5.49,
-        "mom_6m_pct": -41.59,
-        "ma_nav": 13356.8,
-        "stop_nav": 13223.3,
-        "disp_pct": -18.03,
-        "above_streak": 0,
-        "below_streak": 33,
-        "trend_on": false,
-        "pass_all": false,
-        "ann_excess_mu_pct": -94.7,
-        "ann_vol_60d_pct": 53.45,
-        "raw_kelly_f": -3.32,
-        "kelly_target_pct": 0
-      },
-      "kofr_nav": 110884.6,
-      "metrics": {
-        "bt_start": "2016-06-29",
-        "bt_end": "2026-11-24",
-        "years": 10.4,
-        "final_equity_man": 8807.4,
-        "cagr_pct": 23.26,
-        "mdd_pct": -30.13,
-        "vol_pct": 21.11,
-        "ex_sharpe": 1.03,
-        "calmar": 0.77,
-        "p25_cagr_pct": 13.71,
-        "p25_mdd_pct": -20.35,
-        "avg_weight_pct": 50.9,
-        "ann_turnover": 3.1,
-        "total_switches": 48
-      },
-      "yearly": [
-        {
-          "year": 2016,
-          "ret_pct": 3.4
-        },
-        {
-          "year": 2017,
-          "ret_pct": 63.1
-        },
-        {
-          "year": 2018,
-          "ret_pct": 5.5
-        },
-        {
-          "year": 2019,
-          "ret_pct": 3.3
-        },
-        {
-          "year": 2020,
-          "ret_pct": 38.5
-        },
-        {
-          "year": 2021,
-          "ret_pct": 4.2
-        },
-        {
-          "year": 2022,
-          "ret_pct": -2.0
-        },
-        {
-          "year": 2023,
-          "ret_pct": 17.0
-        },
-        {
-          "year": 2024,
-          "ret_pct": -1.9
-        },
-        {
-          "year": 2025,
-          "ret_pct": 71.1
-        },
-        {
-          "year": 2026,
-          "ret_pct": 72.6
-        }
-      ],
-      "recent_events": [
-        {
-          "date": "2026-07-20",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA100 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 46.7,
-          "kq_mom6m": -21.9,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2025-05-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 12.5,
-          "kq_mom6m": 5.5,
-          "kelly_f": 4.02
-        },
-        {
-          "date": "2024-08-02",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA100 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 6.2,
-          "kq_mom6m": 2.8,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-04-30",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 10.9,
-          "kq_mom6m": 5.9,
-          "kelly_f": 5.36
-        },
-        {
-          "date": "2024-03-29",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 19.3,
-          "kq_mom6m": 20.6,
-          "kelly_f": 8.66
-        },
-        {
-          "date": "2024-02-29",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 6.4,
-          "kq_mom6m": -3.6,
-          "kelly_f": 3.93
-        },
-        {
-          "date": "2024-01-10",
-          "from": "KODEX 200 20%",
-          "to": "KOFR 100%",
-          "reason": "켈리 기대우위 소멸(f*=-1.08) → KOFR 대피",
-          "k200_mom6m": -0.8,
-          "kq_mom6m": -0.8,
-          "kelly_f": -1.08
-        },
-        {
-          "date": "2024-01-09",
-          "from": "KODEX 200 45%",
-          "to": "KODEX 200 20% + KOFR 80%",
-          "reason": "켈리 비중 축소 (45% → 20%, f*=0.37)",
-          "k200_mom6m": 1.8,
-          "kq_mom6m": 1.4,
-          "kelly_f": 0.37
-        },
-        {
-          "date": "2024-01-08",
-          "from": "KODEX 200 80%",
-          "to": "KODEX 200 45% + KOFR 55%",
-          "reason": "켈리 비중 축소 (80% → 45%, f*=0.91)",
-          "k200_mom6m": 2.8,
-          "kq_mom6m": 2.5,
-          "kelly_f": 0.91
-        },
-        {
-          "date": "2024-01-05",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 200 80% + KOFR 20%",
-          "reason": "켈리 비중 축소 (100% → 80%, f*=1.56)",
-          "k200_mom6m": 4.0,
-          "kq_mom6m": 2.8,
-          "kelly_f": 1.56
-        },
-        {
-          "date": "2023-12-29",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 6.6,
-          "kq_mom6m": 1.4,
-          "kelly_f": 3.13
-        },
-        {
-          "date": "2023-09-21",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 코스닥150 MA100 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 5.0,
-          "kq_mom6m": 8.0,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2023-03-15",
-          "from": "KODEX 코스닥150 75%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "켈리 비중 확대 (75% → 100%, f*=2.67)",
-          "k200_mom6m": 3.2,
-          "kq_mom6m": 9.7,
-          "kelly_f": 2.67
-        },
-        {
-          "date": "2023-03-14",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KODEX 코스닥150 75% + KOFR 25%",
-          "reason": "켈리 비중 축소 (100% → 75%, f*=1.51)",
-          "k200_mom6m": 1.1,
-          "kq_mom6m": 4.8,
-          "kelly_f": 1.51
-        },
-        {
-          "date": "2023-03-08",
-          "from": "KODEX 코스닥150 75%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "켈리 비중 확대 (75% → 100%, f*=2.52)",
-          "k200_mom6m": 2.6,
-          "kq_mom6m": 7.8,
-          "kelly_f": 2.52
-        }
-      ]
-    },
-    "ma100_quarter": {
-      "id": "ma100_quarter",
-      "ma_len": 100,
-      "kelly_id": "quarter",
-      "kelly_label": "쿼터 켈리 (0.25x)",
-      "kelly_frac": 0.25,
-      "kelly_desc": "연속 켈리 f*의 25% 적용 (MDD 방어 · 칼마비율 최우선)",
-      "title": "MA100 + 쿼터 켈리 (0.25x)",
-      "as_of_date": "2026-11-24",
-      "holding_key": "kofr",
-      "holding_name": "KODEX KOFR금리액티브",
-      "holding_ticker": "423160",
-      "equity_weight_pct": 0,
-      "allocation": {
-        "k200_pct": 0,
-        "kq_pct": 0,
-        "kofr_pct": 100
-      },
-      "prev_allocation": {
-        "k200_pct": 0,
-        "kq_pct": 0,
-        "kofr_pct": 100
-      },
-      "action_code": "HOLD",
-      "action_title": "오늘 매매 없음 (기존 포지션 유지)",
-      "action_detail": "기존 비중 유지",
-      "next_rebal_date": "2026-11-30",
-      "bdays_to_rebal": 4,
-      "k200": {
-        "name": "KODEX 200",
-        "ticker": "069500",
-        "nav_close": 78663.2,
-        "adj_close": 111976.4,
-        "ret_1d_pct": 6.54,
-        "mom_6m_pct": -41.59,
-        "ma_nav": 101652.9,
-        "stop_nav": 100636.3,
-        "disp_pct": -22.62,
-        "above_streak": 0,
-        "below_streak": 83,
-        "trend_on": false,
-        "pass_all": false,
-        "ann_excess_mu_pct": -90.73,
-        "ann_vol_60d_pct": 50.6,
-        "raw_kelly_f": -3.54,
-        "kelly_target_pct": 0
-      },
-      "kq": {
-        "name": "KODEX 코스닥150",
-        "ticker": "229200",
-        "nav_close": 10948.0,
-        "adj_close": 11717.9,
-        "ret_1d_pct": 5.49,
-        "mom_6m_pct": -41.59,
-        "ma_nav": 13356.8,
-        "stop_nav": 13223.3,
-        "disp_pct": -18.03,
-        "above_streak": 0,
-        "below_streak": 33,
-        "trend_on": false,
-        "pass_all": false,
-        "ann_excess_mu_pct": -94.7,
-        "ann_vol_60d_pct": 53.45,
-        "raw_kelly_f": -3.32,
-        "kelly_target_pct": 0
-      },
-      "kofr_nav": 110884.6,
-      "metrics": {
-        "bt_start": "2016-06-29",
-        "bt_end": "2026-11-24",
-        "years": 10.4,
-        "final_equity_man": 8202.3,
-        "cagr_pct": 22.42,
-        "mdd_pct": -27.33,
-        "vol_pct": 20.27,
-        "ex_sharpe": 1.03,
-        "calmar": 0.82,
-        "p25_cagr_pct": 13.43,
-        "p25_mdd_pct": -19.45,
-        "avg_weight_pct": 49.7,
-        "ann_turnover": 3.64,
-        "total_switches": 92
-      },
-      "yearly": [
-        {
-          "year": 2016,
-          "ret_pct": 2.6
-        },
-        {
-          "year": 2017,
-          "ret_pct": 63.1
-        },
-        {
-          "year": 2018,
-          "ret_pct": 5.5
-        },
-        {
-          "year": 2019,
-          "ret_pct": 2.5
-        },
-        {
-          "year": 2020,
-          "ret_pct": 34.0
-        },
-        {
-          "year": 2021,
-          "ret_pct": 5.2
-        },
-        {
-          "year": 2022,
-          "ret_pct": -0.2
-        },
-        {
-          "year": 2023,
-          "ret_pct": 16.6
-        },
-        {
-          "year": 2024,
-          "ret_pct": -1.6
-        },
-        {
-          "year": 2025,
-          "ret_pct": 71.1
-        },
-        {
-          "year": 2026,
-          "ret_pct": 64.1
-        }
-      ],
-      "recent_events": [
-        {
-          "date": "2026-07-20",
-          "from": "KODEX 200 60%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA100 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 46.7,
-          "kq_mom6m": -21.9,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2026-07-13",
-          "from": "KODEX 200 85%",
-          "to": "KODEX 200 60% + KOFR 40%",
-          "reason": "켈리 비중 축소 (85% → 60%, f*=2.42)",
-          "k200_mom6m": 58.3,
-          "kq_mom6m": -12.5,
-          "kelly_f": 2.42
-        },
-        {
-          "date": "2026-07-07",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 200 85% + KOFR 15%",
-          "reason": "켈리 비중 축소 (100% → 85%, f*=3.50)",
-          "k200_mom6m": 85.7,
-          "kq_mom6m": -8.6,
-          "kelly_f": 3.5
-        },
-        {
-          "date": "2026-05-29",
-          "from": "KODEX 200 90%",
-          "to": "KODEX 200 100%",
-          "reason": "켈리 비중 확대 (90% → 100%, f*=4.89)",
-          "k200_mom6m": 144.4,
-          "kq_mom6m": 16.1,
-          "kelly_f": 4.89
-        },
-        {
-          "date": "2026-05-04",
-          "from": "KODEX 200 80%",
-          "to": "KODEX 200 90% + KOFR 10%",
-          "reason": "켈리 비중 확대 (80% → 90%, f*=3.60)",
-          "k200_mom6m": 86.2,
-          "kq_mom6m": 29.8,
-          "kelly_f": 3.6
-        },
-        {
-          "date": "2026-03-31",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 200 80% + KOFR 20%",
-          "reason": "켈리 비중 축소 (100% → 80%, f*=3.20)",
-          "k200_mom6m": 58.1,
-          "kq_mom6m": 28.9,
-          "kelly_f": 3.2
-        },
-        {
-          "date": "2025-05-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 12.5,
-          "kq_mom6m": 5.5,
-          "kelly_f": 4.02
-        },
-        {
-          "date": "2024-08-02",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA100 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 6.2,
-          "kq_mom6m": 2.8,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-04-30",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 10.9,
-          "kq_mom6m": 5.9,
-          "kelly_f": 5.36
-        },
-        {
-          "date": "2024-03-29",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 19.3,
-          "kq_mom6m": 20.6,
-          "kelly_f": 8.66
-        },
-        {
-          "date": "2024-03-18",
-          "from": "KODEX 200 75%",
-          "to": "KODEX 200 100%",
-          "reason": "켈리 비중 확대 (75% → 100%, f*=4.25)",
-          "k200_mom6m": 7.4,
-          "kq_mom6m": 7.4,
-          "kelly_f": 4.25
-        },
-        {
-          "date": "2024-03-15",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 200 75% + KOFR 25%",
-          "reason": "켈리 비중 축소 (100% → 75%, f*=3.01)",
-          "k200_mom6m": 5.5,
-          "kq_mom6m": 4.5,
-          "kelly_f": 3.01
-        },
-        {
-          "date": "2024-02-29",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 6.4,
-          "kq_mom6m": -3.6,
-          "kelly_f": 3.93
-        },
-        {
-          "date": "2024-01-10",
-          "from": "KODEX 200 10%",
-          "to": "KOFR 100%",
-          "reason": "켈리 기대우위 소멸(f*=-1.08) → KOFR 대피",
-          "k200_mom6m": -0.8,
-          "kq_mom6m": -0.8,
-          "kelly_f": -1.08
-        },
-        {
-          "date": "2024-01-09",
-          "from": "KODEX 200 25%",
-          "to": "KODEX 200 10% + KOFR 90%",
-          "reason": "켈리 비중 축소 (25% → 10%, f*=0.37)",
-          "k200_mom6m": 1.8,
-          "kq_mom6m": 1.4,
-          "kelly_f": 0.37
-        }
-      ]
-    },
     "ma100_full": {
       "id": "ma100_full",
       "ma_len": 100,
       "kelly_id": "full",
       "kelly_label": "풀 켈리 (1.0x)",
       "kelly_frac": 1.0,
-      "kelly_desc": "연속 켈리 f*의 100% 적용 (노레버리지 1x 상한, 공격형)",
+      "kelly_desc": "축소추정 켈리 f* 100% 적용 (고수익·샤프 1.25, 보유시 평균 ~88%)",
       "title": "MA100 + 풀 켈리 (1.0x)",
       "as_of_date": "2026-11-24",
       "holding_key": "kofr",
@@ -846,10 +312,10 @@
         "below_streak": 83,
         "trend_on": false,
         "pass_all": false,
-        "ann_excess_mu_pct": -90.73,
-        "ann_vol_60d_pct": 50.6,
-        "raw_kelly_f": -3.54,
-        "kelly_target_pct": 0
+        "ann_excess_mu_pct": 7.0,
+        "ann_vol_60d_pct": 63.83,
+        "raw_kelly_f": 0.17,
+        "kelly_target_pct": 15
       },
       "kq": {
         "name": "KODEX 코스닥150",
@@ -865,27 +331,27 @@
         "below_streak": 33,
         "trend_on": false,
         "pass_all": false,
-        "ann_excess_mu_pct": -94.7,
-        "ann_vol_60d_pct": 53.45,
-        "raw_kelly_f": -3.32,
-        "kelly_target_pct": 0
+        "ann_excess_mu_pct": 4.4,
+        "ann_vol_60d_pct": 67.45,
+        "raw_kelly_f": 0.1,
+        "kelly_target_pct": 10
       },
       "kofr_nav": 110884.6,
       "metrics": {
         "bt_start": "2016-06-29",
         "bt_end": "2026-11-24",
         "years": 10.4,
-        "final_equity_man": 9163.8,
-        "cagr_pct": 23.73,
-        "mdd_pct": -30.13,
-        "vol_pct": 21.25,
-        "ex_sharpe": 1.05,
-        "calmar": 0.79,
-        "p25_cagr_pct": 14.24,
-        "p25_mdd_pct": -20.76,
-        "avg_weight_pct": 51.1,
-        "ann_turnover": 2.82,
-        "total_switches": 34
+        "final_equity_man": 7001.5,
+        "cagr_pct": 20.57,
+        "mdd_pct": -23.7,
+        "vol_pct": 14.67,
+        "ex_sharpe": 1.25,
+        "calmar": 0.87,
+        "p25_cagr_pct": 12.08,
+        "p25_mdd_pct": -23.7,
+        "avg_weight_pct": 46.3,
+        "ann_turnover": 3.1,
+        "total_switches": 85
       },
       "yearly": [
         {
@@ -894,11 +360,11 @@
         },
         {
           "year": 2017,
-          "ret_pct": 63.1
+          "ret_pct": 62.8
         },
         {
           "year": 2018,
-          "ret_pct": 5.5
+          "ret_pct": 5.0
         },
         {
           "year": 2019,
@@ -906,11 +372,11 @@
         },
         {
           "year": 2020,
-          "ret_pct": 42.2
+          "ret_pct": 32.7
         },
         {
           "year": 2021,
-          "ret_pct": 4.1
+          "ret_pct": 1.3
         },
         {
           "year": 2022,
@@ -918,25 +384,25 @@
         },
         {
           "year": 2023,
-          "ret_pct": 19.4
+          "ret_pct": 18.4
         },
         {
           "year": 2024,
-          "ret_pct": -2.4
+          "ret_pct": -7.2
         },
         {
           "year": 2025,
-          "ret_pct": 71.1
+          "ret_pct": 77.4
         },
         {
           "year": 2026,
-          "ret_pct": 72.6
+          "ret_pct": 49.6
         }
       ],
       "recent_events": [
         {
           "date": "2026-07-20",
-          "from": "KODEX 200 100%",
+          "from": "KODEX 200 15%",
           "to": "KOFR 100%",
           "reason": "월중 KODEX 200 MA100 이탈 → 즉시 KOFR 대피",
           "k200_mom6m": 46.7,
@@ -944,130 +410,664 @@
           "kelly_f": 0.0
         },
         {
-          "date": "2025-05-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 12.5,
-          "kq_mom6m": 5.5,
-          "kelly_f": 4.02
+          "date": "2026-06-30",
+          "from": "KODEX 200 25%",
+          "to": "KODEX 200 15% + KOFR 85%",
+          "reason": "켈리 비중 축소 (25% → 15%, f*=0.16)",
+          "k200_mom6m": 127.6,
+          "kq_mom6m": 7.1,
+          "kelly_f": 0.16
         },
         {
-          "date": "2024-08-02",
+          "date": "2026-04-06",
+          "from": "KODEX 200 15%",
+          "to": "KODEX 200 25% + KOFR 75%",
+          "reason": "켈리 비중 확대 (15% → 25%, f*=0.26)",
+          "k200_mom6m": 61.5,
+          "kq_mom6m": 25.3,
+          "kelly_f": 0.26
+        },
+        {
+          "date": "2026-03-31",
+          "from": "KODEX 200 20%",
+          "to": "KODEX 200 15% + KOFR 85%",
+          "reason": "켈리 비중 축소 (20% → 15%, f*=0.17)",
+          "k200_mom6m": 58.1,
+          "kq_mom6m": 28.9,
+          "kelly_f": 0.17
+        },
+        {
+          "date": "2026-03-04",
+          "from": "KODEX 200 35%",
+          "to": "KODEX 200 20% + KOFR 80%",
+          "reason": "켈리 비중 축소 (35% → 20%, f*=0.20)",
+          "k200_mom6m": 78.0,
+          "kq_mom6m": 28.4,
+          "kelly_f": 0.2
+        },
+        {
+          "date": "2026-03-03",
+          "from": "KODEX 200 50%",
+          "to": "KODEX 200 35% + KOFR 65%",
+          "reason": "켈리 비중 축소 (50% → 35%, f*=0.33)",
+          "k200_mom6m": 104.3,
+          "kq_mom6m": 52.3,
+          "kelly_f": 0.33
+        },
+        {
+          "date": "2026-02-26",
+          "from": "KODEX 200 60%",
+          "to": "KODEX 200 50% + KOFR 50%",
+          "reason": "켈리 비중 축소 (60% → 50%, f*=0.48)",
+          "k200_mom6m": 120.0,
+          "kq_mom6m": 56.4,
+          "kelly_f": 0.48
+        },
+        {
+          "date": "2026-02-05",
+          "from": "KODEX 200 80%",
+          "to": "KODEX 200 60% + KOFR 40%",
+          "reason": "켈리 비중 축소 (80% → 60%, f*=0.62)",
+          "k200_mom6m": 75.6,
+          "kq_mom6m": 40.9,
+          "kelly_f": 0.62
+        },
+        {
+          "date": "2026-02-03",
           "from": "KODEX 200 100%",
+          "to": "KODEX 200 80% + KOFR 20%",
+          "reason": "켈리 비중 축소 (100% → 80%, f*=0.78)",
+          "k200_mom6m": 80.0,
+          "kq_mom6m": 49.5,
+          "kelly_f": 0.78
+        },
+        {
+          "date": "2025-12-31",
+          "from": "KODEX 200 90%",
+          "to": "KODEX 200 100%",
+          "reason": "켈리 비중 확대 (90% → 100%, f*=1.10)",
+          "k200_mom6m": 47.6,
+          "kq_mom6m": 21.9,
+          "kelly_f": 1.1
+        },
+        {
+          "date": "2025-12-10",
+          "from": "KODEX 200 80%",
+          "to": "KODEX 200 90% + KOFR 10%",
+          "reason": "켈리 비중 확대 (80% → 90%, f*=0.90)",
+          "k200_mom6m": 48.9,
+          "kq_mom6m": 28.2,
+          "kelly_f": 0.9
+        },
+        {
+          "date": "2025-12-03",
+          "from": "KODEX 200 65%",
+          "to": "KODEX 200 80% + KOFR 20%",
+          "reason": "켈리 비중 확대 (65% → 80%, f*=0.81)",
+          "k200_mom6m": 49.1,
+          "kq_mom6m": 28.6,
+          "kelly_f": 0.81
+        },
+        {
+          "date": "2025-11-28",
+          "from": "KODEX 200 70%",
+          "to": "KODEX 200 65% + KOFR 35%",
+          "reason": "켈리 비중 축소 (70% → 65%, f*=0.65)",
+          "k200_mom6m": 50.5,
+          "kq_mom6m": 31.0,
+          "kelly_f": 0.65
+        },
+        {
+          "date": "2025-11-18",
+          "from": "KODEX 200 85%",
+          "to": "KODEX 200 70% + KOFR 30%",
+          "reason": "켈리 비중 축소 (85% → 70%, f*=0.71)",
+          "k200_mom6m": 62.1,
+          "kq_mom6m": 33.9,
+          "kelly_f": 0.71
+        },
+        {
+          "date": "2025-11-14",
+          "from": "KODEX 200 100%",
+          "to": "KODEX 200 85% + KOFR 15%",
+          "reason": "켈리 비중 축소 (100% → 85%, f*=0.84)",
+          "k200_mom6m": 63.0,
+          "kq_mom6m": 37.8,
+          "kelly_f": 0.84
+        }
+      ]
+    },
+    "ma100_half": {
+      "id": "ma100_half",
+      "ma_len": 100,
+      "kelly_id": "half",
+      "kelly_label": "하프 켈리 (0.5x)",
+      "kelly_frac": 0.5,
+      "kelly_desc": "축소추정 켈리 f* 50% 적용 (연 ~16% · MDD -16%대, 칼마 0.95 권장)",
+      "title": "MA100 + 하프 켈리 (0.5x)",
+      "as_of_date": "2026-11-24",
+      "holding_key": "kofr",
+      "holding_name": "KODEX KOFR금리액티브",
+      "holding_ticker": "423160",
+      "equity_weight_pct": 0,
+      "allocation": {
+        "k200_pct": 0,
+        "kq_pct": 0,
+        "kofr_pct": 100
+      },
+      "prev_allocation": {
+        "k200_pct": 0,
+        "kq_pct": 0,
+        "kofr_pct": 100
+      },
+      "action_code": "HOLD",
+      "action_title": "오늘 매매 없음 (기존 포지션 유지)",
+      "action_detail": "기존 비중 유지",
+      "next_rebal_date": "2026-11-30",
+      "bdays_to_rebal": 4,
+      "k200": {
+        "name": "KODEX 200",
+        "ticker": "069500",
+        "nav_close": 78663.2,
+        "adj_close": 111976.4,
+        "ret_1d_pct": 6.54,
+        "mom_6m_pct": -41.59,
+        "ma_nav": 101652.9,
+        "stop_nav": 100636.3,
+        "disp_pct": -22.62,
+        "above_streak": 0,
+        "below_streak": 83,
+        "trend_on": false,
+        "pass_all": false,
+        "ann_excess_mu_pct": 7.0,
+        "ann_vol_60d_pct": 63.83,
+        "raw_kelly_f": 0.17,
+        "kelly_target_pct": 10
+      },
+      "kq": {
+        "name": "KODEX 코스닥150",
+        "ticker": "229200",
+        "nav_close": 10948.0,
+        "adj_close": 11717.9,
+        "ret_1d_pct": 5.49,
+        "mom_6m_pct": -41.59,
+        "ma_nav": 13356.8,
+        "stop_nav": 13223.3,
+        "disp_pct": -18.03,
+        "above_streak": 0,
+        "below_streak": 33,
+        "trend_on": false,
+        "pass_all": false,
+        "ann_excess_mu_pct": 4.4,
+        "ann_vol_60d_pct": 67.45,
+        "raw_kelly_f": 0.1,
+        "kelly_target_pct": 5
+      },
+      "kofr_nav": 110884.6,
+      "metrics": {
+        "bt_start": "2016-06-29",
+        "bt_end": "2026-11-24",
+        "years": 10.4,
+        "final_equity_man": 4600.6,
+        "cagr_pct": 15.8,
+        "mdd_pct": -16.6,
+        "vol_pct": 11.19,
+        "ex_sharpe": 1.23,
+        "calmar": 0.95,
+        "p25_cagr_pct": 10.4,
+        "p25_mdd_pct": -16.6,
+        "avg_weight_pct": 38.4,
+        "ann_turnover": 3.08,
+        "total_switches": 106
+      },
+      "yearly": [
+        {
+          "year": 2016,
+          "ret_pct": 3.4
+        },
+        {
+          "year": 2017,
+          "ret_pct": 59.8
+        },
+        {
+          "year": 2018,
+          "ret_pct": 3.1
+        },
+        {
+          "year": 2019,
+          "ret_pct": 3.5
+        },
+        {
+          "year": 2020,
+          "ret_pct": 25.8
+        },
+        {
+          "year": 2021,
+          "ret_pct": -0.4
+        },
+        {
+          "year": 2022,
+          "ret_pct": -2.3
+        },
+        {
+          "year": 2023,
+          "ret_pct": 13.6
+        },
+        {
+          "year": 2024,
+          "ret_pct": -5.3
+        },
+        {
+          "year": 2025,
+          "ret_pct": 59.8
+        },
+        {
+          "year": 2026,
+          "ret_pct": 24.1
+        }
+      ],
+      "recent_events": [
+        {
+          "date": "2026-07-20",
+          "from": "KODEX 200 10%",
           "to": "KOFR 100%",
           "reason": "월중 KODEX 200 MA100 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 6.2,
-          "kq_mom6m": 2.8,
+          "k200_mom6m": 46.7,
+          "kq_mom6m": -21.9,
           "kelly_f": 0.0
         },
         {
-          "date": "2024-04-30",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 10.9,
-          "kq_mom6m": 5.9,
-          "kelly_f": 5.36
+          "date": "2026-06-30",
+          "from": "KODEX 200 15%",
+          "to": "KODEX 200 10% + KOFR 90%",
+          "reason": "켈리 비중 축소 (15% → 10%, f*=0.16)",
+          "k200_mom6m": 127.6,
+          "kq_mom6m": 7.1,
+          "kelly_f": 0.16
         },
         {
-          "date": "2024-03-29",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 19.3,
-          "kq_mom6m": 20.6,
-          "kelly_f": 8.66
+          "date": "2026-04-30",
+          "from": "KODEX 200 10%",
+          "to": "KODEX 200 15% + KOFR 85%",
+          "reason": "켈리 비중 확대 (10% → 15%, f*=0.27)",
+          "k200_mom6m": 77.0,
+          "kq_mom6m": 27.3,
+          "kelly_f": 0.27
         },
         {
-          "date": "2024-02-29",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 6.4,
-          "kq_mom6m": -3.6,
-          "kelly_f": 3.93
+          "date": "2026-03-04",
+          "from": "KODEX 200 25%",
+          "to": "KODEX 200 10% + KOFR 90%",
+          "reason": "켈리 비중 축소 (25% → 10%, f*=0.20)",
+          "k200_mom6m": 78.0,
+          "kq_mom6m": 28.4,
+          "kelly_f": 0.2
         },
         {
-          "date": "2024-01-10",
+          "date": "2026-02-27",
+          "from": "KODEX 200 30%",
+          "to": "KODEX 200 25% + KOFR 75%",
+          "reason": "켈리 비중 축소 (30% → 25%, f*=0.48)",
+          "k200_mom6m": 118.3,
+          "kq_mom6m": 58.4,
+          "kelly_f": 0.48
+        },
+        {
+          "date": "2026-02-09",
+          "from": "KODEX 200 40%",
+          "to": "KODEX 200 30% + KOFR 70%",
+          "reason": "켈리 비중 축소 (40% → 30%, f*=0.55)",
+          "k200_mom6m": 79.6,
+          "kq_mom6m": 42.2,
+          "kelly_f": 0.55
+        },
+        {
+          "date": "2026-02-03",
+          "from": "KODEX 200 60%",
+          "to": "KODEX 200 40% + KOFR 60%",
+          "reason": "켈리 비중 축소 (60% → 40%, f*=0.78)",
+          "k200_mom6m": 80.0,
+          "kq_mom6m": 49.5,
+          "kelly_f": 0.78
+        },
+        {
+          "date": "2026-02-02",
+          "from": "KODEX 200 70%",
+          "to": "KODEX 200 60% + KOFR 40%",
+          "reason": "켈리 비중 축소 (70% → 60%, f*=1.15)",
+          "k200_mom6m": 69.4,
+          "kq_mom6m": 43.7,
+          "kelly_f": 1.15
+        },
+        {
+          "date": "2026-01-30",
+          "from": "KODEX 200 65%",
+          "to": "KODEX 200 70% + KOFR 30%",
+          "reason": "켈리 비중 확대 (65% → 70%, f*=1.42)",
+          "k200_mom6m": 79.2,
+          "kq_mom6m": 53.0,
+          "kelly_f": 1.42
+        },
+        {
+          "date": "2026-01-29",
+          "from": "KODEX 200 55%",
+          "to": "KODEX 200 65% + KOFR 35%",
+          "reason": "켈리 비중 확대 (55% → 65%, f*=1.34)",
+          "k200_mom6m": 81.2,
+          "kq_mom6m": 59.8,
+          "kelly_f": 1.34
+        },
+        {
+          "date": "2025-12-12",
+          "from": "KODEX 200 40%",
+          "to": "KODEX 200 55% + KOFR 45%",
+          "reason": "켈리 비중 확대 (40% → 55%, f*=1.14)",
+          "k200_mom6m": 48.0,
+          "kq_mom6m": 25.4,
+          "kelly_f": 1.14
+        },
+        {
+          "date": "2025-12-03",
+          "from": "KODEX 200 30%",
+          "to": "KODEX 200 40% + KOFR 60%",
+          "reason": "켈리 비중 확대 (30% → 40%, f*=0.81)",
+          "k200_mom6m": 49.1,
+          "kq_mom6m": 28.6,
+          "kelly_f": 0.81
+        },
+        {
+          "date": "2025-11-28",
           "from": "KODEX 200 35%",
-          "to": "KOFR 100%",
-          "reason": "켈리 기대우위 소멸(f*=-1.08) → KOFR 대피",
-          "k200_mom6m": -0.8,
-          "kq_mom6m": -0.8,
-          "kelly_f": -1.08
+          "to": "KODEX 200 30% + KOFR 70%",
+          "reason": "켈리 비중 축소 (35% → 30%, f*=0.65)",
+          "k200_mom6m": 50.5,
+          "kq_mom6m": 31.0,
+          "kelly_f": 0.65
         },
         {
-          "date": "2024-01-09",
-          "from": "KODEX 200 100%",
+          "date": "2025-11-18",
+          "from": "KODEX 200 50%",
           "to": "KODEX 200 35% + KOFR 65%",
-          "reason": "켈리 비중 축소 (100% → 35%, f*=0.37)",
-          "k200_mom6m": 1.8,
-          "kq_mom6m": 1.4,
-          "kelly_f": 0.37
+          "reason": "켈리 비중 축소 (50% → 35%, f*=0.71)",
+          "k200_mom6m": 62.1,
+          "kq_mom6m": 33.9,
+          "kelly_f": 0.71
         },
         {
-          "date": "2023-12-29",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 6.6,
-          "kq_mom6m": 1.4,
-          "kelly_f": 3.13
+          "date": "2025-11-05",
+          "from": "KODEX 200 60%",
+          "to": "KODEX 200 50% + KOFR 50%",
+          "reason": "켈리 비중 축소 (60% → 50%, f*=0.98)",
+          "k200_mom6m": 66.2,
+          "kq_mom6m": 34.2,
+          "kelly_f": 0.98
+        }
+      ]
+    },
+    "ma100_quarter": {
+      "id": "ma100_quarter",
+      "ma_len": 100,
+      "kelly_id": "quarter",
+      "kelly_label": "쿼터 켈리 (0.25x)",
+      "kelly_frac": 0.25,
+      "kelly_desc": "축소추정 켈리 f* 25% 적용 (초방어 MDD -10%대 · 칼마 1.05)",
+      "title": "MA100 + 쿼터 켈리 (0.25x)",
+      "as_of_date": "2026-11-24",
+      "holding_key": "kofr",
+      "holding_name": "KODEX KOFR금리액티브",
+      "holding_ticker": "423160",
+      "equity_weight_pct": 0,
+      "allocation": {
+        "k200_pct": 0,
+        "kq_pct": 0,
+        "kofr_pct": 100
+      },
+      "prev_allocation": {
+        "k200_pct": 0,
+        "kq_pct": 0,
+        "kofr_pct": 100
+      },
+      "action_code": "HOLD",
+      "action_title": "오늘 매매 없음 (기존 포지션 유지)",
+      "action_detail": "기존 비중 유지",
+      "next_rebal_date": "2026-11-30",
+      "bdays_to_rebal": 4,
+      "k200": {
+        "name": "KODEX 200",
+        "ticker": "069500",
+        "nav_close": 78663.2,
+        "adj_close": 111976.4,
+        "ret_1d_pct": 6.54,
+        "mom_6m_pct": -41.59,
+        "ma_nav": 101652.9,
+        "stop_nav": 100636.3,
+        "disp_pct": -22.62,
+        "above_streak": 0,
+        "below_streak": 83,
+        "trend_on": false,
+        "pass_all": false,
+        "ann_excess_mu_pct": 7.0,
+        "ann_vol_60d_pct": 63.83,
+        "raw_kelly_f": 0.17,
+        "kelly_target_pct": 5
+      },
+      "kq": {
+        "name": "KODEX 코스닥150",
+        "ticker": "229200",
+        "nav_close": 10948.0,
+        "adj_close": 11717.9,
+        "ret_1d_pct": 5.49,
+        "mom_6m_pct": -41.59,
+        "ma_nav": 13356.8,
+        "stop_nav": 13223.3,
+        "disp_pct": -18.03,
+        "above_streak": 0,
+        "below_streak": 33,
+        "trend_on": false,
+        "pass_all": false,
+        "ann_excess_mu_pct": 4.4,
+        "ann_vol_60d_pct": 67.45,
+        "raw_kelly_f": 0.1,
+        "kelly_target_pct": 0
+      },
+      "kofr_nav": 110884.6,
+      "metrics": {
+        "bt_start": "2016-06-29",
+        "bt_end": "2026-11-24",
+        "years": 10.4,
+        "final_equity_man": 2961.2,
+        "cagr_pct": 11.0,
+        "mdd_pct": -10.52,
+        "vol_pct": 7.38,
+        "ex_sharpe": 1.23,
+        "calmar": 1.05,
+        "p25_cagr_pct": 8.46,
+        "p25_mdd_pct": -10.52,
+        "avg_weight_pct": 27.9,
+        "ann_turnover": 2.48,
+        "total_switches": 118
+      },
+      "yearly": [
+        {
+          "year": 2016,
+          "ret_pct": 2.1
         },
         {
-          "date": "2023-09-21",
-          "from": "KODEX 코스닥150 100%",
+          "year": 2017,
+          "ret_pct": 44.2
+        },
+        {
+          "year": 2018,
+          "ret_pct": 3.2
+        },
+        {
+          "year": 2019,
+          "ret_pct": 2.3
+        },
+        {
+          "year": 2020,
+          "ret_pct": 18.7
+        },
+        {
+          "year": 2021,
+          "ret_pct": -0.1
+        },
+        {
+          "year": 2022,
+          "ret_pct": -0.3
+        },
+        {
+          "year": 2023,
+          "ret_pct": 10.0
+        },
+        {
+          "year": 2024,
+          "ret_pct": -1.2
+        },
+        {
+          "year": 2025,
+          "ret_pct": 31.4
+        },
+        {
+          "year": 2026,
+          "ret_pct": 13.0
+        }
+      ],
+      "recent_events": [
+        {
+          "date": "2026-07-20",
+          "from": "KODEX 200 5%",
           "to": "KOFR 100%",
-          "reason": "월중 코스닥150 MA100 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 5.0,
-          "kq_mom6m": 8.0,
+          "reason": "월중 KODEX 200 MA100 이탈 → 즉시 KOFR 대피",
+          "k200_mom6m": 46.7,
+          "kq_mom6m": -21.9,
           "kelly_f": 0.0
         },
         {
-          "date": "2023-02-28",
-          "from": "KOFR 100%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 2.5,
-          "kq_mom6m": 4.6,
-          "kelly_f": 1.66
+          "date": "2026-03-31",
+          "from": "KODEX 200 10%",
+          "to": "KODEX 200 5% + KOFR 95%",
+          "reason": "켈리 비중 축소 (10% → 5%, f*=0.17)",
+          "k200_mom6m": 58.1,
+          "kq_mom6m": 28.9,
+          "kelly_f": 0.17
         },
         {
-          "date": "2022-01-05",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 코스닥150 MA100 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": -8.9,
-          "kq_mom6m": -0.7,
-          "kelly_f": 0.0
+          "date": "2026-02-27",
+          "from": "KODEX 200 20%",
+          "to": "KODEX 200 10% + KOFR 90%",
+          "reason": "켈리 비중 축소 (20% → 10%, f*=0.48)",
+          "k200_mom6m": 118.3,
+          "kq_mom6m": 58.4,
+          "kelly_f": 0.48
         },
         {
-          "date": "2021-12-31",
-          "from": "KOFR 100%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": -7.6,
-          "kq_mom6m": 4.0,
-          "kelly_f": 2.34
+          "date": "2026-02-03",
+          "from": "KODEX 200 35%",
+          "to": "KODEX 200 20% + KOFR 80%",
+          "reason": "켈리 비중 축소 (35% → 20%, f*=0.78)",
+          "k200_mom6m": 80.0,
+          "kq_mom6m": 49.5,
+          "kelly_f": 0.78
         },
         {
-          "date": "2021-10-05",
-          "from": "KODEX 코스닥150 35%",
-          "to": "KOFR 100%",
-          "reason": "월중 코스닥150 MA100 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": -8.3,
-          "kq_mom6m": -2.9,
-          "kelly_f": 0.0
+          "date": "2026-01-30",
+          "from": "KODEX 200 25%",
+          "to": "KODEX 200 35% + KOFR 65%",
+          "reason": "켈리 비중 확대 (25% → 35%, f*=1.42)",
+          "k200_mom6m": 79.2,
+          "kq_mom6m": 53.0,
+          "kelly_f": 1.42
         },
         {
-          "date": "2021-10-01",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KODEX 코스닥150 35% + KOFR 65%",
-          "reason": "켈리 비중 축소 (100% → 35%, f*=0.37)",
-          "k200_mom6m": -7.3,
-          "kq_mom6m": 0.2,
-          "kelly_f": 0.37
+          "date": "2025-12-31",
+          "from": "KODEX 200 30%",
+          "to": "KODEX 200 25% + KOFR 75%",
+          "reason": "켈리 비중 축소 (30% → 25%, f*=1.10)",
+          "k200_mom6m": 47.6,
+          "kq_mom6m": 21.9,
+          "kelly_f": 1.1
+        },
+        {
+          "date": "2025-12-12",
+          "from": "KODEX 200 15%",
+          "to": "KODEX 200 30% + KOFR 70%",
+          "reason": "켈리 비중 확대 (15% → 30%, f*=1.14)",
+          "k200_mom6m": 48.0,
+          "kq_mom6m": 25.4,
+          "kelly_f": 1.14
+        },
+        {
+          "date": "2025-11-28",
+          "from": "KODEX 200 20%",
+          "to": "KODEX 200 15% + KOFR 85%",
+          "reason": "켈리 비중 축소 (20% → 15%, f*=0.65)",
+          "k200_mom6m": 50.5,
+          "kq_mom6m": 31.0,
+          "kelly_f": 0.65
+        },
+        {
+          "date": "2025-11-18",
+          "from": "KODEX 200 30%",
+          "to": "KODEX 200 20% + KOFR 80%",
+          "reason": "켈리 비중 축소 (30% → 20%, f*=0.71)",
+          "k200_mom6m": 62.1,
+          "kq_mom6m": 33.9,
+          "kelly_f": 0.71
+        },
+        {
+          "date": "2025-11-04",
+          "from": "KODEX 200 45%",
+          "to": "KODEX 200 30% + KOFR 70%",
+          "reason": "켈리 비중 축소 (45% → 30%, f*=1.23)",
+          "k200_mom6m": 71.1,
+          "kq_mom6m": 36.7,
+          "kelly_f": 1.23
+        },
+        {
+          "date": "2025-10-31",
+          "from": "KODEX 200 35%",
+          "to": "KODEX 200 45% + KOFR 55%",
+          "reason": "켈리 비중 확대 (35% → 45%, f*=1.78)",
+          "k200_mom6m": 71.7,
+          "kq_mom6m": 30.5,
+          "kelly_f": 1.78
+        },
+        {
+          "date": "2025-10-28",
+          "from": "KODEX 200 45%",
+          "to": "KODEX 200 35% + KOFR 65%",
+          "reason": "켈리 비중 축소 (45% → 35%, f*=1.34)",
+          "k200_mom6m": 66.7,
+          "kq_mom6m": 31.8,
+          "kelly_f": 1.34
+        },
+        {
+          "date": "2025-10-14",
+          "from": "KODEX 200 55%",
+          "to": "KODEX 200 45% + KOFR 55%",
+          "reason": "켈리 비중 축소 (55% → 45%, f*=1.78)",
+          "k200_mom6m": 53.4,
+          "kq_mom6m": 20.2,
+          "kelly_f": 1.78
+        },
+        {
+          "date": "2025-10-02",
+          "from": "KODEX 200 70%",
+          "to": "KODEX 200 55% + KOFR 45%",
+          "reason": "켈리 비중 축소 (70% → 55%, f*=2.29)",
+          "k200_mom6m": 62.5,
+          "kq_mom6m": 35.1,
+          "kelly_f": 2.29
+        },
+        {
+          "date": "2025-09-01",
+          "from": "KODEX 200 55%",
+          "to": "KODEX 200 70% + KOFR 30%",
+          "reason": "켈리 비중 확대 (55% → 70%, f*=2.82)",
+          "k200_mom6m": 26.4,
+          "kq_mom6m": 7.6,
+          "kelly_f": 2.82
         }
       ]
     },
@@ -1077,7 +1077,7 @@
       "kelly_id": "fixed",
       "kelly_label": "고정 100%",
       "kelly_frac": null,
-      "kelly_desc": "선정 지수에 100% 고정 투자 (기본 해법 1)",
+      "kelly_desc": "선정 지수에 100% 고정 투자 (최고 수익, MDD -30%)",
       "title": "MA80 + 고정 100%",
       "as_of_date": "2026-11-24",
       "holding_key": "kofr",
@@ -1113,9 +1113,9 @@
         "below_streak": 88,
         "trend_on": false,
         "pass_all": false,
-        "ann_excess_mu_pct": -90.73,
-        "ann_vol_60d_pct": 50.6,
-        "raw_kelly_f": -3.54,
+        "ann_excess_mu_pct": 7.0,
+        "ann_vol_60d_pct": 63.83,
+        "raw_kelly_f": 0.17,
         "kelly_target_pct": 100
       },
       "kq": {
@@ -1132,9 +1132,9 @@
         "below_streak": 31,
         "trend_on": false,
         "pass_all": false,
-        "ann_excess_mu_pct": -94.7,
-        "ann_vol_60d_pct": 53.45,
-        "raw_kelly_f": -3.32,
+        "ann_excess_mu_pct": 4.4,
+        "ann_vol_60d_pct": 67.45,
+        "raw_kelly_f": 0.1,
         "kelly_target_pct": 100
       },
       "kofr_nav": 110884.6,
@@ -1217,7 +1217,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 0.3,
           "kq_mom6m": -10.1,
-          "kelly_f": -0.01
+          "kelly_f": 0.41
         },
         {
           "date": "2024-08-02",
@@ -1235,7 +1235,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 7.8,
           "kq_mom6m": -3.4,
-          "kelly_f": 4.44
+          "kelly_f": 2.85
         },
         {
           "date": "2024-05-31",
@@ -1253,7 +1253,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 10.9,
           "kq_mom6m": 5.9,
-          "kelly_f": 5.36
+          "kelly_f": 1.98
         },
         {
           "date": "2024-04-17",
@@ -1271,7 +1271,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 19.3,
           "kq_mom6m": 20.6,
-          "kelly_f": 8.66
+          "kelly_f": 1.86
         },
         {
           "date": "2024-02-29",
@@ -1280,7 +1280,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 6.4,
           "kq_mom6m": -3.6,
-          "kelly_f": 3.93
+          "kelly_f": 2.2
         },
         {
           "date": "2024-01-17",
@@ -1298,7 +1298,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 6.6,
           "kq_mom6m": 1.4,
-          "kelly_f": 3.13
+          "kelly_f": 2.26
         },
         {
           "date": "2023-09-13",
@@ -1316,7 +1316,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 2.5,
           "kq_mom6m": 4.6,
-          "kelly_f": 1.66
+          "kelly_f": 0.91
         },
         {
           "date": "2022-01-05",
@@ -1334,541 +1334,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": -7.6,
           "kq_mom6m": 4.0,
-          "kelly_f": 2.34
-        }
-      ]
-    },
-    "ma80_half": {
-      "id": "ma80_half",
-      "ma_len": 80,
-      "kelly_id": "half",
-      "kelly_label": "하프 켈리 (0.5x)",
-      "kelly_frac": 0.5,
-      "kelly_desc": "연속 켈리 f*의 50% 적용 (변동성 급등 시 자동 비중 축소, 권장)",
-      "title": "MA80 + 하프 켈리 (0.5x)",
-      "as_of_date": "2026-11-24",
-      "holding_key": "kofr",
-      "holding_name": "KODEX KOFR금리액티브",
-      "holding_ticker": "423160",
-      "equity_weight_pct": 0,
-      "allocation": {
-        "k200_pct": 0,
-        "kq_pct": 0,
-        "kofr_pct": 100
-      },
-      "prev_allocation": {
-        "k200_pct": 0,
-        "kq_pct": 0,
-        "kofr_pct": 100
-      },
-      "action_code": "HOLD",
-      "action_title": "오늘 매매 없음 (기존 포지션 유지)",
-      "action_detail": "기존 비중 유지",
-      "next_rebal_date": "2026-11-30",
-      "bdays_to_rebal": 4,
-      "k200": {
-        "name": "KODEX 200",
-        "ticker": "069500",
-        "nav_close": 78663.2,
-        "adj_close": 111976.4,
-        "ret_1d_pct": 6.54,
-        "mom_6m_pct": -41.59,
-        "ma_nav": 98143.4,
-        "stop_nav": 97162.0,
-        "disp_pct": -19.85,
-        "above_streak": 0,
-        "below_streak": 88,
-        "trend_on": false,
-        "pass_all": false,
-        "ann_excess_mu_pct": -90.73,
-        "ann_vol_60d_pct": 50.6,
-        "raw_kelly_f": -3.54,
-        "kelly_target_pct": 0
-      },
-      "kq": {
-        "name": "KODEX 코스닥150",
-        "ticker": "229200",
-        "nav_close": 10948.0,
-        "adj_close": 11717.9,
-        "ret_1d_pct": 5.49,
-        "mom_6m_pct": -41.59,
-        "ma_nav": 13213.1,
-        "stop_nav": 13080.9,
-        "disp_pct": -17.14,
-        "above_streak": 0,
-        "below_streak": 31,
-        "trend_on": false,
-        "pass_all": false,
-        "ann_excess_mu_pct": -94.7,
-        "ann_vol_60d_pct": 53.45,
-        "raw_kelly_f": -3.32,
-        "kelly_target_pct": 0
-      },
-      "kofr_nav": 110884.6,
-      "metrics": {
-        "bt_start": "2016-06-29",
-        "bt_end": "2026-11-24",
-        "years": 10.4,
-        "final_equity_man": 6538.7,
-        "cagr_pct": 19.78,
-        "mdd_pct": -27.01,
-        "vol_pct": 20.5,
-        "ex_sharpe": 0.91,
-        "calmar": 0.73,
-        "p25_cagr_pct": 9.22,
-        "p25_mdd_pct": -24.73,
-        "avg_weight_pct": 46.4,
-        "ann_turnover": 3.77,
-        "total_switches": 53
-      },
-      "yearly": [
-        {
-          "year": 2016,
-          "ret_pct": 0.5
-        },
-        {
-          "year": 2017,
-          "ret_pct": 63.1
-        },
-        {
-          "year": 2018,
-          "ret_pct": 2.7
-        },
-        {
-          "year": 2019,
-          "ret_pct": 3.3
-        },
-        {
-          "year": 2020,
-          "ret_pct": 17.8
-        },
-        {
-          "year": 2021,
-          "ret_pct": 2.8
-        },
-        {
-          "year": 2022,
-          "ret_pct": -2.0
-        },
-        {
-          "year": 2023,
-          "ret_pct": 18.6
-        },
-        {
-          "year": 2024,
-          "ret_pct": -13.4
-        },
-        {
-          "year": 2025,
-          "ret_pct": 71.1
-        },
-        {
-          "year": 2026,
-          "ret_pct": 80.4
-        }
-      ],
-      "recent_events": [
-        {
-          "date": "2026-07-13",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA80 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 58.3,
-          "kq_mom6m": -12.5,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2025-05-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 12.5,
-          "kq_mom6m": 5.5,
-          "kelly_f": 4.02
-        },
-        {
-          "date": "2024-08-02",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA80 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 6.2,
-          "kq_mom6m": 2.8,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-06-28",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 7.8,
-          "kq_mom6m": -3.4,
-          "kelly_f": 4.44
-        },
-        {
-          "date": "2024-05-31",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월말 전 종목 추세이탈 → KOFR 대피",
-          "k200_mom6m": 8.2,
-          "kq_mom6m": 1.4,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-04-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 10.9,
-          "kq_mom6m": 5.9,
-          "kelly_f": 5.36
-        },
-        {
-          "date": "2024-04-17",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 코스닥150 MA80 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 12.5,
-          "kq_mom6m": 9.7,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-03-29",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 19.3,
-          "kq_mom6m": 20.6,
-          "kelly_f": 8.66
-        },
-        {
-          "date": "2024-02-29",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 6.4,
-          "kq_mom6m": -3.6,
-          "kelly_f": 3.93
-        },
-        {
-          "date": "2024-01-10",
-          "from": "KODEX 200 20%",
-          "to": "KOFR 100%",
-          "reason": "켈리 기대우위 소멸(f*=-1.08) → KOFR 대피",
-          "k200_mom6m": -0.8,
-          "kq_mom6m": -0.8,
-          "kelly_f": -1.08
-        },
-        {
-          "date": "2024-01-09",
-          "from": "KODEX 200 45%",
-          "to": "KODEX 200 20% + KOFR 80%",
-          "reason": "켈리 비중 축소 (45% → 20%, f*=0.37)",
-          "k200_mom6m": 1.8,
-          "kq_mom6m": 1.4,
-          "kelly_f": 0.37
-        },
-        {
-          "date": "2024-01-08",
-          "from": "KODEX 200 80%",
-          "to": "KODEX 200 45% + KOFR 55%",
-          "reason": "켈리 비중 축소 (80% → 45%, f*=0.91)",
-          "k200_mom6m": 2.8,
-          "kq_mom6m": 2.5,
-          "kelly_f": 0.91
-        },
-        {
-          "date": "2024-01-05",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 200 80% + KOFR 20%",
-          "reason": "켈리 비중 축소 (100% → 80%, f*=1.56)",
-          "k200_mom6m": 4.0,
-          "kq_mom6m": 2.8,
-          "kelly_f": 1.56
-        },
-        {
-          "date": "2023-12-29",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 6.6,
-          "kq_mom6m": 1.4,
-          "kelly_f": 3.13
-        },
-        {
-          "date": "2023-09-13",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 코스닥150 MA80 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 7.5,
-          "kq_mom6m": 14.5,
-          "kelly_f": 0.0
-        }
-      ]
-    },
-    "ma80_quarter": {
-      "id": "ma80_quarter",
-      "ma_len": 80,
-      "kelly_id": "quarter",
-      "kelly_label": "쿼터 켈리 (0.25x)",
-      "kelly_frac": 0.25,
-      "kelly_desc": "연속 켈리 f*의 25% 적용 (MDD 방어 · 칼마비율 최우선)",
-      "title": "MA80 + 쿼터 켈리 (0.25x)",
-      "as_of_date": "2026-11-24",
-      "holding_key": "kofr",
-      "holding_name": "KODEX KOFR금리액티브",
-      "holding_ticker": "423160",
-      "equity_weight_pct": 0,
-      "allocation": {
-        "k200_pct": 0,
-        "kq_pct": 0,
-        "kofr_pct": 100
-      },
-      "prev_allocation": {
-        "k200_pct": 0,
-        "kq_pct": 0,
-        "kofr_pct": 100
-      },
-      "action_code": "HOLD",
-      "action_title": "오늘 매매 없음 (기존 포지션 유지)",
-      "action_detail": "기존 비중 유지",
-      "next_rebal_date": "2026-11-30",
-      "bdays_to_rebal": 4,
-      "k200": {
-        "name": "KODEX 200",
-        "ticker": "069500",
-        "nav_close": 78663.2,
-        "adj_close": 111976.4,
-        "ret_1d_pct": 6.54,
-        "mom_6m_pct": -41.59,
-        "ma_nav": 98143.4,
-        "stop_nav": 97162.0,
-        "disp_pct": -19.85,
-        "above_streak": 0,
-        "below_streak": 88,
-        "trend_on": false,
-        "pass_all": false,
-        "ann_excess_mu_pct": -90.73,
-        "ann_vol_60d_pct": 50.6,
-        "raw_kelly_f": -3.54,
-        "kelly_target_pct": 0
-      },
-      "kq": {
-        "name": "KODEX 코스닥150",
-        "ticker": "229200",
-        "nav_close": 10948.0,
-        "adj_close": 11717.9,
-        "ret_1d_pct": 5.49,
-        "mom_6m_pct": -41.59,
-        "ma_nav": 13213.1,
-        "stop_nav": 13080.9,
-        "disp_pct": -17.14,
-        "above_streak": 0,
-        "below_streak": 31,
-        "trend_on": false,
-        "pass_all": false,
-        "ann_excess_mu_pct": -94.7,
-        "ann_vol_60d_pct": 53.45,
-        "raw_kelly_f": -3.32,
-        "kelly_target_pct": 0
-      },
-      "kofr_nav": 110884.6,
-      "metrics": {
-        "bt_start": "2016-06-29",
-        "bt_end": "2026-11-24",
-        "years": 10.4,
-        "final_equity_man": 5911.1,
-        "cagr_pct": 18.62,
-        "mdd_pct": -25.52,
-        "vol_pct": 19.82,
-        "ex_sharpe": 0.89,
-        "calmar": 0.73,
-        "p25_cagr_pct": 8.82,
-        "p25_mdd_pct": -24.44,
-        "avg_weight_pct": 45.4,
-        "ann_turnover": 4.25,
-        "total_switches": 90
-      },
-      "yearly": [
-        {
-          "year": 2016,
-          "ret_pct": -0.3
-        },
-        {
-          "year": 2017,
-          "ret_pct": 63.1
-        },
-        {
-          "year": 2018,
-          "ret_pct": 2.7
-        },
-        {
-          "year": 2019,
-          "ret_pct": 2.5
-        },
-        {
-          "year": 2020,
-          "ret_pct": 13.9
-        },
-        {
-          "year": 2021,
-          "ret_pct": 3.5
-        },
-        {
-          "year": 2022,
-          "ret_pct": -0.2
-        },
-        {
-          "year": 2023,
-          "ret_pct": 17.4
-        },
-        {
-          "year": 2024,
-          "ret_pct": -13.1
-        },
-        {
-          "year": 2025,
-          "ret_pct": 71.1
-        },
-        {
-          "year": 2026,
-          "ret_pct": 68.3
-        }
-      ],
-      "recent_events": [
-        {
-          "date": "2026-07-13",
-          "from": "KODEX 200 85%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA80 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 58.3,
-          "kq_mom6m": -12.5,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2026-07-07",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 200 85% + KOFR 15%",
-          "reason": "켈리 비중 축소 (100% → 85%, f*=3.50)",
-          "k200_mom6m": 85.7,
-          "kq_mom6m": -8.6,
-          "kelly_f": 3.5
-        },
-        {
-          "date": "2026-05-29",
-          "from": "KODEX 200 90%",
-          "to": "KODEX 200 100%",
-          "reason": "켈리 비중 확대 (90% → 100%, f*=4.89)",
-          "k200_mom6m": 144.4,
-          "kq_mom6m": 16.1,
-          "kelly_f": 4.89
-        },
-        {
-          "date": "2026-05-04",
-          "from": "KODEX 200 80%",
-          "to": "KODEX 200 90% + KOFR 10%",
-          "reason": "켈리 비중 확대 (80% → 90%, f*=3.60)",
-          "k200_mom6m": 86.2,
-          "kq_mom6m": 29.8,
-          "kelly_f": 3.6
-        },
-        {
-          "date": "2026-03-31",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 200 80% + KOFR 20%",
-          "reason": "켈리 비중 축소 (100% → 80%, f*=3.20)",
-          "k200_mom6m": 58.1,
-          "kq_mom6m": 28.9,
-          "kelly_f": 3.2
-        },
-        {
-          "date": "2025-05-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 12.5,
-          "kq_mom6m": 5.5,
-          "kelly_f": 4.02
-        },
-        {
-          "date": "2024-08-02",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA80 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 6.2,
-          "kq_mom6m": 2.8,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-06-28",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 7.8,
-          "kq_mom6m": -3.4,
-          "kelly_f": 4.44
-        },
-        {
-          "date": "2024-05-31",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월말 전 종목 추세이탈 → KOFR 대피",
-          "k200_mom6m": 8.2,
-          "kq_mom6m": 1.4,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-04-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 10.9,
-          "kq_mom6m": 5.9,
-          "kelly_f": 5.36
-        },
-        {
-          "date": "2024-04-17",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 코스닥150 MA80 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 12.5,
-          "kq_mom6m": 9.7,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-03-29",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 19.3,
-          "kq_mom6m": 20.6,
-          "kelly_f": 8.66
-        },
-        {
-          "date": "2024-03-18",
-          "from": "KODEX 200 75%",
-          "to": "KODEX 200 100%",
-          "reason": "켈리 비중 확대 (75% → 100%, f*=4.25)",
-          "k200_mom6m": 7.4,
-          "kq_mom6m": 7.4,
-          "kelly_f": 4.25
-        },
-        {
-          "date": "2024-03-15",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 200 75% + KOFR 25%",
-          "reason": "켈리 비중 축소 (100% → 75%, f*=3.01)",
-          "k200_mom6m": 5.5,
-          "kq_mom6m": 4.5,
-          "kelly_f": 3.01
-        },
-        {
-          "date": "2024-02-29",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 6.4,
-          "kq_mom6m": -3.6,
-          "kelly_f": 3.93
+          "kelly_f": 2.06
         }
       ]
     },
@@ -1878,7 +1344,7 @@
       "kelly_id": "full",
       "kelly_label": "풀 켈리 (1.0x)",
       "kelly_frac": 1.0,
-      "kelly_desc": "연속 켈리 f*의 100% 적용 (노레버리지 1x 상한, 공격형)",
+      "kelly_desc": "축소추정 켈리 f* 100% 적용 (고수익·샤프 1.25, 보유시 평균 ~88%)",
       "title": "MA80 + 풀 켈리 (1.0x)",
       "as_of_date": "2026-11-24",
       "holding_key": "kofr",
@@ -1914,10 +1380,10 @@
         "below_streak": 88,
         "trend_on": false,
         "pass_all": false,
-        "ann_excess_mu_pct": -90.73,
-        "ann_vol_60d_pct": 50.6,
-        "raw_kelly_f": -3.54,
-        "kelly_target_pct": 0
+        "ann_excess_mu_pct": 7.0,
+        "ann_vol_60d_pct": 63.83,
+        "raw_kelly_f": 0.17,
+        "kelly_target_pct": 15
       },
       "kq": {
         "name": "KODEX 코스닥150",
@@ -1933,27 +1399,27 @@
         "below_streak": 31,
         "trend_on": false,
         "pass_all": false,
-        "ann_excess_mu_pct": -94.7,
-        "ann_vol_60d_pct": 53.45,
-        "raw_kelly_f": -3.32,
-        "kelly_target_pct": 0
+        "ann_excess_mu_pct": 4.4,
+        "ann_vol_60d_pct": 67.45,
+        "raw_kelly_f": 0.1,
+        "kelly_target_pct": 10
       },
       "kofr_nav": 110884.6,
       "metrics": {
         "bt_start": "2016-06-29",
         "bt_end": "2026-11-24",
         "years": 10.4,
-        "final_equity_man": 6809.9,
-        "cagr_pct": 20.25,
-        "mdd_pct": -27.01,
-        "vol_pct": 20.64,
-        "ex_sharpe": 0.93,
-        "calmar": 0.75,
-        "p25_cagr_pct": 9.75,
-        "p25_mdd_pct": -25.11,
-        "avg_weight_pct": 46.6,
-        "ann_turnover": 3.49,
-        "total_switches": 39
+        "final_equity_man": 5232.1,
+        "cagr_pct": 17.24,
+        "mdd_pct": -28.05,
+        "vol_pct": 14.2,
+        "ex_sharpe": 1.09,
+        "calmar": 0.61,
+        "p25_cagr_pct": 8.23,
+        "p25_mdd_pct": -28.05,
+        "avg_weight_pct": 42.0,
+        "ann_turnover": 3.84,
+        "total_switches": 91
       },
       "yearly": [
         {
@@ -1962,7 +1428,274 @@
         },
         {
           "year": 2017,
-          "ret_pct": 63.1
+          "ret_pct": 62.8
+        },
+        {
+          "year": 2018,
+          "ret_pct": 4.3
+        },
+        {
+          "year": 2019,
+          "ret_pct": 3.5
+        },
+        {
+          "year": 2020,
+          "ret_pct": 12.8
+        },
+        {
+          "year": 2021,
+          "ret_pct": 2.6
+        },
+        {
+          "year": 2022,
+          "ret_pct": -2.3
+        },
+        {
+          "year": 2023,
+          "ret_pct": 19.8
+        },
+        {
+          "year": 2024,
+          "ret_pct": -18.1
+        },
+        {
+          "year": 2025,
+          "ret_pct": 77.4
+        },
+        {
+          "year": 2026,
+          "ret_pct": 50.4
+        }
+      ],
+      "recent_events": [
+        {
+          "date": "2026-07-13",
+          "from": "KODEX 200 15%",
+          "to": "KOFR 100%",
+          "reason": "월중 KODEX 200 MA80 이탈 → 즉시 KOFR 대피",
+          "k200_mom6m": 58.3,
+          "kq_mom6m": -12.5,
+          "kelly_f": 0.0
+        },
+        {
+          "date": "2026-06-30",
+          "from": "KODEX 200 25%",
+          "to": "KODEX 200 15% + KOFR 85%",
+          "reason": "켈리 비중 축소 (25% → 15%, f*=0.16)",
+          "k200_mom6m": 127.6,
+          "kq_mom6m": 7.1,
+          "kelly_f": 0.16
+        },
+        {
+          "date": "2026-04-06",
+          "from": "KODEX 200 15%",
+          "to": "KODEX 200 25% + KOFR 75%",
+          "reason": "켈리 비중 확대 (15% → 25%, f*=0.26)",
+          "k200_mom6m": 61.5,
+          "kq_mom6m": 25.3,
+          "kelly_f": 0.26
+        },
+        {
+          "date": "2026-03-31",
+          "from": "KODEX 200 20%",
+          "to": "KODEX 200 15% + KOFR 85%",
+          "reason": "켈리 비중 축소 (20% → 15%, f*=0.17)",
+          "k200_mom6m": 58.1,
+          "kq_mom6m": 28.9,
+          "kelly_f": 0.17
+        },
+        {
+          "date": "2026-03-04",
+          "from": "KODEX 200 35%",
+          "to": "KODEX 200 20% + KOFR 80%",
+          "reason": "켈리 비중 축소 (35% → 20%, f*=0.20)",
+          "k200_mom6m": 78.0,
+          "kq_mom6m": 28.4,
+          "kelly_f": 0.2
+        },
+        {
+          "date": "2026-03-03",
+          "from": "KODEX 200 50%",
+          "to": "KODEX 200 35% + KOFR 65%",
+          "reason": "켈리 비중 축소 (50% → 35%, f*=0.33)",
+          "k200_mom6m": 104.3,
+          "kq_mom6m": 52.3,
+          "kelly_f": 0.33
+        },
+        {
+          "date": "2026-02-26",
+          "from": "KODEX 200 60%",
+          "to": "KODEX 200 50% + KOFR 50%",
+          "reason": "켈리 비중 축소 (60% → 50%, f*=0.48)",
+          "k200_mom6m": 120.0,
+          "kq_mom6m": 56.4,
+          "kelly_f": 0.48
+        },
+        {
+          "date": "2026-02-05",
+          "from": "KODEX 200 80%",
+          "to": "KODEX 200 60% + KOFR 40%",
+          "reason": "켈리 비중 축소 (80% → 60%, f*=0.62)",
+          "k200_mom6m": 75.6,
+          "kq_mom6m": 40.9,
+          "kelly_f": 0.62
+        },
+        {
+          "date": "2026-02-03",
+          "from": "KODEX 200 100%",
+          "to": "KODEX 200 80% + KOFR 20%",
+          "reason": "켈리 비중 축소 (100% → 80%, f*=0.78)",
+          "k200_mom6m": 80.0,
+          "kq_mom6m": 49.5,
+          "kelly_f": 0.78
+        },
+        {
+          "date": "2025-12-31",
+          "from": "KODEX 200 90%",
+          "to": "KODEX 200 100%",
+          "reason": "켈리 비중 확대 (90% → 100%, f*=1.10)",
+          "k200_mom6m": 47.6,
+          "kq_mom6m": 21.9,
+          "kelly_f": 1.1
+        },
+        {
+          "date": "2025-12-10",
+          "from": "KODEX 200 80%",
+          "to": "KODEX 200 90% + KOFR 10%",
+          "reason": "켈리 비중 확대 (80% → 90%, f*=0.90)",
+          "k200_mom6m": 48.9,
+          "kq_mom6m": 28.2,
+          "kelly_f": 0.9
+        },
+        {
+          "date": "2025-12-03",
+          "from": "KODEX 200 65%",
+          "to": "KODEX 200 80% + KOFR 20%",
+          "reason": "켈리 비중 확대 (65% → 80%, f*=0.81)",
+          "k200_mom6m": 49.1,
+          "kq_mom6m": 28.6,
+          "kelly_f": 0.81
+        },
+        {
+          "date": "2025-11-28",
+          "from": "KODEX 200 70%",
+          "to": "KODEX 200 65% + KOFR 35%",
+          "reason": "켈리 비중 축소 (70% → 65%, f*=0.65)",
+          "k200_mom6m": 50.5,
+          "kq_mom6m": 31.0,
+          "kelly_f": 0.65
+        },
+        {
+          "date": "2025-11-18",
+          "from": "KODEX 200 85%",
+          "to": "KODEX 200 70% + KOFR 30%",
+          "reason": "켈리 비중 축소 (85% → 70%, f*=0.71)",
+          "k200_mom6m": 62.1,
+          "kq_mom6m": 33.9,
+          "kelly_f": 0.71
+        },
+        {
+          "date": "2025-11-14",
+          "from": "KODEX 200 100%",
+          "to": "KODEX 200 85% + KOFR 15%",
+          "reason": "켈리 비중 축소 (100% → 85%, f*=0.84)",
+          "k200_mom6m": 63.0,
+          "kq_mom6m": 37.8,
+          "kelly_f": 0.84
+        }
+      ]
+    },
+    "ma80_half": {
+      "id": "ma80_half",
+      "ma_len": 80,
+      "kelly_id": "half",
+      "kelly_label": "하프 켈리 (0.5x)",
+      "kelly_frac": 0.5,
+      "kelly_desc": "축소추정 켈리 f* 50% 적용 (연 ~16% · MDD -16%대, 칼마 0.95 권장)",
+      "title": "MA80 + 하프 켈리 (0.5x)",
+      "as_of_date": "2026-11-24",
+      "holding_key": "kofr",
+      "holding_name": "KODEX KOFR금리액티브",
+      "holding_ticker": "423160",
+      "equity_weight_pct": 0,
+      "allocation": {
+        "k200_pct": 0,
+        "kq_pct": 0,
+        "kofr_pct": 100
+      },
+      "prev_allocation": {
+        "k200_pct": 0,
+        "kq_pct": 0,
+        "kofr_pct": 100
+      },
+      "action_code": "HOLD",
+      "action_title": "오늘 매매 없음 (기존 포지션 유지)",
+      "action_detail": "기존 비중 유지",
+      "next_rebal_date": "2026-11-30",
+      "bdays_to_rebal": 4,
+      "k200": {
+        "name": "KODEX 200",
+        "ticker": "069500",
+        "nav_close": 78663.2,
+        "adj_close": 111976.4,
+        "ret_1d_pct": 6.54,
+        "mom_6m_pct": -41.59,
+        "ma_nav": 98143.4,
+        "stop_nav": 97162.0,
+        "disp_pct": -19.85,
+        "above_streak": 0,
+        "below_streak": 88,
+        "trend_on": false,
+        "pass_all": false,
+        "ann_excess_mu_pct": 7.0,
+        "ann_vol_60d_pct": 63.83,
+        "raw_kelly_f": 0.17,
+        "kelly_target_pct": 10
+      },
+      "kq": {
+        "name": "KODEX 코스닥150",
+        "ticker": "229200",
+        "nav_close": 10948.0,
+        "adj_close": 11717.9,
+        "ret_1d_pct": 5.49,
+        "mom_6m_pct": -41.59,
+        "ma_nav": 13213.1,
+        "stop_nav": 13080.9,
+        "disp_pct": -17.14,
+        "above_streak": 0,
+        "below_streak": 31,
+        "trend_on": false,
+        "pass_all": false,
+        "ann_excess_mu_pct": 4.4,
+        "ann_vol_60d_pct": 67.45,
+        "raw_kelly_f": 0.1,
+        "kelly_target_pct": 5
+      },
+      "kofr_nav": 110884.6,
+      "metrics": {
+        "bt_start": "2016-06-29",
+        "bt_end": "2026-11-24",
+        "years": 10.4,
+        "final_equity_man": 3461.4,
+        "cagr_pct": 12.68,
+        "mdd_pct": -21.85,
+        "vol_pct": 10.74,
+        "ex_sharpe": 1.02,
+        "calmar": 0.58,
+        "p25_cagr_pct": 6.72,
+        "p25_mdd_pct": -21.85,
+        "avg_weight_pct": 34.5,
+        "ann_turnover": 3.67,
+        "total_switches": 110
+      },
+      "yearly": [
+        {
+          "year": 2016,
+          "ret_pct": 0.5
+        },
+        {
+          "year": 2017,
+          "ret_pct": 59.8
         },
         {
           "year": 2018,
@@ -1974,11 +1707,11 @@
         },
         {
           "year": 2020,
-          "ret_pct": 20.9
+          "ret_pct": 7.8
         },
         {
           "year": 2021,
-          "ret_pct": 2.8
+          "ret_pct": 0.8
         },
         {
           "year": 2022,
@@ -1986,25 +1719,25 @@
         },
         {
           "year": 2023,
-          "ret_pct": 21.1
+          "ret_pct": 14.2
         },
         {
           "year": 2024,
-          "ret_pct": -13.9
+          "ret_pct": -15.9
         },
         {
           "year": 2025,
-          "ret_pct": 71.1
+          "ret_pct": 59.8
         },
         {
           "year": 2026,
-          "ret_pct": 80.4
+          "ret_pct": 24.5
         }
       ],
       "recent_events": [
         {
           "date": "2026-07-13",
-          "from": "KODEX 200 100%",
+          "from": "KODEX 200 10%",
           "to": "KOFR 100%",
           "reason": "월중 KODEX 200 MA80 이탈 → 즉시 KOFR 대피",
           "k200_mom6m": 58.3,
@@ -2012,130 +1745,397 @@
           "kelly_f": 0.0
         },
         {
-          "date": "2025-05-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 12.5,
-          "kq_mom6m": 5.5,
-          "kelly_f": 4.02
+          "date": "2026-06-30",
+          "from": "KODEX 200 15%",
+          "to": "KODEX 200 10% + KOFR 90%",
+          "reason": "켈리 비중 축소 (15% → 10%, f*=0.16)",
+          "k200_mom6m": 127.6,
+          "kq_mom6m": 7.1,
+          "kelly_f": 0.16
         },
         {
-          "date": "2024-08-02",
-          "from": "KODEX 200 100%",
+          "date": "2026-04-30",
+          "from": "KODEX 200 10%",
+          "to": "KODEX 200 15% + KOFR 85%",
+          "reason": "켈리 비중 확대 (10% → 15%, f*=0.27)",
+          "k200_mom6m": 77.0,
+          "kq_mom6m": 27.3,
+          "kelly_f": 0.27
+        },
+        {
+          "date": "2026-03-04",
+          "from": "KODEX 200 25%",
+          "to": "KODEX 200 10% + KOFR 90%",
+          "reason": "켈리 비중 축소 (25% → 10%, f*=0.20)",
+          "k200_mom6m": 78.0,
+          "kq_mom6m": 28.4,
+          "kelly_f": 0.2
+        },
+        {
+          "date": "2026-02-27",
+          "from": "KODEX 200 30%",
+          "to": "KODEX 200 25% + KOFR 75%",
+          "reason": "켈리 비중 축소 (30% → 25%, f*=0.48)",
+          "k200_mom6m": 118.3,
+          "kq_mom6m": 58.4,
+          "kelly_f": 0.48
+        },
+        {
+          "date": "2026-02-09",
+          "from": "KODEX 200 40%",
+          "to": "KODEX 200 30% + KOFR 70%",
+          "reason": "켈리 비중 축소 (40% → 30%, f*=0.55)",
+          "k200_mom6m": 79.6,
+          "kq_mom6m": 42.2,
+          "kelly_f": 0.55
+        },
+        {
+          "date": "2026-02-03",
+          "from": "KODEX 200 60%",
+          "to": "KODEX 200 40% + KOFR 60%",
+          "reason": "켈리 비중 축소 (60% → 40%, f*=0.78)",
+          "k200_mom6m": 80.0,
+          "kq_mom6m": 49.5,
+          "kelly_f": 0.78
+        },
+        {
+          "date": "2026-02-02",
+          "from": "KODEX 200 70%",
+          "to": "KODEX 200 60% + KOFR 40%",
+          "reason": "켈리 비중 축소 (70% → 60%, f*=1.15)",
+          "k200_mom6m": 69.4,
+          "kq_mom6m": 43.7,
+          "kelly_f": 1.15
+        },
+        {
+          "date": "2026-01-30",
+          "from": "KODEX 200 65%",
+          "to": "KODEX 200 70% + KOFR 30%",
+          "reason": "켈리 비중 확대 (65% → 70%, f*=1.42)",
+          "k200_mom6m": 79.2,
+          "kq_mom6m": 53.0,
+          "kelly_f": 1.42
+        },
+        {
+          "date": "2026-01-29",
+          "from": "KODEX 200 55%",
+          "to": "KODEX 200 65% + KOFR 35%",
+          "reason": "켈리 비중 확대 (55% → 65%, f*=1.34)",
+          "k200_mom6m": 81.2,
+          "kq_mom6m": 59.8,
+          "kelly_f": 1.34
+        },
+        {
+          "date": "2025-12-12",
+          "from": "KODEX 200 40%",
+          "to": "KODEX 200 55% + KOFR 45%",
+          "reason": "켈리 비중 확대 (40% → 55%, f*=1.14)",
+          "k200_mom6m": 48.0,
+          "kq_mom6m": 25.4,
+          "kelly_f": 1.14
+        },
+        {
+          "date": "2025-12-03",
+          "from": "KODEX 200 30%",
+          "to": "KODEX 200 40% + KOFR 60%",
+          "reason": "켈리 비중 확대 (30% → 40%, f*=0.81)",
+          "k200_mom6m": 49.1,
+          "kq_mom6m": 28.6,
+          "kelly_f": 0.81
+        },
+        {
+          "date": "2025-11-28",
+          "from": "KODEX 200 35%",
+          "to": "KODEX 200 30% + KOFR 70%",
+          "reason": "켈리 비중 축소 (35% → 30%, f*=0.65)",
+          "k200_mom6m": 50.5,
+          "kq_mom6m": 31.0,
+          "kelly_f": 0.65
+        },
+        {
+          "date": "2025-11-18",
+          "from": "KODEX 200 50%",
+          "to": "KODEX 200 35% + KOFR 65%",
+          "reason": "켈리 비중 축소 (50% → 35%, f*=0.71)",
+          "k200_mom6m": 62.1,
+          "kq_mom6m": 33.9,
+          "kelly_f": 0.71
+        },
+        {
+          "date": "2025-11-05",
+          "from": "KODEX 200 60%",
+          "to": "KODEX 200 50% + KOFR 50%",
+          "reason": "켈리 비중 축소 (60% → 50%, f*=0.98)",
+          "k200_mom6m": 66.2,
+          "kq_mom6m": 34.2,
+          "kelly_f": 0.98
+        }
+      ]
+    },
+    "ma80_quarter": {
+      "id": "ma80_quarter",
+      "ma_len": 80,
+      "kelly_id": "quarter",
+      "kelly_label": "쿼터 켈리 (0.25x)",
+      "kelly_frac": 0.25,
+      "kelly_desc": "축소추정 켈리 f* 25% 적용 (초방어 MDD -10%대 · 칼마 1.05)",
+      "title": "MA80 + 쿼터 켈리 (0.25x)",
+      "as_of_date": "2026-11-24",
+      "holding_key": "kofr",
+      "holding_name": "KODEX KOFR금리액티브",
+      "holding_ticker": "423160",
+      "equity_weight_pct": 0,
+      "allocation": {
+        "k200_pct": 0,
+        "kq_pct": 0,
+        "kofr_pct": 100
+      },
+      "prev_allocation": {
+        "k200_pct": 0,
+        "kq_pct": 0,
+        "kofr_pct": 100
+      },
+      "action_code": "HOLD",
+      "action_title": "오늘 매매 없음 (기존 포지션 유지)",
+      "action_detail": "기존 비중 유지",
+      "next_rebal_date": "2026-11-30",
+      "bdays_to_rebal": 4,
+      "k200": {
+        "name": "KODEX 200",
+        "ticker": "069500",
+        "nav_close": 78663.2,
+        "adj_close": 111976.4,
+        "ret_1d_pct": 6.54,
+        "mom_6m_pct": -41.59,
+        "ma_nav": 98143.4,
+        "stop_nav": 97162.0,
+        "disp_pct": -19.85,
+        "above_streak": 0,
+        "below_streak": 88,
+        "trend_on": false,
+        "pass_all": false,
+        "ann_excess_mu_pct": 7.0,
+        "ann_vol_60d_pct": 63.83,
+        "raw_kelly_f": 0.17,
+        "kelly_target_pct": 5
+      },
+      "kq": {
+        "name": "KODEX 코스닥150",
+        "ticker": "229200",
+        "nav_close": 10948.0,
+        "adj_close": 11717.9,
+        "ret_1d_pct": 5.49,
+        "mom_6m_pct": -41.59,
+        "ma_nav": 13213.1,
+        "stop_nav": 13080.9,
+        "disp_pct": -17.14,
+        "above_streak": 0,
+        "below_streak": 31,
+        "trend_on": false,
+        "pass_all": false,
+        "ann_excess_mu_pct": 4.4,
+        "ann_vol_60d_pct": 67.45,
+        "raw_kelly_f": 0.1,
+        "kelly_target_pct": 0
+      },
+      "kofr_nav": 110884.6,
+      "metrics": {
+        "bt_start": "2016-06-29",
+        "bt_end": "2026-11-24",
+        "years": 10.4,
+        "final_equity_man": 2479.7,
+        "cagr_pct": 9.12,
+        "mdd_pct": -10.54,
+        "vol_pct": 7.07,
+        "ex_sharpe": 1.04,
+        "calmar": 0.87,
+        "p25_cagr_pct": 6.19,
+        "p25_mdd_pct": -10.54,
+        "avg_weight_pct": 25.1,
+        "ann_turnover": 2.81,
+        "total_switches": 113
+      },
+      "yearly": [
+        {
+          "year": 2016,
+          "ret_pct": 0.5
+        },
+        {
+          "year": 2017,
+          "ret_pct": 44.2
+        },
+        {
+          "year": 2018,
+          "ret_pct": 2.8
+        },
+        {
+          "year": 2019,
+          "ret_pct": 2.3
+        },
+        {
+          "year": 2020,
+          "ret_pct": 7.9
+        },
+        {
+          "year": 2021,
+          "ret_pct": 0.2
+        },
+        {
+          "year": 2022,
+          "ret_pct": -0.3
+        },
+        {
+          "year": 2023,
+          "ret_pct": 10.3
+        },
+        {
+          "year": 2024,
+          "ret_pct": -8.0
+        },
+        {
+          "year": 2025,
+          "ret_pct": 31.4
+        },
+        {
+          "year": 2026,
+          "ret_pct": 13.2
+        }
+      ],
+      "recent_events": [
+        {
+          "date": "2026-07-13",
+          "from": "KODEX 200 5%",
           "to": "KOFR 100%",
           "reason": "월중 KODEX 200 MA80 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 6.2,
-          "kq_mom6m": 2.8,
+          "k200_mom6m": 58.3,
+          "kq_mom6m": -12.5,
           "kelly_f": 0.0
         },
         {
-          "date": "2024-06-28",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 7.8,
-          "kq_mom6m": -3.4,
-          "kelly_f": 4.44
+          "date": "2026-03-31",
+          "from": "KODEX 200 10%",
+          "to": "KODEX 200 5% + KOFR 95%",
+          "reason": "켈리 비중 축소 (10% → 5%, f*=0.17)",
+          "k200_mom6m": 58.1,
+          "kq_mom6m": 28.9,
+          "kelly_f": 0.17
         },
         {
-          "date": "2024-05-31",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월말 전 종목 추세이탈 → KOFR 대피",
-          "k200_mom6m": 8.2,
-          "kq_mom6m": 1.4,
-          "kelly_f": 0.0
+          "date": "2026-02-27",
+          "from": "KODEX 200 20%",
+          "to": "KODEX 200 10% + KOFR 90%",
+          "reason": "켈리 비중 축소 (20% → 10%, f*=0.48)",
+          "k200_mom6m": 118.3,
+          "kq_mom6m": 58.4,
+          "kelly_f": 0.48
         },
         {
-          "date": "2024-04-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 10.9,
-          "kq_mom6m": 5.9,
-          "kelly_f": 5.36
-        },
-        {
-          "date": "2024-04-17",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 코스닥150 MA80 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 12.5,
-          "kq_mom6m": 9.7,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-03-29",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 19.3,
-          "kq_mom6m": 20.6,
-          "kelly_f": 8.66
-        },
-        {
-          "date": "2024-02-29",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 6.4,
-          "kq_mom6m": -3.6,
-          "kelly_f": 3.93
-        },
-        {
-          "date": "2024-01-10",
+          "date": "2026-02-03",
           "from": "KODEX 200 35%",
-          "to": "KOFR 100%",
-          "reason": "켈리 기대우위 소멸(f*=-1.08) → KOFR 대피",
-          "k200_mom6m": -0.8,
-          "kq_mom6m": -0.8,
-          "kelly_f": -1.08
+          "to": "KODEX 200 20% + KOFR 80%",
+          "reason": "켈리 비중 축소 (35% → 20%, f*=0.78)",
+          "k200_mom6m": 80.0,
+          "kq_mom6m": 49.5,
+          "kelly_f": 0.78
         },
         {
-          "date": "2024-01-09",
-          "from": "KODEX 200 100%",
+          "date": "2026-01-30",
+          "from": "KODEX 200 25%",
           "to": "KODEX 200 35% + KOFR 65%",
-          "reason": "켈리 비중 축소 (100% → 35%, f*=0.37)",
-          "k200_mom6m": 1.8,
-          "kq_mom6m": 1.4,
-          "kelly_f": 0.37
+          "reason": "켈리 비중 확대 (25% → 35%, f*=1.42)",
+          "k200_mom6m": 79.2,
+          "kq_mom6m": 53.0,
+          "kelly_f": 1.42
         },
         {
-          "date": "2023-12-29",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 6.6,
-          "kq_mom6m": 1.4,
-          "kelly_f": 3.13
+          "date": "2025-12-31",
+          "from": "KODEX 200 30%",
+          "to": "KODEX 200 25% + KOFR 75%",
+          "reason": "켈리 비중 축소 (30% → 25%, f*=1.10)",
+          "k200_mom6m": 47.6,
+          "kq_mom6m": 21.9,
+          "kelly_f": 1.1
         },
         {
-          "date": "2023-09-13",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 코스닥150 MA80 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 7.5,
-          "kq_mom6m": 14.5,
-          "kelly_f": 0.0
+          "date": "2025-12-12",
+          "from": "KODEX 200 15%",
+          "to": "KODEX 200 30% + KOFR 70%",
+          "reason": "켈리 비중 확대 (15% → 30%, f*=1.14)",
+          "k200_mom6m": 48.0,
+          "kq_mom6m": 25.4,
+          "kelly_f": 1.14
         },
         {
-          "date": "2023-02-28",
-          "from": "KOFR 100%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 2.5,
-          "kq_mom6m": 4.6,
-          "kelly_f": 1.66
+          "date": "2025-11-28",
+          "from": "KODEX 200 20%",
+          "to": "KODEX 200 15% + KOFR 85%",
+          "reason": "켈리 비중 축소 (20% → 15%, f*=0.65)",
+          "k200_mom6m": 50.5,
+          "kq_mom6m": 31.0,
+          "kelly_f": 0.65
         },
         {
-          "date": "2022-01-05",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 코스닥150 MA80 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": -8.9,
-          "kq_mom6m": -0.7,
-          "kelly_f": 0.0
+          "date": "2025-11-18",
+          "from": "KODEX 200 30%",
+          "to": "KODEX 200 20% + KOFR 80%",
+          "reason": "켈리 비중 축소 (30% → 20%, f*=0.71)",
+          "k200_mom6m": 62.1,
+          "kq_mom6m": 33.9,
+          "kelly_f": 0.71
+        },
+        {
+          "date": "2025-11-04",
+          "from": "KODEX 200 45%",
+          "to": "KODEX 200 30% + KOFR 70%",
+          "reason": "켈리 비중 축소 (45% → 30%, f*=1.23)",
+          "k200_mom6m": 71.1,
+          "kq_mom6m": 36.7,
+          "kelly_f": 1.23
+        },
+        {
+          "date": "2025-10-31",
+          "from": "KODEX 200 35%",
+          "to": "KODEX 200 45% + KOFR 55%",
+          "reason": "켈리 비중 확대 (35% → 45%, f*=1.78)",
+          "k200_mom6m": 71.7,
+          "kq_mom6m": 30.5,
+          "kelly_f": 1.78
+        },
+        {
+          "date": "2025-10-28",
+          "from": "KODEX 200 45%",
+          "to": "KODEX 200 35% + KOFR 65%",
+          "reason": "켈리 비중 축소 (45% → 35%, f*=1.34)",
+          "k200_mom6m": 66.7,
+          "kq_mom6m": 31.8,
+          "kelly_f": 1.34
+        },
+        {
+          "date": "2025-10-14",
+          "from": "KODEX 200 55%",
+          "to": "KODEX 200 45% + KOFR 55%",
+          "reason": "켈리 비중 축소 (55% → 45%, f*=1.78)",
+          "k200_mom6m": 53.4,
+          "kq_mom6m": 20.2,
+          "kelly_f": 1.78
+        },
+        {
+          "date": "2025-10-02",
+          "from": "KODEX 200 70%",
+          "to": "KODEX 200 55% + KOFR 45%",
+          "reason": "켈리 비중 축소 (70% → 55%, f*=2.29)",
+          "k200_mom6m": 62.5,
+          "kq_mom6m": 35.1,
+          "kelly_f": 2.29
+        },
+        {
+          "date": "2025-09-01",
+          "from": "KODEX 200 55%",
+          "to": "KODEX 200 70% + KOFR 30%",
+          "reason": "켈리 비중 확대 (55% → 70%, f*=2.82)",
+          "k200_mom6m": 26.4,
+          "kq_mom6m": 7.6,
+          "kelly_f": 2.82
         }
       ]
     },
@@ -2145,7 +2145,7 @@
       "kelly_id": "fixed",
       "kelly_label": "고정 100%",
       "kelly_frac": null,
-      "kelly_desc": "선정 지수에 100% 고정 투자 (기본 해법 1)",
+      "kelly_desc": "선정 지수에 100% 고정 투자 (최고 수익, MDD -30%)",
       "title": "MA60 + 고정 100%",
       "as_of_date": "2026-11-24",
       "holding_key": "kofr",
@@ -2181,9 +2181,9 @@
         "below_streak": 33,
         "trend_on": false,
         "pass_all": false,
-        "ann_excess_mu_pct": -90.73,
-        "ann_vol_60d_pct": 50.6,
-        "raw_kelly_f": -3.54,
+        "ann_excess_mu_pct": 7.0,
+        "ann_vol_60d_pct": 63.83,
+        "raw_kelly_f": 0.17,
         "kelly_target_pct": 100
       },
       "kq": {
@@ -2200,9 +2200,9 @@
         "below_streak": 29,
         "trend_on": false,
         "pass_all": false,
-        "ann_excess_mu_pct": -94.7,
-        "ann_vol_60d_pct": 53.45,
-        "raw_kelly_f": -3.32,
+        "ann_excess_mu_pct": 4.4,
+        "ann_vol_60d_pct": 67.45,
+        "raw_kelly_f": 0.1,
         "kelly_target_pct": 100
       },
       "kofr_nav": 110884.6,
@@ -2285,7 +2285,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 36.5,
           "kq_mom6m": -20.0,
-          "kelly_f": 1.56
+          "kelly_f": 0.19
         },
         {
           "date": "2026-07-08",
@@ -2303,7 +2303,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 77.0,
           "kq_mom6m": 27.3,
-          "kelly_f": 3.28
+          "kelly_f": 0.27
         },
         {
           "date": "2026-03-31",
@@ -2321,7 +2321,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 0.3,
           "kq_mom6m": -10.1,
-          "kelly_f": -0.01
+          "kelly_f": 0.41
         },
         {
           "date": "2024-07-25",
@@ -2339,7 +2339,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 7.8,
           "kq_mom6m": -3.4,
-          "kelly_f": 4.44
+          "kelly_f": 2.85
         },
         {
           "date": "2024-05-30",
@@ -2357,7 +2357,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 10.9,
           "kq_mom6m": 5.9,
-          "kelly_f": 5.36
+          "kelly_f": 1.98
         },
         {
           "date": "2024-04-16",
@@ -2375,7 +2375,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 19.3,
           "kq_mom6m": 20.6,
-          "kelly_f": 8.66
+          "kelly_f": 1.86
         },
         {
           "date": "2024-02-29",
@@ -2384,7 +2384,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 6.4,
           "kq_mom6m": -3.6,
-          "kelly_f": 3.93
+          "kelly_f": 2.2
         },
         {
           "date": "2024-01-17",
@@ -2402,541 +2402,7 @@
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 6.6,
           "kq_mom6m": 1.4,
-          "kelly_f": 3.13
-        }
-      ]
-    },
-    "ma60_half": {
-      "id": "ma60_half",
-      "ma_len": 60,
-      "kelly_id": "half",
-      "kelly_label": "하프 켈리 (0.5x)",
-      "kelly_frac": 0.5,
-      "kelly_desc": "연속 켈리 f*의 50% 적용 (변동성 급등 시 자동 비중 축소, 권장)",
-      "title": "MA60 + 하프 켈리 (0.5x)",
-      "as_of_date": "2026-11-24",
-      "holding_key": "kofr",
-      "holding_name": "KODEX KOFR금리액티브",
-      "holding_ticker": "423160",
-      "equity_weight_pct": 0,
-      "allocation": {
-        "k200_pct": 0,
-        "kq_pct": 0,
-        "kofr_pct": 100
-      },
-      "prev_allocation": {
-        "k200_pct": 0,
-        "kq_pct": 0,
-        "kofr_pct": 100
-      },
-      "action_code": "HOLD",
-      "action_title": "오늘 매매 없음 (기존 포지션 유지)",
-      "action_detail": "기존 비중 유지",
-      "next_rebal_date": "2026-11-30",
-      "bdays_to_rebal": 4,
-      "k200": {
-        "name": "KODEX 200",
-        "ticker": "069500",
-        "nav_close": 78663.2,
-        "adj_close": 111976.4,
-        "ret_1d_pct": 6.54,
-        "mom_6m_pct": -41.59,
-        "ma_nav": 96721.3,
-        "stop_nav": 95754.1,
-        "disp_pct": -18.67,
-        "above_streak": 0,
-        "below_streak": 33,
-        "trend_on": false,
-        "pass_all": false,
-        "ann_excess_mu_pct": -90.73,
-        "ann_vol_60d_pct": 50.6,
-        "raw_kelly_f": -3.54,
-        "kelly_target_pct": 0
-      },
-      "kq": {
-        "name": "KODEX 코스닥150",
-        "ticker": "229200",
-        "nav_close": 10948.0,
-        "adj_close": 11717.9,
-        "ret_1d_pct": 5.49,
-        "mom_6m_pct": -41.59,
-        "ma_nav": 13053.5,
-        "stop_nav": 12923.0,
-        "disp_pct": -16.13,
-        "above_streak": 0,
-        "below_streak": 29,
-        "trend_on": false,
-        "pass_all": false,
-        "ann_excess_mu_pct": -94.7,
-        "ann_vol_60d_pct": 53.45,
-        "raw_kelly_f": -3.32,
-        "kelly_target_pct": 0
-      },
-      "kofr_nav": 110884.6,
-      "metrics": {
-        "bt_start": "2016-06-29",
-        "bt_end": "2026-11-24",
-        "years": 10.4,
-        "final_equity_man": 4883.9,
-        "cagr_pct": 16.47,
-        "mdd_pct": -22.88,
-        "vol_pct": 19.48,
-        "ex_sharpe": 0.8,
-        "calmar": 0.72,
-        "p25_cagr_pct": 8.51,
-        "p25_mdd_pct": -20.77,
-        "avg_weight_pct": 42.0,
-        "ann_turnover": 4.48,
-        "total_switches": 61
-      },
-      "yearly": [
-        {
-          "year": 2016,
-          "ret_pct": 2.1
-        },
-        {
-          "year": 2017,
-          "ret_pct": 60.1
-        },
-        {
-          "year": 2018,
-          "ret_pct": 4.6
-        },
-        {
-          "year": 2019,
-          "ret_pct": -1.6
-        },
-        {
-          "year": 2020,
-          "ret_pct": 19.2
-        },
-        {
-          "year": 2021,
-          "ret_pct": 1.1
-        },
-        {
-          "year": 2022,
-          "ret_pct": -2.0
-        },
-        {
-          "year": 2023,
-          "ret_pct": 13.1
-        },
-        {
-          "year": 2024,
-          "ret_pct": -10.9
-        },
-        {
-          "year": 2025,
-          "ret_pct": 71.1
-        },
-        {
-          "year": 2026,
-          "ret_pct": 42.5
-        }
-      ],
-      "recent_events": [
-        {
-          "date": "2026-10-08",
-          "from": "KODEX 200 65%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 19.8,
-          "kq_mom6m": -18.1,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2026-10-06",
-          "from": "KODEX 200 80%",
-          "to": "KODEX 200 65% + KOFR 35%",
-          "reason": "켈리 비중 축소 (80% → 65%, f*=1.28)",
-          "k200_mom6m": 25.1,
-          "kq_mom6m": -15.3,
-          "kelly_f": 1.28
-        },
-        {
-          "date": "2026-09-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 80% + KOFR 20%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 36.5,
-          "kq_mom6m": -20.0,
-          "kelly_f": 1.56
-        },
-        {
-          "date": "2026-07-08",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 74.4,
-          "kq_mom6m": -14.8,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2026-04-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 77.0,
-          "kq_mom6m": 27.3,
-          "kelly_f": 3.28
-        },
-        {
-          "date": "2026-03-31",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월말 전 종목 추세이탈 → KOFR 대피",
-          "k200_mom6m": 58.1,
-          "kq_mom6m": 28.9,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2025-05-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 12.5,
-          "kq_mom6m": 5.5,
-          "kelly_f": 4.02
-        },
-        {
-          "date": "2024-07-25",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 11.2,
-          "kq_mom6m": 3.9,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-06-28",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 7.8,
-          "kq_mom6m": -3.4,
-          "kelly_f": 4.44
-        },
-        {
-          "date": "2024-05-30",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 8.8,
-          "kq_mom6m": 0.4,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-04-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 10.9,
-          "kq_mom6m": 5.9,
-          "kelly_f": 5.36
-        },
-        {
-          "date": "2024-04-16",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 코스닥150 MA60 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 14.8,
-          "kq_mom6m": 14.1,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-03-29",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 19.3,
-          "kq_mom6m": 20.6,
-          "kelly_f": 8.66
-        },
-        {
-          "date": "2024-02-29",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 6.4,
-          "kq_mom6m": -3.6,
-          "kelly_f": 3.93
-        },
-        {
-          "date": "2024-01-10",
-          "from": "KODEX 200 20%",
-          "to": "KOFR 100%",
-          "reason": "켈리 기대우위 소멸(f*=-1.08) → KOFR 대피",
-          "k200_mom6m": -0.8,
-          "kq_mom6m": -0.8,
-          "kelly_f": -1.08
-        }
-      ]
-    },
-    "ma60_quarter": {
-      "id": "ma60_quarter",
-      "ma_len": 60,
-      "kelly_id": "quarter",
-      "kelly_label": "쿼터 켈리 (0.25x)",
-      "kelly_frac": 0.25,
-      "kelly_desc": "연속 켈리 f*의 25% 적용 (MDD 방어 · 칼마비율 최우선)",
-      "title": "MA60 + 쿼터 켈리 (0.25x)",
-      "as_of_date": "2026-11-24",
-      "holding_key": "kofr",
-      "holding_name": "KODEX KOFR금리액티브",
-      "holding_ticker": "423160",
-      "equity_weight_pct": 0,
-      "allocation": {
-        "k200_pct": 0,
-        "kq_pct": 0,
-        "kofr_pct": 100
-      },
-      "prev_allocation": {
-        "k200_pct": 0,
-        "kq_pct": 0,
-        "kofr_pct": 100
-      },
-      "action_code": "HOLD",
-      "action_title": "오늘 매매 없음 (기존 포지션 유지)",
-      "action_detail": "기존 비중 유지",
-      "next_rebal_date": "2026-11-30",
-      "bdays_to_rebal": 4,
-      "k200": {
-        "name": "KODEX 200",
-        "ticker": "069500",
-        "nav_close": 78663.2,
-        "adj_close": 111976.4,
-        "ret_1d_pct": 6.54,
-        "mom_6m_pct": -41.59,
-        "ma_nav": 96721.3,
-        "stop_nav": 95754.1,
-        "disp_pct": -18.67,
-        "above_streak": 0,
-        "below_streak": 33,
-        "trend_on": false,
-        "pass_all": false,
-        "ann_excess_mu_pct": -90.73,
-        "ann_vol_60d_pct": 50.6,
-        "raw_kelly_f": -3.54,
-        "kelly_target_pct": 0
-      },
-      "kq": {
-        "name": "KODEX 코스닥150",
-        "ticker": "229200",
-        "nav_close": 10948.0,
-        "adj_close": 11717.9,
-        "ret_1d_pct": 5.49,
-        "mom_6m_pct": -41.59,
-        "ma_nav": 13053.5,
-        "stop_nav": 12923.0,
-        "disp_pct": -16.13,
-        "above_streak": 0,
-        "below_streak": 29,
-        "trend_on": false,
-        "pass_all": false,
-        "ann_excess_mu_pct": -94.7,
-        "ann_vol_60d_pct": 53.45,
-        "raw_kelly_f": -3.32,
-        "kelly_target_pct": 0
-      },
-      "kofr_nav": 110884.6,
-      "metrics": {
-        "bt_start": "2016-06-29",
-        "bt_end": "2026-11-24",
-        "years": 10.4,
-        "final_equity_man": 4690.8,
-        "cagr_pct": 16.02,
-        "mdd_pct": -21.6,
-        "vol_pct": 19.05,
-        "ex_sharpe": 0.8,
-        "calmar": 0.74,
-        "p25_cagr_pct": 8.23,
-        "p25_mdd_pct": -20.47,
-        "avg_weight_pct": 41.1,
-        "ann_turnover": 4.72,
-        "total_switches": 91
-      },
-      "yearly": [
-        {
-          "year": 2016,
-          "ret_pct": 1.3
-        },
-        {
-          "year": 2017,
-          "ret_pct": 60.1
-        },
-        {
-          "year": 2018,
-          "ret_pct": 4.6
-        },
-        {
-          "year": 2019,
-          "ret_pct": -1.1
-        },
-        {
-          "year": 2020,
-          "ret_pct": 15.2
-        },
-        {
-          "year": 2021,
-          "ret_pct": 1.4
-        },
-        {
-          "year": 2022,
-          "ret_pct": -0.2
-        },
-        {
-          "year": 2023,
-          "ret_pct": 11.9
-        },
-        {
-          "year": 2024,
-          "ret_pct": -10.6
-        },
-        {
-          "year": 2025,
-          "ret_pct": 71.1
-        },
-        {
-          "year": 2026,
-          "ret_pct": 40.0
-        }
-      ],
-      "recent_events": [
-        {
-          "date": "2026-10-08",
-          "from": "KODEX 200 40%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 19.8,
-          "kq_mom6m": -18.1,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2026-09-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 40% + KOFR 60%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 36.5,
-          "kq_mom6m": -20.0,
-          "kelly_f": 1.56
-        },
-        {
-          "date": "2026-07-08",
-          "from": "KODEX 200 85%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 74.4,
-          "kq_mom6m": -14.8,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2026-07-07",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 200 85% + KOFR 15%",
-          "reason": "켈리 비중 축소 (100% → 85%, f*=3.50)",
-          "k200_mom6m": 85.7,
-          "kq_mom6m": -8.6,
-          "kelly_f": 3.5
-        },
-        {
-          "date": "2026-05-29",
-          "from": "KODEX 200 90%",
-          "to": "KODEX 200 100%",
-          "reason": "켈리 비중 확대 (90% → 100%, f*=4.89)",
-          "k200_mom6m": 144.4,
-          "kq_mom6m": 16.1,
-          "kelly_f": 4.89
-        },
-        {
-          "date": "2026-05-04",
-          "from": "KODEX 200 80%",
-          "to": "KODEX 200 90% + KOFR 10%",
-          "reason": "켈리 비중 확대 (80% → 90%, f*=3.60)",
-          "k200_mom6m": 86.2,
-          "kq_mom6m": 29.8,
-          "kelly_f": 3.6
-        },
-        {
-          "date": "2026-04-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 80% + KOFR 20%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 77.0,
-          "kq_mom6m": 27.3,
-          "kelly_f": 3.28
-        },
-        {
-          "date": "2026-03-31",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월말 전 종목 추세이탈 → KOFR 대피",
-          "k200_mom6m": 58.1,
-          "kq_mom6m": 28.9,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2025-05-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 12.5,
-          "kq_mom6m": 5.5,
-          "kelly_f": 4.02
-        },
-        {
-          "date": "2024-07-25",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 11.2,
-          "kq_mom6m": 3.9,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-06-28",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 7.8,
-          "kq_mom6m": -3.4,
-          "kelly_f": 4.44
-        },
-        {
-          "date": "2024-05-30",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 8.8,
-          "kq_mom6m": 0.4,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-04-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 10.9,
-          "kq_mom6m": 5.9,
-          "kelly_f": 5.36
-        },
-        {
-          "date": "2024-04-16",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 코스닥150 MA60 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 14.8,
-          "kq_mom6m": 14.1,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-03-29",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 19.3,
-          "kq_mom6m": 20.6,
-          "kelly_f": 8.66
+          "kelly_f": 2.26
         }
       ]
     },
@@ -2946,7 +2412,7 @@
       "kelly_id": "full",
       "kelly_label": "풀 켈리 (1.0x)",
       "kelly_frac": 1.0,
-      "kelly_desc": "연속 켈리 f*의 100% 적용 (노레버리지 1x 상한, 공격형)",
+      "kelly_desc": "축소추정 켈리 f* 100% 적용 (고수익·샤프 1.25, 보유시 평균 ~88%)",
       "title": "MA60 + 풀 켈리 (1.0x)",
       "as_of_date": "2026-11-24",
       "holding_key": "kofr",
@@ -2982,10 +2448,10 @@
         "below_streak": 33,
         "trend_on": false,
         "pass_all": false,
-        "ann_excess_mu_pct": -90.73,
-        "ann_vol_60d_pct": 50.6,
-        "raw_kelly_f": -3.54,
-        "kelly_target_pct": 0
+        "ann_excess_mu_pct": 7.0,
+        "ann_vol_60d_pct": 63.83,
+        "raw_kelly_f": 0.17,
+        "kelly_target_pct": 15
       },
       "kq": {
         "name": "KODEX 코스닥150",
@@ -3001,27 +2467,27 @@
         "below_streak": 29,
         "trend_on": false,
         "pass_all": false,
-        "ann_excess_mu_pct": -94.7,
-        "ann_vol_60d_pct": 53.45,
-        "raw_kelly_f": -3.32,
-        "kelly_target_pct": 0
+        "ann_excess_mu_pct": 4.4,
+        "ann_vol_60d_pct": 67.45,
+        "raw_kelly_f": 0.1,
+        "kelly_target_pct": 10
       },
       "kofr_nav": 110884.6,
       "metrics": {
         "bt_start": "2016-06-29",
         "bt_end": "2026-11-24",
         "years": 10.4,
-        "final_equity_man": 4984.4,
-        "cagr_pct": 16.7,
-        "mdd_pct": -24.02,
-        "vol_pct": 19.65,
-        "ex_sharpe": 0.81,
-        "calmar": 0.7,
-        "p25_cagr_pct": 8.96,
-        "p25_mdd_pct": -21.18,
-        "avg_weight_pct": 42.2,
-        "ann_turnover": 4.33,
-        "total_switches": 47
+        "final_equity_man": 4587.7,
+        "cagr_pct": 15.77,
+        "mdd_pct": -24.54,
+        "vol_pct": 13.84,
+        "ex_sharpe": 1.02,
+        "calmar": 0.64,
+        "p25_cagr_pct": 7.35,
+        "p25_mdd_pct": -24.54,
+        "avg_weight_pct": 38.4,
+        "ann_turnover": 4.44,
+        "total_switches": 96
       },
       "yearly": [
         {
@@ -3030,11 +2496,11 @@
         },
         {
           "year": 2017,
-          "ret_pct": 60.1
+          "ret_pct": 59.9
         },
         {
           "year": 2018,
-          "ret_pct": 4.6
+          "ret_pct": 6.1
         },
         {
           "year": 2019,
@@ -3042,11 +2508,11 @@
         },
         {
           "year": 2020,
-          "ret_pct": 22.3
+          "ret_pct": 13.7
         },
         {
           "year": 2021,
-          "ret_pct": 1.1
+          "ret_pct": 0.9
         },
         {
           "year": 2022,
@@ -3054,25 +2520,25 @@
         },
         {
           "year": 2023,
-          "ret_pct": 15.5
+          "ret_pct": 13.9
         },
         {
           "year": 2024,
-          "ret_pct": -11.4
+          "ret_pct": -15.7
         },
         {
           "year": 2025,
-          "ret_pct": 71.1
+          "ret_pct": 77.4
         },
         {
           "year": 2026,
-          "ret_pct": 40.4
+          "ret_pct": 41.5
         }
       ],
       "recent_events": [
         {
           "date": "2026-10-08",
-          "from": "KODEX 200 100%",
+          "from": "KODEX 200 20%",
           "to": "KOFR 100%",
           "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
           "k200_mom6m": 19.8,
@@ -3082,15 +2548,549 @@
         {
           "date": "2026-09-30",
           "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
+          "to": "KODEX 200 20% + KOFR 80%",
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 36.5,
           "kq_mom6m": -20.0,
-          "kelly_f": 1.56
+          "kelly_f": 0.19
         },
         {
           "date": "2026-07-08",
+          "from": "KODEX 200 15%",
+          "to": "KOFR 100%",
+          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
+          "k200_mom6m": 74.4,
+          "kq_mom6m": -14.8,
+          "kelly_f": 0.0
+        },
+        {
+          "date": "2026-06-30",
+          "from": "KODEX 200 25%",
+          "to": "KODEX 200 15% + KOFR 85%",
+          "reason": "켈리 비중 축소 (25% → 15%, f*=0.16)",
+          "k200_mom6m": 127.6,
+          "kq_mom6m": 7.1,
+          "kelly_f": 0.16
+        },
+        {
+          "date": "2026-04-30",
+          "from": "KOFR 100%",
+          "to": "KODEX 200 25% + KOFR 75%",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 77.0,
+          "kq_mom6m": 27.3,
+          "kelly_f": 0.27
+        },
+        {
+          "date": "2026-03-31",
+          "from": "KODEX 200 20%",
+          "to": "KOFR 100%",
+          "reason": "월말 전 종목 추세이탈 → KOFR 대피",
+          "k200_mom6m": 58.1,
+          "kq_mom6m": 28.9,
+          "kelly_f": 0.0
+        },
+        {
+          "date": "2026-03-04",
+          "from": "KODEX 200 35%",
+          "to": "KODEX 200 20% + KOFR 80%",
+          "reason": "켈리 비중 축소 (35% → 20%, f*=0.20)",
+          "k200_mom6m": 78.0,
+          "kq_mom6m": 28.4,
+          "kelly_f": 0.2
+        },
+        {
+          "date": "2026-03-03",
+          "from": "KODEX 200 50%",
+          "to": "KODEX 200 35% + KOFR 65%",
+          "reason": "켈리 비중 축소 (50% → 35%, f*=0.33)",
+          "k200_mom6m": 104.3,
+          "kq_mom6m": 52.3,
+          "kelly_f": 0.33
+        },
+        {
+          "date": "2026-02-26",
+          "from": "KODEX 200 60%",
+          "to": "KODEX 200 50% + KOFR 50%",
+          "reason": "켈리 비중 축소 (60% → 50%, f*=0.48)",
+          "k200_mom6m": 120.0,
+          "kq_mom6m": 56.4,
+          "kelly_f": 0.48
+        },
+        {
+          "date": "2026-02-05",
+          "from": "KODEX 200 80%",
+          "to": "KODEX 200 60% + KOFR 40%",
+          "reason": "켈리 비중 축소 (80% → 60%, f*=0.62)",
+          "k200_mom6m": 75.6,
+          "kq_mom6m": 40.9,
+          "kelly_f": 0.62
+        },
+        {
+          "date": "2026-02-03",
           "from": "KODEX 200 100%",
+          "to": "KODEX 200 80% + KOFR 20%",
+          "reason": "켈리 비중 축소 (100% → 80%, f*=0.78)",
+          "k200_mom6m": 80.0,
+          "kq_mom6m": 49.5,
+          "kelly_f": 0.78
+        },
+        {
+          "date": "2025-12-31",
+          "from": "KODEX 200 90%",
+          "to": "KODEX 200 100%",
+          "reason": "켈리 비중 확대 (90% → 100%, f*=1.10)",
+          "k200_mom6m": 47.6,
+          "kq_mom6m": 21.9,
+          "kelly_f": 1.1
+        },
+        {
+          "date": "2025-12-10",
+          "from": "KODEX 200 80%",
+          "to": "KODEX 200 90% + KOFR 10%",
+          "reason": "켈리 비중 확대 (80% → 90%, f*=0.90)",
+          "k200_mom6m": 48.9,
+          "kq_mom6m": 28.2,
+          "kelly_f": 0.9
+        },
+        {
+          "date": "2025-12-03",
+          "from": "KODEX 200 65%",
+          "to": "KODEX 200 80% + KOFR 20%",
+          "reason": "켈리 비중 확대 (65% → 80%, f*=0.81)",
+          "k200_mom6m": 49.1,
+          "kq_mom6m": 28.6,
+          "kelly_f": 0.81
+        },
+        {
+          "date": "2025-11-28",
+          "from": "KODEX 200 70%",
+          "to": "KODEX 200 65% + KOFR 35%",
+          "reason": "켈리 비중 축소 (70% → 65%, f*=0.65)",
+          "k200_mom6m": 50.5,
+          "kq_mom6m": 31.0,
+          "kelly_f": 0.65
+        }
+      ]
+    },
+    "ma60_half": {
+      "id": "ma60_half",
+      "ma_len": 60,
+      "kelly_id": "half",
+      "kelly_label": "하프 켈리 (0.5x)",
+      "kelly_frac": 0.5,
+      "kelly_desc": "축소추정 켈리 f* 50% 적용 (연 ~16% · MDD -16%대, 칼마 0.95 권장)",
+      "title": "MA60 + 하프 켈리 (0.5x)",
+      "as_of_date": "2026-11-24",
+      "holding_key": "kofr",
+      "holding_name": "KODEX KOFR금리액티브",
+      "holding_ticker": "423160",
+      "equity_weight_pct": 0,
+      "allocation": {
+        "k200_pct": 0,
+        "kq_pct": 0,
+        "kofr_pct": 100
+      },
+      "prev_allocation": {
+        "k200_pct": 0,
+        "kq_pct": 0,
+        "kofr_pct": 100
+      },
+      "action_code": "HOLD",
+      "action_title": "오늘 매매 없음 (기존 포지션 유지)",
+      "action_detail": "기존 비중 유지",
+      "next_rebal_date": "2026-11-30",
+      "bdays_to_rebal": 4,
+      "k200": {
+        "name": "KODEX 200",
+        "ticker": "069500",
+        "nav_close": 78663.2,
+        "adj_close": 111976.4,
+        "ret_1d_pct": 6.54,
+        "mom_6m_pct": -41.59,
+        "ma_nav": 96721.3,
+        "stop_nav": 95754.1,
+        "disp_pct": -18.67,
+        "above_streak": 0,
+        "below_streak": 33,
+        "trend_on": false,
+        "pass_all": false,
+        "ann_excess_mu_pct": 7.0,
+        "ann_vol_60d_pct": 63.83,
+        "raw_kelly_f": 0.17,
+        "kelly_target_pct": 10
+      },
+      "kq": {
+        "name": "KODEX 코스닥150",
+        "ticker": "229200",
+        "nav_close": 10948.0,
+        "adj_close": 11717.9,
+        "ret_1d_pct": 5.49,
+        "mom_6m_pct": -41.59,
+        "ma_nav": 13053.5,
+        "stop_nav": 12923.0,
+        "disp_pct": -16.13,
+        "above_streak": 0,
+        "below_streak": 29,
+        "trend_on": false,
+        "pass_all": false,
+        "ann_excess_mu_pct": 4.4,
+        "ann_vol_60d_pct": 67.45,
+        "raw_kelly_f": 0.1,
+        "kelly_target_pct": 5
+      },
+      "kofr_nav": 110884.6,
+      "metrics": {
+        "bt_start": "2016-06-29",
+        "bt_end": "2026-11-24",
+        "years": 10.4,
+        "final_equity_man": 3162.2,
+        "cagr_pct": 11.7,
+        "mdd_pct": -18.97,
+        "vol_pct": 10.43,
+        "ex_sharpe": 0.96,
+        "calmar": 0.62,
+        "p25_cagr_pct": 5.92,
+        "p25_mdd_pct": -18.97,
+        "avg_weight_pct": 31.7,
+        "ann_turnover": 4.25,
+        "total_switches": 113
+      },
+      "yearly": [
+        {
+          "year": 2016,
+          "ret_pct": 2.1
+        },
+        {
+          "year": 2017,
+          "ret_pct": 56.9
+        },
+        {
+          "year": 2018,
+          "ret_pct": 3.5
+        },
+        {
+          "year": 2019,
+          "ret_pct": -1.9
+        },
+        {
+          "year": 2020,
+          "ret_pct": 6.7
+        },
+        {
+          "year": 2021,
+          "ret_pct": 0.2
+        },
+        {
+          "year": 2022,
+          "ret_pct": -2.3
+        },
+        {
+          "year": 2023,
+          "ret_pct": 11.2
+        },
+        {
+          "year": 2024,
+          "ret_pct": -13.6
+        },
+        {
+          "year": 2025,
+          "ret_pct": 59.8
+        },
+        {
+          "year": 2026,
+          "ret_pct": 21.3
+        }
+      ],
+      "recent_events": [
+        {
+          "date": "2026-10-08",
+          "from": "KODEX 200 10%",
+          "to": "KOFR 100%",
+          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
+          "k200_mom6m": 19.8,
+          "kq_mom6m": -18.1,
+          "kelly_f": 0.0
+        },
+        {
+          "date": "2026-09-30",
+          "from": "KOFR 100%",
+          "to": "KODEX 200 10% + KOFR 90%",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 36.5,
+          "kq_mom6m": -20.0,
+          "kelly_f": 0.19
+        },
+        {
+          "date": "2026-07-08",
+          "from": "KODEX 200 10%",
+          "to": "KOFR 100%",
+          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
+          "k200_mom6m": 74.4,
+          "kq_mom6m": -14.8,
+          "kelly_f": 0.0
+        },
+        {
+          "date": "2026-06-30",
+          "from": "KODEX 200 15%",
+          "to": "KODEX 200 10% + KOFR 90%",
+          "reason": "켈리 비중 축소 (15% → 10%, f*=0.16)",
+          "k200_mom6m": 127.6,
+          "kq_mom6m": 7.1,
+          "kelly_f": 0.16
+        },
+        {
+          "date": "2026-04-30",
+          "from": "KOFR 100%",
+          "to": "KODEX 200 15% + KOFR 85%",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 77.0,
+          "kq_mom6m": 27.3,
+          "kelly_f": 0.27
+        },
+        {
+          "date": "2026-03-31",
+          "from": "KODEX 200 10%",
+          "to": "KOFR 100%",
+          "reason": "월말 전 종목 추세이탈 → KOFR 대피",
+          "k200_mom6m": 58.1,
+          "kq_mom6m": 28.9,
+          "kelly_f": 0.0
+        },
+        {
+          "date": "2026-03-04",
+          "from": "KODEX 200 25%",
+          "to": "KODEX 200 10% + KOFR 90%",
+          "reason": "켈리 비중 축소 (25% → 10%, f*=0.20)",
+          "k200_mom6m": 78.0,
+          "kq_mom6m": 28.4,
+          "kelly_f": 0.2
+        },
+        {
+          "date": "2026-02-27",
+          "from": "KODEX 200 30%",
+          "to": "KODEX 200 25% + KOFR 75%",
+          "reason": "켈리 비중 축소 (30% → 25%, f*=0.48)",
+          "k200_mom6m": 118.3,
+          "kq_mom6m": 58.4,
+          "kelly_f": 0.48
+        },
+        {
+          "date": "2026-02-09",
+          "from": "KODEX 200 40%",
+          "to": "KODEX 200 30% + KOFR 70%",
+          "reason": "켈리 비중 축소 (40% → 30%, f*=0.55)",
+          "k200_mom6m": 79.6,
+          "kq_mom6m": 42.2,
+          "kelly_f": 0.55
+        },
+        {
+          "date": "2026-02-03",
+          "from": "KODEX 200 60%",
+          "to": "KODEX 200 40% + KOFR 60%",
+          "reason": "켈리 비중 축소 (60% → 40%, f*=0.78)",
+          "k200_mom6m": 80.0,
+          "kq_mom6m": 49.5,
+          "kelly_f": 0.78
+        },
+        {
+          "date": "2026-02-02",
+          "from": "KODEX 200 70%",
+          "to": "KODEX 200 60% + KOFR 40%",
+          "reason": "켈리 비중 축소 (70% → 60%, f*=1.15)",
+          "k200_mom6m": 69.4,
+          "kq_mom6m": 43.7,
+          "kelly_f": 1.15
+        },
+        {
+          "date": "2026-01-30",
+          "from": "KODEX 200 65%",
+          "to": "KODEX 200 70% + KOFR 30%",
+          "reason": "켈리 비중 확대 (65% → 70%, f*=1.42)",
+          "k200_mom6m": 79.2,
+          "kq_mom6m": 53.0,
+          "kelly_f": 1.42
+        },
+        {
+          "date": "2026-01-29",
+          "from": "KODEX 200 55%",
+          "to": "KODEX 200 65% + KOFR 35%",
+          "reason": "켈리 비중 확대 (55% → 65%, f*=1.34)",
+          "k200_mom6m": 81.2,
+          "kq_mom6m": 59.8,
+          "kelly_f": 1.34
+        },
+        {
+          "date": "2025-12-12",
+          "from": "KODEX 200 40%",
+          "to": "KODEX 200 55% + KOFR 45%",
+          "reason": "켈리 비중 확대 (40% → 55%, f*=1.14)",
+          "k200_mom6m": 48.0,
+          "kq_mom6m": 25.4,
+          "kelly_f": 1.14
+        },
+        {
+          "date": "2025-12-03",
+          "from": "KODEX 200 30%",
+          "to": "KODEX 200 40% + KOFR 60%",
+          "reason": "켈리 비중 확대 (30% → 40%, f*=0.81)",
+          "k200_mom6m": 49.1,
+          "kq_mom6m": 28.6,
+          "kelly_f": 0.81
+        }
+      ]
+    },
+    "ma60_quarter": {
+      "id": "ma60_quarter",
+      "ma_len": 60,
+      "kelly_id": "quarter",
+      "kelly_label": "쿼터 켈리 (0.25x)",
+      "kelly_frac": 0.25,
+      "kelly_desc": "축소추정 켈리 f* 25% 적용 (초방어 MDD -10%대 · 칼마 1.05)",
+      "title": "MA60 + 쿼터 켈리 (0.25x)",
+      "as_of_date": "2026-11-24",
+      "holding_key": "kofr",
+      "holding_name": "KODEX KOFR금리액티브",
+      "holding_ticker": "423160",
+      "equity_weight_pct": 0,
+      "allocation": {
+        "k200_pct": 0,
+        "kq_pct": 0,
+        "kofr_pct": 100
+      },
+      "prev_allocation": {
+        "k200_pct": 0,
+        "kq_pct": 0,
+        "kofr_pct": 100
+      },
+      "action_code": "HOLD",
+      "action_title": "오늘 매매 없음 (기존 포지션 유지)",
+      "action_detail": "기존 비중 유지",
+      "next_rebal_date": "2026-11-30",
+      "bdays_to_rebal": 4,
+      "k200": {
+        "name": "KODEX 200",
+        "ticker": "069500",
+        "nav_close": 78663.2,
+        "adj_close": 111976.4,
+        "ret_1d_pct": 6.54,
+        "mom_6m_pct": -41.59,
+        "ma_nav": 96721.3,
+        "stop_nav": 95754.1,
+        "disp_pct": -18.67,
+        "above_streak": 0,
+        "below_streak": 33,
+        "trend_on": false,
+        "pass_all": false,
+        "ann_excess_mu_pct": 7.0,
+        "ann_vol_60d_pct": 63.83,
+        "raw_kelly_f": 0.17,
+        "kelly_target_pct": 5
+      },
+      "kq": {
+        "name": "KODEX 코스닥150",
+        "ticker": "229200",
+        "nav_close": 10948.0,
+        "adj_close": 11717.9,
+        "ret_1d_pct": 5.49,
+        "mom_6m_pct": -41.59,
+        "ma_nav": 13053.5,
+        "stop_nav": 12923.0,
+        "disp_pct": -16.13,
+        "above_streak": 0,
+        "below_streak": 29,
+        "trend_on": false,
+        "pass_all": false,
+        "ann_excess_mu_pct": 4.4,
+        "ann_vol_60d_pct": 67.45,
+        "raw_kelly_f": 0.1,
+        "kelly_target_pct": 0
+      },
+      "kofr_nav": 110884.6,
+      "metrics": {
+        "bt_start": "2016-06-29",
+        "bt_end": "2026-11-24",
+        "years": 10.4,
+        "final_equity_man": 2349.4,
+        "cagr_pct": 8.56,
+        "mdd_pct": -8.89,
+        "vol_pct": 6.77,
+        "ex_sharpe": 1.0,
+        "calmar": 0.96,
+        "p25_cagr_pct": 5.69,
+        "p25_mdd_pct": -8.89,
+        "avg_weight_pct": 23.0,
+        "ann_turnover": 3.19,
+        "total_switches": 112
+      },
+      "yearly": [
+        {
+          "year": 2016,
+          "ret_pct": 2.1
+        },
+        {
+          "year": 2017,
+          "ret_pct": 41.7
+        },
+        {
+          "year": 2018,
+          "ret_pct": 3.0
+        },
+        {
+          "year": 2019,
+          "ret_pct": -1.6
+        },
+        {
+          "year": 2020,
+          "ret_pct": 7.0
+        },
+        {
+          "year": 2021,
+          "ret_pct": 0.7
+        },
+        {
+          "year": 2022,
+          "ret_pct": -0.3
+        },
+        {
+          "year": 2023,
+          "ret_pct": 8.8
+        },
+        {
+          "year": 2024,
+          "ret_pct": -6.7
+        },
+        {
+          "year": 2025,
+          "ret_pct": 31.4
+        },
+        {
+          "year": 2026,
+          "ret_pct": 11.7
+        }
+      ],
+      "recent_events": [
+        {
+          "date": "2026-10-08",
+          "from": "KODEX 200 5%",
+          "to": "KOFR 100%",
+          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
+          "k200_mom6m": 19.8,
+          "kq_mom6m": -18.1,
+          "kelly_f": 0.0
+        },
+        {
+          "date": "2026-09-30",
+          "from": "KOFR 100%",
+          "to": "KODEX 200 5% + KOFR 95%",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 36.5,
+          "kq_mom6m": -20.0,
+          "kelly_f": 0.19
+        },
+        {
+          "date": "2026-07-08",
+          "from": "KODEX 200 5%",
           "to": "KOFR 100%",
           "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
           "k200_mom6m": 74.4,
@@ -3100,15 +3100,15 @@
         {
           "date": "2026-04-30",
           "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
+          "to": "KODEX 200 5% + KOFR 95%",
           "reason": "월말 모멘텀 선정",
           "k200_mom6m": 77.0,
           "kq_mom6m": 27.3,
-          "kelly_f": 3.28
+          "kelly_f": 0.27
         },
         {
           "date": "2026-03-31",
-          "from": "KODEX 200 100%",
+          "from": "KODEX 200 10%",
           "to": "KOFR 100%",
           "reason": "월말 전 종목 추세이탈 → KOFR 대피",
           "k200_mom6m": 58.1,
@@ -3116,94 +3116,94 @@
           "kelly_f": 0.0
         },
         {
-          "date": "2025-05-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 12.5,
-          "kq_mom6m": 5.5,
-          "kelly_f": 4.02
+          "date": "2026-02-27",
+          "from": "KODEX 200 20%",
+          "to": "KODEX 200 10% + KOFR 90%",
+          "reason": "켈리 비중 축소 (20% → 10%, f*=0.48)",
+          "k200_mom6m": 118.3,
+          "kq_mom6m": 58.4,
+          "kelly_f": 0.48
         },
         {
-          "date": "2024-07-25",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 11.2,
-          "kq_mom6m": 3.9,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-06-28",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 7.8,
-          "kq_mom6m": -3.4,
-          "kelly_f": 4.44
-        },
-        {
-          "date": "2024-05-30",
-          "from": "KODEX 200 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 KODEX 200 MA60 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 8.8,
-          "kq_mom6m": 0.4,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-04-30",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 10.9,
-          "kq_mom6m": 5.9,
-          "kelly_f": 5.36
-        },
-        {
-          "date": "2024-04-16",
-          "from": "KODEX 코스닥150 100%",
-          "to": "KOFR 100%",
-          "reason": "월중 코스닥150 MA60 이탈 → 즉시 KOFR 대피",
-          "k200_mom6m": 14.8,
-          "kq_mom6m": 14.1,
-          "kelly_f": 0.0
-        },
-        {
-          "date": "2024-03-29",
-          "from": "KODEX 200 100%",
-          "to": "KODEX 코스닥150 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 19.3,
-          "kq_mom6m": 20.6,
-          "kelly_f": 8.66
-        },
-        {
-          "date": "2024-02-29",
-          "from": "KOFR 100%",
-          "to": "KODEX 200 100%",
-          "reason": "월말 모멘텀 선정",
-          "k200_mom6m": 6.4,
-          "kq_mom6m": -3.6,
-          "kelly_f": 3.93
-        },
-        {
-          "date": "2024-01-10",
+          "date": "2026-02-03",
           "from": "KODEX 200 35%",
-          "to": "KOFR 100%",
-          "reason": "켈리 기대우위 소멸(f*=-1.08) → KOFR 대피",
-          "k200_mom6m": -0.8,
-          "kq_mom6m": -0.8,
-          "kelly_f": -1.08
+          "to": "KODEX 200 20% + KOFR 80%",
+          "reason": "켈리 비중 축소 (35% → 20%, f*=0.78)",
+          "k200_mom6m": 80.0,
+          "kq_mom6m": 49.5,
+          "kelly_f": 0.78
         },
         {
-          "date": "2024-01-09",
-          "from": "KODEX 200 100%",
+          "date": "2026-01-30",
+          "from": "KODEX 200 25%",
           "to": "KODEX 200 35% + KOFR 65%",
-          "reason": "켈리 비중 축소 (100% → 35%, f*=0.37)",
-          "k200_mom6m": 1.8,
-          "kq_mom6m": 1.4,
-          "kelly_f": 0.37
+          "reason": "켈리 비중 확대 (25% → 35%, f*=1.42)",
+          "k200_mom6m": 79.2,
+          "kq_mom6m": 53.0,
+          "kelly_f": 1.42
+        },
+        {
+          "date": "2025-12-31",
+          "from": "KODEX 200 30%",
+          "to": "KODEX 200 25% + KOFR 75%",
+          "reason": "켈리 비중 축소 (30% → 25%, f*=1.10)",
+          "k200_mom6m": 47.6,
+          "kq_mom6m": 21.9,
+          "kelly_f": 1.1
+        },
+        {
+          "date": "2025-12-12",
+          "from": "KODEX 200 15%",
+          "to": "KODEX 200 30% + KOFR 70%",
+          "reason": "켈리 비중 확대 (15% → 30%, f*=1.14)",
+          "k200_mom6m": 48.0,
+          "kq_mom6m": 25.4,
+          "kelly_f": 1.14
+        },
+        {
+          "date": "2025-11-28",
+          "from": "KODEX 200 20%",
+          "to": "KODEX 200 15% + KOFR 85%",
+          "reason": "켈리 비중 축소 (20% → 15%, f*=0.65)",
+          "k200_mom6m": 50.5,
+          "kq_mom6m": 31.0,
+          "kelly_f": 0.65
+        },
+        {
+          "date": "2025-11-18",
+          "from": "KODEX 200 30%",
+          "to": "KODEX 200 20% + KOFR 80%",
+          "reason": "켈리 비중 축소 (30% → 20%, f*=0.71)",
+          "k200_mom6m": 62.1,
+          "kq_mom6m": 33.9,
+          "kelly_f": 0.71
+        },
+        {
+          "date": "2025-11-04",
+          "from": "KODEX 200 45%",
+          "to": "KODEX 200 30% + KOFR 70%",
+          "reason": "켈리 비중 축소 (45% → 30%, f*=1.23)",
+          "k200_mom6m": 71.1,
+          "kq_mom6m": 36.7,
+          "kelly_f": 1.23
+        },
+        {
+          "date": "2025-10-31",
+          "from": "KODEX 200 35%",
+          "to": "KODEX 200 45% + KOFR 55%",
+          "reason": "켈리 비중 확대 (35% → 45%, f*=1.78)",
+          "k200_mom6m": 71.7,
+          "kq_mom6m": 30.5,
+          "kelly_f": 1.78
+        },
+        {
+          "date": "2025-10-28",
+          "from": "KODEX 200 45%",
+          "to": "KODEX 200 35% + KOFR 65%",
+          "reason": "켈리 비중 축소 (45% → 35%, f*=1.34)",
+          "k200_mom6m": 66.7,
+          "kq_mom6m": 31.8,
+          "kelly_f": 1.34
         }
       ]
     }

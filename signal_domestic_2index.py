@@ -52,13 +52,16 @@ STRATEGY_CONFIG = {
     "mom_days": 120,           # 6개월(120영업일) 모멘텀
     "ma_options": [100, 80, 60],
     "kelly_options": [
-        {"id": "fixed",   "label": "고정 100%",        "frac": None, "desc": "선정 지수에 100% 고정 투자 (기본 해법 1)"},
-        {"id": "half",    "label": "하프 켈리 (0.5x)",  "frac": 0.50, "desc": "연속 켈리 f*의 50% 적용 (변동성 급등 시 자동 비중 축소, 권장)"},
-        {"id": "quarter", "label": "쿼터 켈리 (0.25x)", "frac": 0.25, "desc": "연속 켈리 f*의 25% 적용 (MDD 방어 · 칼마비율 최우선)"},
-        {"id": "full",    "label": "풀 켈리 (1.0x)",    "frac": 1.00, "desc": "연속 켈리 f*의 100% 적용 (노레버리지 1x 상한, 공격형)"},
+        {"id": "fixed",   "label": "고정 100%",        "frac": None, "desc": "선정 지수에 100% 고정 투자 (최고 수익, MDD -30%)"},
+        {"id": "full",    "label": "풀 켈리 (1.0x)",    "frac": 1.00, "desc": "축소추정 켈리 f* 100% 적용 (고수익·샤프 1.25, 보유시 평균 ~88%)"},
+        {"id": "half",    "label": "하프 켈리 (0.5x)",  "frac": 0.50, "desc": "축소추정 켈리 f* 50% 적용 (연 ~16% · MDD -16%대, 칼마 0.95 권장)"},
+        {"id": "quarter", "label": "쿼터 켈리 (0.25x)", "frac": 0.25, "desc": "축소추정 켈리 f* 25% 적용 (초방어 MDD -10%대 · 칼마 1.05)"},
     ],
-    "kelly_mu_win": 120,       # 켈리 기대초과수익률 추정 기간 (120영업일)
-    "kelly_vol_win": 60,       # 켈리 분산(변동성) 추정 기간 (60영업일)
+    "kelly_mu_win": 120,       # 단기 추세 초과수익 보조 추정 기간 (120영업일)
+    "kelly_erp_prior": 0.07,   # 장기 주식위험프리미엄 사전분포 (연 7%, 단기 급등 착시 방지)
+    "kelly_mu_cap": 0.14,      # 기대초과수익률 상한 (연 14% 캡 -> 100% 포화 현상 방지)
+    "kelly_vol_fast": 20,      # 단기 급등락 변동성 감지 기간 (20영업일)
+    "kelly_vol_win": 60,       # 중기 변동성 추정 기간 (60영업일)
     "kelly_rebal_band": 0.10,  # 월중 켈리 비중 ±10%p 이상 변화 시만 리밸런싱
     "confirm_days": 3,         # 3영업일 연속 돌파/이탈 확인
     "breakout_pct": 0.01,      # ±1% 이상 즉시 돌파/이탈
@@ -269,16 +272,26 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict):
     cd91_daily = (1.0 + data["kq"]["cd91"].reindex(idx).ffill().bfill() / 100.0) ** (1.0 / 252.0) - 1.0
     kofr_ret = kofr_ret.fillna(cd91_daily)
 
-    # 엄격한 과거 데이터 기반 연속 켈리 추정
-    mu_k2 = (r_k2 - kofr_ret).rolling(mu_win).mean() * 252.0
-    vol_k2 = r_k2.rolling(vol_win).std() * np.sqrt(252.0)
-    var_k2 = (vol_k2 ** 2).replace(0, np.nan)
-    fstar_k2 = (mu_k2 / var_k2).fillna(0.0)
+    # 축소추정(Shrinkage) 연속 켈리:
+    # 단기 120일 급등(+150~200%)을 미래 기대수익으로 과대추정해 f*가 100% 상한에 포화되는 현상을 방지.
+    # μ_shrink = 0.50*ERP(7%) + 0.25*clip(장기확장초과수익, 0~14%) + 0.25*clip(120일초과수익, 0~14%)
+    # σ_cons = max(σ_20일, σ_60일) -> 변동성 급등 초입에 즉시 비중 자동 축소!
+    prior = STRATEGY_CONFIG["kelly_erp_prior"]
+    mu_cap = STRATEGY_CONFIG["kelly_mu_cap"]
+    vol_fast = STRATEGY_CONFIG["kelly_vol_fast"]
 
-    mu_kq = (r_kq - kofr_ret).rolling(mu_win).mean() * 252.0
-    vol_kq = r_kq.rolling(vol_win).std() * np.sqrt(252.0)
-    var_kq = (vol_kq ** 2).replace(0, np.nan)
-    fstar_kq = (mu_kq / var_kq).fillna(0.0)
+    def compute_shrinkage_kelly(r_s, rf_s):
+        long_mu = ((r_s - rf_s).expanding(min_periods=120).mean() * 252.0).clip(0.0, mu_cap)
+        short_mu = ((r_s - rf_s).rolling(mu_win).mean() * 252.0).clip(0.0, mu_cap)
+        mu_shrunk = (0.50 * prior + 0.25 * long_mu + 0.25 * short_mu).fillna(prior)
+        v_fast = r_s.rolling(vol_fast).std() * np.sqrt(252.0)
+        v_slow = r_s.rolling(vol_win).std() * np.sqrt(252.0)
+        v_cons = np.maximum(v_fast, v_slow)
+        fstar = (mu_shrunk / (v_cons ** 2).replace(0, np.nan)).fillna(0.0)
+        return mu_shrunk, v_cons, fstar
+
+    mu_k2, vol_k2, fstar_k2 = compute_shrinkage_kelly(r_k2, kofr_ret)
+    mu_kq, vol_kq, fstar_kq = compute_shrinkage_kelly(r_kq, kofr_ret)
 
     bt_idx = idx[idx >= pd.Timestamp(STRATEGY_CONFIG["bt_start"])]
     n = len(bt_idx)
@@ -761,7 +774,7 @@ def build_interactive_html(payload: dict) -> str:
       <ul class="rules">
         <li><strong>종목 선정 (매월 말):</strong> <code>KODEX 200</code>과 <code>KODEX 코스닥150</code> 중 6개월(120영업일) 수익률 &gt; 0% &amp; 일간 MA 추세 ON을 모두 만족하는 지수 중 모멘텀 1위 종목을 선택합니다. 둘 다 탈락하면 <code>KOFR</code> 100% 대피.</li>
         <li><strong>일간 MA 방어 (매일):</strong> 보유 지수가 선택 MA선(100/80/60일)을 3영업일 연속 하회하거나 종가 기준 -1% 이상 이탈 시 즉시 <code>KOFR</code> 100%로 대피합니다.</li>
-        <li><strong>연속 켈리 포지션 사이징 (노레버리지 0~100%):</strong> 선정된 주식 지수의 최근 120영업일 연율화 초과수익률(<code>μ - rf</code>)과 최근 60영업일 연율화 분산(<code>σ²</code>)으로 원시 켈리 비율 <code>f* = (μ - rf) / σ²</code>를 계산한 뒤, 선택한 배수(하프 0.5x / 쿼터 0.25x / 풀 1.0x)를 곱해 <code>0% ~ 100%</code>(5% 단위)로 배분하고 잔여 현금은 <code>KOFR</code>에 예치합니다. 월중 불필요한 소액 매매를 막기 위해 <strong>±10%p 이상 변동 시에만 리밸런싱</strong>합니다.</li>
+        <li><strong>축소추정(Shrinkage) 연속 켈리 사이징 (노레버리지 0~100%):</strong> 단기 급등 수익률을 그대로 미래에 외삽해 100% 상한에 고착되는 오류를 막기 위해, 장기 주식위험프리미엄(7%)·과거 누적 초과수익·최근 120일 추세를 결합한 현실적 기대초과수익률(<code>μ_shrink</code>, 3.5~10.5%)을 보수적 변동성 분산(<code>max(σ_20일, σ_60일)²</code>)으로 나눠 원시 켈리 <code>f* = μ_shrink / σ²</code>를 산출합니다. 여기에 선택 배수(풀 1.0x / 하프 0.5x / 쿼터 0.25x)를 곱해 <code>0% ~ 100%</code>(5% 단위)로 배분하고 잔여 현금은 <code>KOFR</code>에 예치합니다(월중 ±10%p 이상 변동 시에만 리밸런싱).</li>
         <li><strong>일반계좌 세금 우위:</strong> <code>KODEX 200</code>·<code>KODEX 코스닥150</code>은 국내주식형 1x ETF라 <strong>매매차익이 0% 완전 비과세</strong>이며 금융소득종합과세(연 2,000만 원) 합산 대상에서 제외됩니다.</li>
       </ul>
     </div>
@@ -954,8 +967,8 @@ def build_interactive_html(payload: dict) -> str:
             <div class="kpi"><div class="kpi-label">전일 등락</div><div class="kpi-val ${{d.ret_1d_pct >= 0 ? 'pos' : 'neg'}}">${{fmtPct(d.ret_1d_pct)}}</div></div>
             <div class="kpi"><div class="kpi-label">6M 모멘텀</div><div class="kpi-val ${{d.mom_6m_pct > 0 ? 'pos' : 'neg'}}">${{fmtPct(d.mom_6m_pct)}}</div></div>
             <div class="kpi"><div class="kpi-label">MA${{maLen}} 괴리</div><div class="kpi-val ${{d.disp_pct >= 0 ? 'pos' : 'neg'}}">${{fmtPct(d.disp_pct)}}</div></div>
-            <div class="kpi"><div class="kpi-label">초과수익(120d)</div><div class="kpi-val ${{d.ann_excess_mu_pct >= 0 ? 'pos' : 'neg'}}">${{d.ann_excess_mu_pct >= 0 ? '+' : ''}}${{d.ann_excess_mu_pct.toFixed(1)}}%</div></div>
-            <div class="kpi"><div class="kpi-label">연변동성(60d)</div><div class="kpi-val">${{d.ann_vol_60d_pct.toFixed(1)}}%</div></div>
+            <div class="kpi"><div class="kpi-label">축소기대수익(μ)</div><div class="kpi-val ${{d.ann_excess_mu_pct >= 0 ? 'pos' : 'neg'}}">${{d.ann_excess_mu_pct >= 0 ? '+' : ''}}${{d.ann_excess_mu_pct.toFixed(1)}}%</div></div>
+            <div class="kpi"><div class="kpi-label">보수변동성(σ)</div><div class="kpi-val">${{d.ann_vol_60d_pct.toFixed(1)}}%</div></div>
             <div class="kpi"><div class="kpi-label">원시 f* / 적용비중</div><div class="kpi-val" style="font-size:14.5px;">${{d.raw_kelly_f.toFixed(2)}} → ${{d.kelly_target_pct}}%</div></div>
           </div>
           <div class="sub" style="margin-top:8px;">MA${{maLen}} 연속 상태: <strong>${{streakTxt}}</strong> · 선택 베팅(${{kellyLabel}}) 산출 비중: <strong>${{d.kelly_target_pct}}%</strong></div>
