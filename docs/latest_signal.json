@@ -1,0 +1,566 @@
+{
+  "generated_at_kst": "2026-11-25 14:47:24 KST",
+  "primary": {
+    "ma_len": 100,
+    "as_of_date": "2026-11-24",
+    "holding_key": "kofr",
+    "holding_name": "KODEX KOFR금리액티브",
+    "holding_ticker": "423160",
+    "weight_pct": 100,
+    "action": "기존 보유 유지",
+    "action_detail": "보유 유지",
+    "prev_holding_name": "KODEX KOFR금리액티브",
+    "next_rebal_date": "2026-11-30",
+    "bdays_to_rebal": 4,
+    "k200": {
+      "nav_close": 78663.17,
+      "adj_close": 111976.37,
+      "ret_1d_pct": 6.54,
+      "mom_6m_pct": -41.59,
+      "ma_val": 144702.02,
+      "disp_pct": -22.62,
+      "above_streak": 0,
+      "below_streak": 83,
+      "trend_on": false,
+      "pass_all": false
+    },
+    "kq": {
+      "nav_close": 10948.04,
+      "adj_close": 11717.87,
+      "ret_1d_pct": 5.49,
+      "mom_6m_pct": -41.59,
+      "ma_val": 14296.06,
+      "disp_pct": -18.03,
+      "above_streak": 0,
+      "below_streak": 33,
+      "trend_on": false,
+      "pass_all": false
+    },
+    "metrics": {
+      "bt_start": "2016-06-29",
+      "bt_end": "2026-11-24",
+      "years": 10.4,
+      "final_equity_man": 8998.9,
+      "cagr_pct": 23.51,
+      "mdd_pct": -30.13,
+      "vol_pct": 21.35,
+      "ex_sharpe": 1.03,
+      "calmar": 0.78,
+      "ann_turnover": 2.6,
+      "total_switches": 27
+    },
+    "recent_events": [
+      {
+        "date": "2026-07-20",
+        "from": "KODEX 200",
+        "to": "KODEX KOFR금리액티브",
+        "to_ticker": "423160",
+        "reason": "월중 KODEX 200 MA100 이탈 -> 즉시 KOFR 대피",
+        "k200_mom6m": 46.68,
+        "kq_mom6m": -21.93
+      },
+      {
+        "date": "2025-04-30",
+        "from": "KODEX KOFR금리액티브",
+        "to": "KODEX 200",
+        "to_ticker": "069500",
+        "reason": "월말 모멘텀 선정",
+        "k200_mom6m": 0.27,
+        "kq_mom6m": -10.14
+      },
+      {
+        "date": "2024-08-02",
+        "from": "KODEX 200",
+        "to": "KODEX KOFR금리액티브",
+        "to_ticker": "423160",
+        "reason": "월중 KODEX 200 MA100 이탈 -> 즉시 KOFR 대피",
+        "k200_mom6m": 6.23,
+        "kq_mom6m": 2.85
+      },
+      {
+        "date": "2024-04-30",
+        "from": "KODEX 코스닥150",
+        "to": "KODEX 200",
+        "to_ticker": "069500",
+        "reason": "월말 모멘텀 선정",
+        "k200_mom6m": 10.95,
+        "kq_mom6m": 5.87
+      },
+      {
+        "date": "2024-03-29",
+        "from": "KODEX 200",
+        "to": "KODEX 코스닥150",
+        "to_ticker": "229200",
+        "reason": "월말 모멘텀 선정",
+        "k200_mom6m": 19.31,
+        "kq_mom6m": 20.57
+      },
+      {
+        "date": "2024-02-29",
+        "from": "KODEX KOFR금리액티브",
+        "to": "KODEX 200",
+        "to_ticker": "069500",
+        "reason": "월말 모멘텀 선정",
+        "k200_mom6m": 6.42,
+        "kq_mom6m": -3.59
+      },
+      {
+        "date": "2024-01-17",
+        "from": "KODEX 200",
+        "to": "KODEX KOFR금리액티브",
+        "to_ticker": "423160",
+        "reason": "월중 KODEX 200 MA100 이탈 -> 즉시 KOFR 대피",
+        "k200_mom6m": -3.78,
+        "kq_mom6m": -12.95
+      },
+      {
+        "date": "2023-12-29",
+        "from": "KODEX KOFR금리액티브",
+        "to": "KODEX 200",
+        "to_ticker": "069500",
+        "reason": "월말 모멘텀 선정",
+        "k200_mom6m": 6.6,
+        "kq_mom6m": 1.41
+      },
+      {
+        "date": "2023-09-21",
+        "from": "KODEX 코스닥150",
+        "to": "KODEX KOFR금리액티브",
+        "to_ticker": "423160",
+        "reason": "월중 코스닥150 MA100 이탈 -> 즉시 KOFR 대피",
+        "k200_mom6m": 5.04,
+        "kq_mom6m": 8.04
+      },
+      {
+        "date": "2023-02-28",
+        "from": "KODEX KOFR금리액티브",
+        "to": "KODEX 코스닥150",
+        "to_ticker": "229200",
+        "reason": "월말 모멘텀 선정",
+        "k200_mom6m": 2.49,
+        "kq_mom6m": 4.61
+      },
+      {
+        "date": "2022-01-05",
+        "from": "KODEX 코스닥150",
+        "to": "KODEX KOFR금리액티브",
+        "to_ticker": "423160",
+        "reason": "월중 코스닥150 MA100 이탈 -> 즉시 KOFR 대피",
+        "k200_mom6m": -8.94,
+        "kq_mom6m": -0.69
+      },
+      {
+        "date": "2021-12-31",
+        "from": "KODEX KOFR금리액티브",
+        "to": "KODEX 코스닥150",
+        "to_ticker": "229200",
+        "reason": "월말 모멘텀 선정",
+        "k200_mom6m": -7.63,
+        "kq_mom6m": 4.02
+      },
+      {
+        "date": "2021-10-05",
+        "from": "KODEX 코스닥150",
+        "to": "KODEX KOFR금리액티브",
+        "to_ticker": "423160",
+        "reason": "월중 코스닥150 MA100 이탈 -> 즉시 KOFR 대피",
+        "k200_mom6m": -8.32,
+        "kq_mom6m": -2.86
+      },
+      {
+        "date": "2021-08-31",
+        "from": "KODEX KOFR금리액티브",
+        "to": "KODEX 코스닥150",
+        "to_ticker": "229200",
+        "reason": "월말 모멘텀 선정",
+        "k200_mom6m": 2.28,
+        "kq_mom6m": 9.83
+      },
+      {
+        "date": "2021-08-12",
+        "from": "KODEX 200",
+        "to": "KODEX KOFR금리액티브",
+        "to_ticker": "423160",
+        "reason": "월중 KODEX 200 MA100 이탈 -> 즉시 KOFR 대피",
+        "k200_mom6m": 1.51,
+        "kq_mom6m": 5.4
+      }
+    ]
+  },
+  "alternatives": [
+    {
+      "ma_len": 80,
+      "as_of_date": "2026-11-24",
+      "holding_key": "kofr",
+      "holding_name": "KODEX KOFR금리액티브",
+      "holding_ticker": "423160",
+      "weight_pct": 100,
+      "action": "기존 보유 유지",
+      "action_detail": "보유 유지",
+      "prev_holding_name": "KODEX KOFR금리액티브",
+      "next_rebal_date": "2026-11-30",
+      "bdays_to_rebal": 4,
+      "k200": {
+        "nav_close": 78663.17,
+        "adj_close": 111976.37,
+        "ret_1d_pct": 6.54,
+        "mom_6m_pct": -41.59,
+        "ma_val": 139706.35,
+        "disp_pct": -19.85,
+        "above_streak": 0,
+        "below_streak": 88,
+        "trend_on": false,
+        "pass_all": false
+      },
+      "kq": {
+        "nav_close": 10948.04,
+        "adj_close": 11717.87,
+        "ret_1d_pct": 5.49,
+        "mom_6m_pct": -41.59,
+        "ma_val": 14142.16,
+        "disp_pct": -17.14,
+        "above_streak": 0,
+        "below_streak": 31,
+        "trend_on": false,
+        "pass_all": false
+      },
+      "metrics": {
+        "bt_start": "2016-06-29",
+        "bt_end": "2026-11-24",
+        "years": 10.4,
+        "final_equity_man": 6857.1,
+        "cagr_pct": 20.33,
+        "mdd_pct": -28.76,
+        "vol_pct": 20.71,
+        "ex_sharpe": 0.93,
+        "calmar": 0.71,
+        "ann_turnover": 3.46,
+        "total_switches": 36
+      },
+      "recent_events": [
+        {
+          "date": "2026-07-13",
+          "from": "KODEX 200",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월중 KODEX 200 MA80 이탈 -> 즉시 KOFR 대피",
+          "k200_mom6m": 58.31,
+          "kq_mom6m": -12.48
+        },
+        {
+          "date": "2025-04-30",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 200",
+          "to_ticker": "069500",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 0.27,
+          "kq_mom6m": -10.14
+        },
+        {
+          "date": "2024-08-02",
+          "from": "KODEX 200",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월중 KODEX 200 MA80 이탈 -> 즉시 KOFR 대피",
+          "k200_mom6m": 6.23,
+          "kq_mom6m": 2.85
+        },
+        {
+          "date": "2024-06-28",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 200",
+          "to_ticker": "069500",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 7.78,
+          "kq_mom6m": -3.42
+        },
+        {
+          "date": "2024-05-31",
+          "from": "KODEX 200",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월말 전 종목 추세이탈 -> 현금대피",
+          "k200_mom6m": 8.22,
+          "kq_mom6m": 1.43
+        },
+        {
+          "date": "2024-04-30",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 200",
+          "to_ticker": "069500",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 10.95,
+          "kq_mom6m": 5.87
+        },
+        {
+          "date": "2024-04-17",
+          "from": "KODEX 코스닥150",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월중 코스닥150 MA80 이탈 -> 즉시 KOFR 대피",
+          "k200_mom6m": 12.5,
+          "kq_mom6m": 9.66
+        },
+        {
+          "date": "2024-03-29",
+          "from": "KODEX 200",
+          "to": "KODEX 코스닥150",
+          "to_ticker": "229200",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 19.31,
+          "kq_mom6m": 20.57
+        },
+        {
+          "date": "2024-02-29",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 200",
+          "to_ticker": "069500",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 6.42,
+          "kq_mom6m": -3.59
+        },
+        {
+          "date": "2024-01-17",
+          "from": "KODEX 200",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월중 KODEX 200 MA80 이탈 -> 즉시 KOFR 대피",
+          "k200_mom6m": -3.78,
+          "kq_mom6m": -12.95
+        },
+        {
+          "date": "2023-12-29",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 200",
+          "to_ticker": "069500",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 6.6,
+          "kq_mom6m": 1.41
+        },
+        {
+          "date": "2023-09-13",
+          "from": "KODEX 코스닥150",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월중 코스닥150 MA80 이탈 -> 즉시 KOFR 대피",
+          "k200_mom6m": 7.53,
+          "kq_mom6m": 14.54
+        },
+        {
+          "date": "2023-02-28",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 코스닥150",
+          "to_ticker": "229200",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 2.49,
+          "kq_mom6m": 4.61
+        },
+        {
+          "date": "2022-01-05",
+          "from": "KODEX 코스닥150",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월중 코스닥150 MA80 이탈 -> 즉시 KOFR 대피",
+          "k200_mom6m": -8.94,
+          "kq_mom6m": -0.69
+        },
+        {
+          "date": "2021-12-31",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 코스닥150",
+          "to_ticker": "229200",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": -7.63,
+          "kq_mom6m": 4.02
+        }
+      ]
+    },
+    {
+      "ma_len": 60,
+      "as_of_date": "2026-11-24",
+      "holding_key": "kofr",
+      "holding_name": "KODEX KOFR금리액티브",
+      "holding_ticker": "423160",
+      "weight_pct": 100,
+      "action": "기존 보유 유지",
+      "action_detail": "보유 유지",
+      "prev_holding_name": "KODEX KOFR금리액티브",
+      "next_rebal_date": "2026-11-30",
+      "bdays_to_rebal": 4,
+      "k200": {
+        "nav_close": 78663.17,
+        "adj_close": 111976.37,
+        "ret_1d_pct": 6.54,
+        "mom_6m_pct": -41.59,
+        "ma_val": 137682.03,
+        "disp_pct": -18.67,
+        "above_streak": 0,
+        "below_streak": 33,
+        "trend_on": false,
+        "pass_all": false
+      },
+      "kq": {
+        "nav_close": 10948.04,
+        "adj_close": 11717.87,
+        "ret_1d_pct": 5.49,
+        "mom_6m_pct": -41.59,
+        "ma_val": 13971.43,
+        "disp_pct": -16.13,
+        "above_streak": 0,
+        "below_streak": 29,
+        "trend_on": false,
+        "pass_all": false
+      },
+      "metrics": {
+        "bt_start": "2016-06-29",
+        "bt_end": "2026-11-24",
+        "years": 10.4,
+        "final_equity_man": 5017.7,
+        "cagr_pct": 16.77,
+        "mdd_pct": -25.02,
+        "vol_pct": 19.73,
+        "ex_sharpe": 0.81,
+        "calmar": 0.67,
+        "ann_turnover": 4.33,
+        "total_switches": 45
+      },
+      "recent_events": [
+        {
+          "date": "2026-10-08",
+          "from": "KODEX 200",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월중 KODEX 200 MA60 이탈 -> 즉시 KOFR 대피",
+          "k200_mom6m": 19.83,
+          "kq_mom6m": -18.08
+        },
+        {
+          "date": "2026-09-30",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 200",
+          "to_ticker": "069500",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 36.53,
+          "kq_mom6m": -20.02
+        },
+        {
+          "date": "2026-07-08",
+          "from": "KODEX 200",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월중 KODEX 200 MA60 이탈 -> 즉시 KOFR 대피",
+          "k200_mom6m": 74.43,
+          "kq_mom6m": -14.75
+        },
+        {
+          "date": "2026-04-30",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 200",
+          "to_ticker": "069500",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 76.95,
+          "kq_mom6m": 27.34
+        },
+        {
+          "date": "2026-03-31",
+          "from": "KODEX 200",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월말 전 종목 추세이탈 -> 현금대피",
+          "k200_mom6m": 58.1,
+          "kq_mom6m": 28.93
+        },
+        {
+          "date": "2025-04-30",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 200",
+          "to_ticker": "069500",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 0.27,
+          "kq_mom6m": -10.14
+        },
+        {
+          "date": "2024-07-25",
+          "from": "KODEX 200",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월중 KODEX 200 MA60 이탈 -> 즉시 KOFR 대피",
+          "k200_mom6m": 11.16,
+          "kq_mom6m": 3.89
+        },
+        {
+          "date": "2024-06-28",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 200",
+          "to_ticker": "069500",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 7.78,
+          "kq_mom6m": -3.42
+        },
+        {
+          "date": "2024-05-30",
+          "from": "KODEX 200",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월중 KODEX 200 MA60 이탈 -> 즉시 KOFR 대피",
+          "k200_mom6m": 8.8,
+          "kq_mom6m": 0.42
+        },
+        {
+          "date": "2024-04-30",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 200",
+          "to_ticker": "069500",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 10.95,
+          "kq_mom6m": 5.87
+        },
+        {
+          "date": "2024-04-16",
+          "from": "KODEX 코스닥150",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월중 코스닥150 MA60 이탈 -> 즉시 KOFR 대피",
+          "k200_mom6m": 14.78,
+          "kq_mom6m": 14.13
+        },
+        {
+          "date": "2024-03-29",
+          "from": "KODEX 200",
+          "to": "KODEX 코스닥150",
+          "to_ticker": "229200",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 19.31,
+          "kq_mom6m": 20.57
+        },
+        {
+          "date": "2024-02-29",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 200",
+          "to_ticker": "069500",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 6.42,
+          "kq_mom6m": -3.59
+        },
+        {
+          "date": "2024-01-17",
+          "from": "KODEX 200",
+          "to": "KODEX KOFR금리액티브",
+          "to_ticker": "423160",
+          "reason": "월중 KODEX 200 MA60 이탈 -> 즉시 KOFR 대피",
+          "k200_mom6m": -3.78,
+          "kq_mom6m": -12.95
+        },
+        {
+          "date": "2023-12-29",
+          "from": "KODEX KOFR금리액티브",
+          "to": "KODEX 200",
+          "to_ticker": "069500",
+          "reason": "월말 모멘텀 선정",
+          "k200_mom6m": 6.6,
+          "kq_mom6m": 1.41
+        }
+      ]
+    }
+  ]
+}
