@@ -19,7 +19,9 @@ os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(DOCS_DIR, exist_ok=True)
 
 # ==============================================================================
-# 옵션 A: 일반계좌 · 노레버리지(1x) · 국내 2대 지수 비과세 추세 + 코스닥150 단타 스윙
+# 옵션 A (장기 풀사이클): 일반계좌 · 노레버리지(1x) · 국내 2대 지수 추세 + 코스닥150 단타 스윙
+# - 검증 1: 2011 ~ 2024 (14.0년 · 박스피 6년 포함 · 25~26 폭등 제외)
+# - 검증 2: 2011 ~ 2026 (15.9년 · 박스피 + 25~26 풀사이클 전체)
 # ==============================================================================
 ETF_META = {
     "k200": {
@@ -27,7 +29,7 @@ ETF_META = {
         "ticker": "069500",
         "kofia_cd": "KR5105352888",
         "csv": "kodex_200_nav.csv",
-        "start_year": 2015,
+        "start_year": 2009,
         "taxable_capgain": False,
     },
     "kq": {
@@ -72,7 +74,7 @@ STRATEGY_CONFIG = {
             "short_label": "분리 75:25",
             "cap": 0.25,
             "carve_out": True,
-            "desc": "추세 엔진 75% + 코스닥150 1주일 분할 단타 25% 분리 운용 (15년 박스피 방어·MDD 대폭 축소)",
+            "desc": "추세 엔진 75% + 코스닥150 1주일 분할 단타 25% 분리 운용 (2011~16 박스피 방어 · MDD -10%p 축소)",
         },
         {
             "id": "none",
@@ -83,22 +85,23 @@ STRATEGY_CONFIG = {
             "desc": "기존 국내 2지수 MA 추세 + 켈리 전략만 단독 실행 (비교 기준)",
         },
     ],
-    "swing_rsi_len": 5,        # 코스닥150 단기 RSI 기간 (5영업일)
-    "swing_entry_1": 20.0,     # 1차 분할 진입: RSI(5) < 20 (캡의 50% = 12.5%)
-    "swing_entry_2": 15.0,     # 2차 분할 증액: RSI(5) < 15 (캡의 100% = 25.0%)
-    "swing_exit_rsi": 50.0,    # 반등 익절선: RSI(5) >= 50
-    "swing_max_hold": 5,       # 1주일(5영업일) 만기 강제청산
-    "kelly_mu_win": 120,       # 단기 추세 초과수익 보조 추정 기간 (120영업일)
-    "kelly_erp_prior": 0.07,   # 장기 주식위험프리미엄 사전분포 (연 7%)
-    "kelly_mu_cap": 0.14,      # 기대초과수익률 상한 (연 14% 캡)
-    "kelly_vol_fast": 20,      # 단기 급등락 변동성 감지 기간 (20영업일)
-    "kelly_vol_win": 60,       # 중기 변동성 추정 기간 (60영업일)
-    "kelly_rebal_band": 0.10,  # 월중 켈리 비중 ±10%p 이상 변화 시만 리밸런싱
-    "confirm_days": 3,         # 3영업일 연속 돌파/이탈 확인
-    "breakout_pct": 0.01,      # ±1% 이상 즉시 돌파/이탈
+    "swing_rsi_len": 5,
+    "swing_entry_1": 20.0,
+    "swing_entry_2": 15.0,
+    "swing_exit_rsi": 50.0,
+    "swing_max_hold": 5,
+    "kelly_mu_win": 120,
+    "kelly_erp_prior": 0.07,
+    "kelly_mu_cap": 0.14,
+    "kelly_vol_fast": 20,
+    "kelly_vol_win": 60,
+    "kelly_rebal_band": 0.10,
+    "confirm_days": 3,
+    "breakout_pct": 0.01,
     "fee_oneway": 0.0005,      # 실전 국내 ETF 편도 5bp (거래세 0% + 수수료·호가1틱)
     "tax_rate": 0.154,         # 일반계좌 배당/이자소득세 15.4%
-    "bt_start": "2016-06-29",  # 백테스트 공통 시작일
+    "bt_start": "2011-01-03",  # 2011년 첫 거래일 시작 (2009~2010 2년 워밍업)
+    "bt_mid_end": "2024-12-31",
     "default_strategy_id": "ma100_full_overlay25",
 }
 
@@ -243,6 +246,39 @@ def reconstruct_total_return_nav(raw_df: pd.DataFrame) -> pd.DataFrame:
     return aligned
 
 
+def splice_kosdaq_2009(kq_etf_aligned: pd.DataFrame) -> pd.DataFrame:
+    """
+    2009-01 ~ 2015-09-29: 금융투자협회 FreeSIS 공식 코스닥지수 대용 (분배금 0 가정)
+    2015-09-30 ~ 최신일 : 공식 KODEX 코스닥150 ETF 수정기준가 실데이터
+    접합일 가격 연속 스케일링으로 MA·모멘텀·RSI 단절 제거.
+    """
+    pre_path = os.path.join(DATA_DIR, "freesis_kosdaq_2009.csv")
+    if not os.path.exists(pre_path):
+        return kq_etf_aligned
+
+    kq_old = pd.read_csv(pre_path, parse_dates=["date"]).sort_values("date").drop_duplicates("date")
+    first_etf_dt = kq_etf_aligned.index[0]
+    first_etf_adj = float(kq_etf_aligned["adj_close"].iloc[0])
+    first_etf_nav = float(kq_etf_aligned["nav_close"].iloc[0])
+
+    pre = kq_old[kq_old["date"] < first_etf_dt].set_index("date").sort_index().copy()
+    anchor_idx = float(kq_old[kq_old["date"] <= first_etf_dt]["kosdaq_index"].iloc[-1])
+    scale_adj = first_etf_adj / anchor_idx
+    scale_nav = first_etf_nav / anchor_idx
+
+    pre_df = pd.DataFrame({
+        "nav_close": pre["kosdaq_index"] * scale_nav,
+        "adj_close": pre["kosdaq_index"] * scale_adj,
+    }, index=pre.index)
+
+    combined = pd.concat([pre_df, kq_etf_aligned[["nav_close", "adj_close"]]])
+    combined = combined[~combined.index.duplicated(keep="last")].sort_index()
+    combined["price_ret"] = combined["nav_close"].pct_change().fillna(0.0)
+    combined["total_ret"] = combined["adj_close"].pct_change().fillna(0.0)
+    combined["div_ret"] = np.maximum(0.0, combined["total_ret"] - combined["price_ret"])
+    return combined
+
+
 def compute_ma_state(close: pd.Series, ma_len: int, confirm_days: int = 3, brk: float = 0.01) -> pd.DataFrame:
     ma = close.rolling(ma_len).mean()
     disp = close / ma - 1.0
@@ -287,12 +323,29 @@ def compute_rsi(close: pd.Series, period: int = 5) -> pd.Series:
     return rsi.fillna(50.0)
 
 
+def summarize_trades(tr_list: list) -> dict:
+    tr_arr = np.array(tr_list) if tr_list else np.array([])
+    if len(tr_arr) == 0:
+        return {"trades": 0, "win_rate_pct": 0.0, "avg_ret_pct": 0.0, "profit_factor": 0.0, "kelly_f_pct": 0.0}
+    wins = tr_arr[tr_arr > 0]
+    losses = tr_arr[tr_arr <= 0]
+    win_rate = len(wins) / len(tr_arr)
+    avg_win = float(wins.mean()) if len(wins) > 0 else 0.0
+    avg_loss = float(abs(losses.mean())) if len(losses) > 0 else 0.0
+    pf = float(wins.sum() / abs(losses.sum())) if len(losses) > 0 and abs(losses.sum()) > 0 else 9.99
+    kelly_f = (win_rate - (1.0 - win_rate) / (avg_win / avg_loss)) if (avg_win > 0 and avg_loss > 0) else 0.0
+    return {
+        "trades": int(len(tr_arr)),
+        "win_rate_pct": round(win_rate * 100, 1),
+        "avg_ret_pct": round(float(tr_arr.mean()) * 100, 2),
+        "profit_factor": round(pf, 2),
+        "kelly_f_pct": round(kelly_f * 100, 1),
+    }
+
+
 def compute_kq_swing_signal(kq_close: pd.Series, kq_ret_at: pd.Series, bt_idx: pd.DatetimeIndex):
     """
-    코스닥150 극단 과매도 1주일 분할 스윙 엔진 (미래참조 0):
-    - 1차 진입(0.5x): RSI(5) < 20
-    - 2차 증액(1.0x): RSI(5) < 15 (당일 바로 <15이면 즉시 1.0x)
-    - 청산(0.0x)   : RSI(5) >= 50 도달 OR 진입 후 5영업일 경과
+    코스닥150 극단 과매도 1주일 분할 스윙 엔진 (미래참조 0, 2011~2024 및 2011~2026 통계 분리 집계).
     """
     rsi_s = compute_rsi(kq_close, STRATEGY_CONFIG["swing_rsi_len"])
     ent1 = STRATEGY_CONFIG["swing_entry_1"]
@@ -300,11 +353,12 @@ def compute_kq_swing_signal(kq_close: pd.Series, kq_ret_at: pd.Series, bt_idx: p
     ext_rsi = STRATEGY_CONFIG["swing_exit_rsi"]
     max_hold = STRATEGY_CONFIG["swing_max_hold"]
     fee = STRATEGY_CONFIG["fee_oneway"]
+    mid_end = pd.Timestamp(STRATEGY_CONFIG["bt_mid_end"])
 
     n = len(bt_idx)
-    swing_frac = np.zeros(n)     # 0.0, 0.5, 1.0 (스윙 캡 대비 비율)
-    swing_stage = np.zeros(n, dtype=int)  # 0=대기, 1=1차, 2=2차
-    swing_days = np.zeros(n, dtype=int)   # 현재 보유 경과일
+    swing_frac = np.zeros(n)
+    swing_stage = np.zeros(n, dtype=int)
+    swing_days = np.zeros(n, dtype=int)
     swing_reason = []
     entry_px_hist = np.zeros(n)
 
@@ -314,8 +368,8 @@ def compute_kq_swing_signal(kq_close: pd.Series, kq_ret_at: pd.Series, bt_idx: p
     hold_d = 0
     ent_px = 0.0
 
-    # 트레이드 통계 (t+1 실현 기준)
-    trades = []
+    trades_all = []
+    trades_14 = []
     tr_active = False
     tr_eq = 1.0
     prev_f = 0.0
@@ -325,9 +379,6 @@ def compute_kq_swing_signal(kq_close: pd.Series, kq_ret_at: pd.Series, bt_idx: p
         rv = float(rsi_s.loc[d])
         r_day = float(kq_ret_at.iloc[i])
 
-        # t-1 확정 비중으로 오늘 스윙 단독 트레이드 손익 추적
-        if i > 0:
-            turn_s = abs(cur_f - prev_f) if False else 0.0  # 아래에서 실현
         if not in_pos:
             if rv < ent1:
                 in_pos = True
@@ -369,7 +420,6 @@ def compute_kq_swing_signal(kq_close: pd.Series, kq_ret_at: pd.Series, bt_idx: p
         entry_px_hist[i] = ent_px
         swing_reason.append(rsn)
 
-        # 단독 트레이드 성과 집계 (전일 확정 비중 prev_f로 오늘 r_day 실현)
         if i > 0:
             if not tr_active and prev_f > 0:
                 tr_active = True
@@ -379,25 +429,16 @@ def compute_kq_swing_signal(kq_close: pd.Series, kq_ret_at: pd.Series, bt_idx: p
                     tr_eq *= (1.0 + prev_f * r_day)
                 else:
                     tr_eq *= (1.0 - fee)
-                    trades.append(tr_eq - 1.0)
+                    trades_all.append(tr_eq - 1.0)
+                    if d <= mid_end:
+                        trades_14.append(tr_eq - 1.0)
                     tr_active = False
         prev_f = cur_f
 
     if tr_active:
-        trades.append(tr_eq - 1.0)
-
-    tr_arr = np.array(trades) if trades else np.array([])
-    if len(tr_arr) > 0:
-        wins = tr_arr[tr_arr > 0]
-        losses = tr_arr[tr_arr <= 0]
-        win_rate = len(wins) / len(tr_arr)
-        avg_win = float(wins.mean()) if len(wins) > 0 else 0.0
-        avg_loss = float(abs(losses.mean())) if len(losses) > 0 else 0.0
-        pf = float(wins.sum() / abs(losses.sum())) if len(losses) > 0 and abs(losses.sum()) > 0 else 9.99
-        kelly_f = (win_rate - (1.0 - win_rate) / (avg_win / avg_loss)) if (avg_win > 0 and avg_loss > 0) else 0.0
-        avg_ret = float(tr_arr.mean())
-    else:
-        win_rate = avg_win = avg_loss = pf = kelly_f = avg_ret = 0.0
+        trades_all.append(tr_eq - 1.0)
+        if bt_idx[-1] <= mid_end:
+            trades_14.append(tr_eq - 1.0)
 
     ld = bt_idx[-1]
     cur_rsi = float(rsi_s.loc[ld])
@@ -412,13 +453,8 @@ def compute_kq_swing_signal(kq_close: pd.Series, kq_ret_at: pd.Series, bt_idx: p
         "remain_days": max(0, max_hold - int(swing_days[-1])) if swing_stage[-1] > 0 else 0,
         "open_pnl_pct": round(live_pnl, 2),
         "status_text": swing_reason[-1],
-        "stats": {
-            "trades": int(len(tr_arr)),
-            "win_rate_pct": round(win_rate * 100, 1),
-            "avg_ret_pct": round(avg_ret * 100, 2),
-            "profit_factor": round(pf, 2),
-            "kelly_f_pct": round(kelly_f * 100, 1),
-        },
+        "stats_11_24": summarize_trades(trades_14),
+        "stats_11_26": summarize_trades(trades_all),
     }
     return {
         "rsi5_series": rsi_s,
@@ -446,12 +482,40 @@ def fmt_pos_label(w_k2: float, w_kq: float) -> str:
     return " + ".join(parts)
 
 
+def calc_period_metrics(eq_sub: pd.Series, ret_sub: pd.Series, rf_sub: pd.Series, w_sub: pd.Series, turn_sum: float, n_events: int) -> dict:
+    yrs = (eq_sub.index[-1] - eq_sub.index[0]).days / 365.25
+    cagr = (eq_sub.iloc[-1] / eq_sub.iloc[0]) ** (1.0 / yrs) - 1.0
+    mdd = (eq_sub / eq_sub.cummax() - 1.0).min()
+    vol = ret_sub.iloc[1:].std() * np.sqrt(252.0)
+    ex = ret_sub.iloc[1:] - rf_sub.iloc[1:]
+    ex_sharpe = (ex.mean() * 252.0) / (ex.std() * np.sqrt(252.0)) if ex.std() > 0 else 0.0
+    calmar = cagr / abs(mdd) if mdd < 0 else 0.0
+    return {
+        "bt_start": eq_sub.index[0].strftime("%Y-%m-%d"),
+        "bt_end": eq_sub.index[-1].strftime("%Y-%m-%d"),
+        "years": round(yrs, 2),
+        "final_equity_man": round(float(eq_sub.iloc[-1]) / 1e4, 1),
+        "cagr_pct": round(cagr * 100, 2),
+        "mdd_pct": round(mdd * 100, 2),
+        "vol_pct": round(vol * 100, 2),
+        "ex_sharpe": round(ex_sharpe, 2),
+        "calmar": round(calmar, 2),
+        "avg_weight_pct": round(float(w_sub.mean()) * 100, 1),
+        "ann_turnover": round(turn_sum / yrs, 2),
+        "total_switches": int(n_events),
+    }
+
+
+def sub_cagr_mdd(ret_s: pd.Series, s_dt: str, e_dt: str):
+    sub = ret_s.loc[s_dt:e_dt]
+    if len(sub) < 20:
+        return 0.0, 0.0
+    eq = (1.0 + sub).cumprod()
+    yrs = (sub.index[-1] - sub.index[0]).days / 365.25
+    return round(((eq.iloc[-1] ** (1.0 / yrs)) - 1.0) * 100, 1), round(((eq / eq.cummax()) - 1.0).min() * 100, 1)
+
+
 def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: dict, swing_bundle: dict):
-    """
-    옵션 A 통합 엔진:
-    - 추세 엔진: 국내 2지수(KODEX 200, 코스닥150) 월말 6M 모멘텀 + 일간 MA 방어 + 축소추정 켈리
-    - 단타 스윙: 코스닥150 RSI(5)<20 1주일 분할 스윙 (유휴현금 25% 오버레이 / 계좌 분리 75:25 / 미사용)
-    """
     mom_days = STRATEGY_CONFIG["mom_days"]
     mu_win = STRATEGY_CONFIG["kelly_mu_win"]
     vol_win = STRATEGY_CONFIG["kelly_vol_win"]
@@ -471,8 +535,10 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
     st_k200 = compute_ma_state(k200_c, ma_len, STRATEGY_CONFIG["confirm_days"], STRATEGY_CONFIG["breakout_pct"])
     st_kq = compute_ma_state(kq_c, ma_len, STRATEGY_CONFIG["confirm_days"], STRATEGY_CONFIG["breakout_pct"])
 
+    # 2009~2022.04: KODEX 200 공식 CD91 금리 / 2022.04~현재: 공식 KOFR ETF 실수익률
     kofr_ret = data["kofr"]["total_ret"].reindex(idx)
-    cd91_daily = (1.0 + data["kq"]["cd91"].reindex(idx).ffill().bfill() / 100.0) ** (1.0 / 252.0) - 1.0
+    cd91_s = data["k200"]["cd91"].reindex(idx).replace(0.0, np.nan).ffill().bfill()
+    cd91_daily = (1.0 + cd91_s / 100.0) ** (1.0 / 252.0) - 1.0
     kofr_ret = kofr_ret.fillna(cd91_daily)
 
     prior = STRATEGY_CONFIG["kelly_erp_prior"]
@@ -493,7 +559,9 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
     mu_kq, vol_kq, fstar_kq = compute_shrinkage_kelly(r_kq, kofr_ret)
 
     bt_idx = idx[idx >= pd.Timestamp(STRATEGY_CONFIG["bt_start"])]
+    mid_end_ts = pd.Timestamp(STRATEGY_CONFIG["bt_mid_end"])
     n = len(bt_idx)
+    idx_2024_end = int(np.where(bt_idx <= mid_end_ts)[0][-1])
 
     is_me = np.zeros(n, dtype=bool)
     is_me[0] = True
@@ -516,27 +584,23 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
     bh_kq = np.zeros(n); bh_kq[0] = init_cap
     rets = np.zeros(n)
     w_hist = np.zeros(n)
+    turn_arr = np.zeros(n)
 
-    # 추세 엔진 상태
     tr_asset = "kofr"
     tr_w = 0.0
-    # 최종 포트폴리오 비중 (w_k2, w_kq, w_kofr)
     prev_wk2, prev_wkq = 0.0, 0.0
     prev_sw_w = 0.0
 
-    turns = 0.0
     events = []
     reasons = []
-    alloc_hist = []  # (wk2, wkq, tr_asset, tr_w, sw_w)
+    alloc_hist = []
 
     sw_frac_arr = swing_bundle["frac"]
-    sw_stage_arr = swing_bundle["stage"]
     sw_reasons = swing_bundle["reasons"]
     rsi5_s = swing_bundle["rsi5_series"]
 
     for i in range(n):
         d = bt_idx[i]
-        # 1. 전일 확정 비중으로 오늘 수익 실현 (미래참조 0)
         if i > 0:
             prev_wkofr = max(0.0, 1.0 - prev_wk2 - prev_wkq)
             gross = (
@@ -552,7 +616,6 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
         p_tr_asset, p_tr_w = tr_asset, tr_w
         tr_reason = ""
 
-        # 2. 추세 엔진 종목 선정 & 일간 MA 방어
         if is_me[i]:
             cands = []
             if not np.isnan(mk2) and mk2 > 0 and on_k2 == 1:
@@ -572,7 +635,6 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
                 n_tr_asset = "kofr"
                 tr_reason = f"월중 코스닥150 MA{ma_len} 이탈 → KOFR 대피"
 
-        # 3. 켈리 사이징
         raw_f = float(fstar_k2.loc[d]) if n_tr_asset == "k200" else (float(fstar_kq.loc[d]) if n_tr_asset == "kq" else 0.0)
         if n_tr_asset == "kofr":
             n_tr_w = 0.0
@@ -591,17 +653,14 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
                     n_tr_asset = "kofr"
                     tr_reason = f"켈리 기대우위 소멸(f*={raw_f:.2f}) → KOFR 대피"
 
-        # 4. 옵션 A: 코스닥150 1주일 분할 스윙 결합
         if sw_cap > 0:
             if sw_carve:
-                # 계좌 분리 75:25
                 tr_scale = 1.0 - sw_cap
                 new_wk2 = (n_tr_w * tr_scale) if n_tr_asset == "k200" else 0.0
                 new_wkq_tr = (n_tr_w * tr_scale) if n_tr_asset == "kq" else 0.0
                 sw_w = float(sw_frac_arr[i] * sw_cap)
                 new_wkq = new_wkq_tr + sw_w
             else:
-                # 유휴현금 25% 오버레이
                 new_wk2 = n_tr_w if n_tr_asset == "k200" else 0.0
                 new_wkq_tr = n_tr_w if n_tr_asset == "kq" else 0.0
                 idle_cash = max(0.0, 1.0 - new_wk2 - new_wkq_tr)
@@ -612,7 +671,6 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
             new_wkq = n_tr_w if n_tr_asset == "kq" else 0.0
             sw_w = 0.0
 
-        # 사유 조합
         sw_changed = abs(sw_w - prev_sw_w) >= 0.01
         tr_changed = (n_tr_asset != p_tr_asset) or (abs(n_tr_w - p_tr_w) >= 0.01)
         if tr_changed and sw_changed:
@@ -624,7 +682,6 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
         else:
             reason = "기존 포지션 유지" if sw_w == 0 else f"추세 유지 · {sw_reasons[i]}"
 
-        # 5. 회전율 및 비용
         if i > 0:
             new_wkofr = max(0.0, 1.0 - new_wk2 - new_wkq)
             prev_wkofr = max(0.0, 1.0 - prev_wk2 - prev_wkq)
@@ -632,7 +689,7 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
         else:
             t = 0.0
 
-        turns += t
+        turn_arr[i] = t
         rets[i] = gross - t * fee
         if i > 0:
             eq[i] = eq[i - 1] * (1.0 + rets[i])
@@ -662,20 +719,30 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
 
     eq_s = pd.Series(eq, index=bt_idx)
     ret_s = pd.Series(rets, index=bt_idx)
-    years = (bt_idx[-1] - bt_idx[0]).days / 365.25
-    cagr = (eq_s.iloc[-1] / eq_s.iloc[0]) ** (1.0 / years) - 1.0
-    mdd = (eq_s / eq_s.cummax() - 1.0).min()
-    vol = ret_s.iloc[1:].std() * np.sqrt(252)
-    ex = ret_s.iloc[1:] - r_kofr_at.iloc[1:]
-    ex_sharpe = (ex.mean() * 252) / (ex.std() * np.sqrt(252)) if ex.std() > 0 else 0.0
-    calmar = cagr / abs(mdd) if mdd < 0 else 0.0
+    w_s = pd.Series(w_hist, index=bt_idx)
 
-    # Pre-2025 (2016~2024, 8.5년)
-    r_p25 = ret_s.loc[:"2024-12-31"]
-    eq_p25 = (1 + r_p25).cumprod()
-    y_p25 = (r_p25.index[-1] - r_p25.index[0]).days / 365.25
-    cagr_p25 = eq_p25.iloc[-1] ** (1.0 / y_p25) - 1.0
-    mdd_p25 = (eq_p25 / eq_p25.cummax() - 1.0).min()
+    ev_14_cnt = sum(1 for ev in events if ev["date"] <= STRATEGY_CONFIG["bt_mid_end"])
+    m_11_24 = calc_period_metrics(
+        eq_s.iloc[:idx_2024_end + 1],
+        ret_s.iloc[:idx_2024_end + 1],
+        r_kofr_at.iloc[:idx_2024_end + 1],
+        w_s.iloc[:idx_2024_end + 1],
+        float(turn_arr[:idx_2024_end + 1].sum()),
+        ev_14_cnt,
+    )
+    b_cagr, b_mdd = sub_cagr_mdd(ret_s, "2011-01-03", "2016-12-31")
+    p_cagr, p_mdd = sub_cagr_mdd(ret_s, "2017-01-01", "2024-12-31")
+    m_11_24["boxpi_cagr_pct"] = b_cagr
+    m_11_24["boxpi_mdd_pct"] = b_mdd
+    m_11_24["post_cagr_pct"] = p_cagr
+    m_11_24["post_mdd_pct"] = p_mdd
+
+    m_11_26 = calc_period_metrics(
+        eq_s, ret_s, r_kofr_at, w_s, float(turn_arr.sum()), len(events)
+    )
+    r25_cagr, r25_mdd = sub_cagr_mdd(ret_s, "2025-01-01", bt_idx[-1].strftime("%Y-%m-%d"))
+    m_11_26["rally_cagr_pct"] = r25_cagr
+    m_11_26["rally_mdd_pct"] = r25_mdd
 
     yearly = []
     for yr, grp in ret_s.groupby(ret_s.index.year):
@@ -736,23 +803,14 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
     alloc = {"k200_pct": k2_pct, "kq_pct": kq_pct, "kofr_pct": kofr_pct}
     prev_alloc = {"k200_pct": pk2_pct, "kq_pct": pkq_pct, "kofr_pct": pkofr_pct}
 
-    # 대표 holding_key 결정
     if k2_pct > 0 and kq_pct > 0:
-        holding_key = "both"
-        holding_name = "KODEX 200 + 코스닥150"
-        holding_ticker = "069500/229200"
+        holding_key, holding_name, holding_ticker = "both", "KODEX 200 + 코스닥150", "069500/229200"
     elif k2_pct > 0:
-        holding_key = "k200"
-        holding_name = ETF_META["k200"]["name"]
-        holding_ticker = ETF_META["k200"]["ticker"]
+        holding_key, holding_name, holding_ticker = "k200", ETF_META["k200"]["name"], ETF_META["k200"]["ticker"]
     elif kq_pct > 0:
-        holding_key = "kq"
-        holding_name = ETF_META["kq"]["name"]
-        holding_ticker = ETF_META["kq"]["ticker"]
+        holding_key, holding_name, holding_ticker = "kq", ETF_META["kq"]["name"], ETF_META["kq"]["ticker"]
     else:
-        holding_key = "kofr"
-        holding_name = ETF_META["kofr"]["name"]
-        holding_ticker = ETF_META["kofr"]["ticker"]
+        holding_key, holding_name, holding_ticker = "kofr", ETF_META["kofr"]["name"], ETF_META["kofr"]["ticker"]
 
     def asset_live_info(key: str, close_s, mom_s, st_df, mu_s, vol_s, fstar_s):
         f_val = float(fstar_s.loc[ld])
@@ -785,7 +843,6 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
             info["rsi5"] = round(float(rsi5_s.loc[ld]), 1)
         return info
 
-    # 자산별 보유 일수 & 기여도
     asset_days = {"k200": 0, "kq": 0, "kofr": 0, "swing": 0}
     for wk2_i, wkq_i, _, _, sw_i in alloc_hist:
         if wk2_i >= 0.005: asset_days["k200"] += 1
@@ -797,9 +854,12 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
     swing_only_events = [ev for ev in events if ev.get("is_swing_event")]
 
     dd_s = (eq_s / eq_s.cummax() - 1.0) * 100.0
-    sample_idx = list(range(0, n, 5))
-    if sample_idx[-1] != n - 1:
-        sample_idx.append(n - 1)
+    # 5영업일 샘플링 + 2024년 말일 + 최종 거래일 정확 포함
+    sample_set = set(range(0, n, 5))
+    sample_set.add(idx_2024_end)
+    sample_set.add(n - 1)
+    sample_idx = sorted(sample_set)
+    end_2024_sample_pos = sample_idx.index(idx_2024_end)
 
     strategy_id = f"ma{ma_len}_{kelly_opt['id']}_{swing_opt['id']}"
     result = {
@@ -837,22 +897,9 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
             "swing": {"name": "코스닥150 단타 스윙", "days": asset_days["swing"], "pct": round(asset_days["swing"] / n * 100, 1)},
             "kofr": {"name": "KOFR 현금 보유일", "days": asset_days["kofr"], "pct": round(asset_days["kofr"] / n * 100, 1)},
         },
-        "metrics": {
-            "bt_start": bt_idx[0].strftime("%Y-%m-%d"),
-            "bt_end": ld.strftime("%Y-%m-%d"),
-            "years": round(years, 2),
-            "final_equity_man": round(float(eq_s.iloc[-1]) / 1e4, 1),
-            "cagr_pct": round(cagr * 100, 2),
-            "mdd_pct": round(mdd * 100, 2),
-            "vol_pct": round(vol * 100, 2),
-            "ex_sharpe": round(ex_sharpe, 2),
-            "calmar": round(calmar, 2),
-            "p25_cagr_pct": round(cagr_p25 * 100, 2),
-            "p25_mdd_pct": round(mdd_p25 * 100, 2),
-            "avg_weight_pct": round(float(w_hist.mean()) * 100, 1),
-            "ann_turnover": round(turns / years, 2),
-            "total_switches": len(events),
-        },
+        "metrics_11_24": m_11_24,
+        "metrics_11_26": m_11_26,
+        "metrics": m_11_26,
         "yearly": yearly,
         "recent_events": events[-20:][::-1],
         "switch_events": switch_only_events[-20:][::-1],
@@ -863,10 +910,18 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
         },
     }
 
+    # 벤치마크 14년/16년 수치도 함께 전달
+    bh2_s = pd.Series(bh_k200, index=bt_idx)
+    bhq_s = pd.Series(bh_kq, index=bt_idx)
     bench = {
         "dates": [bt_idx[j].strftime("%Y-%m-%d") for j in sample_idx],
+        "end_2024_pos": end_2024_sample_pos,
         "bh_k200": [round(float(bh_k200[j]) / 1e4, 1) for j in sample_idx],
         "bh_kq": [round(float(bh_kq[j]) / 1e4, 1) for j in sample_idx],
+        "bh_k200_11_24_cagr": round(((bh2_s.iloc[idx_2024_end] / bh2_s.iloc[0]) ** (1.0 / m_11_24["years"]) - 1.0) * 100, 2),
+        "bh_k200_11_26_cagr": round(((bh2_s.iloc[-1] / bh2_s.iloc[0]) ** (1.0 / m_11_26["years"]) - 1.0) * 100, 2),
+        "bh_kq_11_24_cagr": round(((bhq_s.iloc[idx_2024_end] / bhq_s.iloc[0]) ** (1.0 / m_11_24["years"]) - 1.0) * 100, 2),
+        "bh_kq_11_26_cagr": round(((bhq_s.iloc[-1] / bhq_s.iloc[0]) ** (1.0 / m_11_26["years"]) - 1.0) * 100, 2),
     }
     return result, bench
 
@@ -878,13 +933,13 @@ def build_interactive_html(payload: dict) -> str:
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>국내 2대 지수 모멘텀·켈리 + 코스닥150 단타 스윙 시그널</title>
+  <title>국내 2대 지수 모멘텀·켈리 + 코스닥150 단타 스윙 (2011~2024 / 2011~2026)</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <style>
     :root {{ --bg:#f4f6fb; --card:#ffffff; --text:#111827; --muted:#6b7280; --border:#e5e7eb; --accent:#1d4ed8; }}
     * {{ box-sizing:border-box; }}
     body {{ margin:0; font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Gothic Neo",sans-serif; background:var(--bg); color:var(--text); line-height:1.5; }}
-    .wrap {{ max-width:1140px; margin:0 auto; padding:22px 16px 56px; }}
+    .wrap {{ max-width:1160px; margin:0 auto; padding:22px 16px 56px; }}
     .topbar {{ display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:8px; margin-bottom:14px; }}
     .topbar h1 {{ margin:0; font-size:22px; font-weight:800; letter-spacing:-0.4px; }}
     .topbar .meta {{ font-size:13px; color:var(--muted); }}
@@ -907,7 +962,6 @@ def build_interactive_html(payload: dict) -> str:
     .hero-main {{ font-size:28px; font-weight:800; margin:12px 0 6px; letter-spacing:-0.6px; }}
     .hero-sub {{ font-size:14px; opacity:0.93; display:flex; flex-wrap:wrap; gap:16px; margin-top:6px; }}
 
-    /* Swing Live Monitor Card */
     .swing-card {{ background:linear-gradient(135deg, #faf5ff 0%, #ffffff 100%); border:2px solid #8b5cf6; border-radius:14px; padding:16px 20px; margin-bottom:18px; box-shadow:0 3px 10px rgba(139,92,246,0.08); }}
     .rsi-bar-wrap {{ margin-top:10px; }}
     .rsi-bar-bg {{ height:10px; background:linear-gradient(90deg, #dc2626 0%, #f59e0b 20%, #e5e7eb 50%, #10b981 100%); border-radius:999px; position:relative; }}
@@ -927,10 +981,14 @@ def build_interactive_html(payload: dict) -> str:
     .alloc-delta {{ font-size:12.5px; font-weight:700; }}
     .alloc-krw {{ font-size:13.5px; font-weight:700; color:#1d4ed8; margin-top:4px; }}
 
-    .kpi-strip {{ display:grid; grid-template-columns:repeat(auto-fit, minmax(145px, 1fr)); gap:10px; margin-bottom:18px; }}
-    .stat-card {{ background:#fff; border:1px solid var(--border); border-radius:12px; padding:13px 14px; }}
+    .period-banner {{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding-bottom:10px; margin-bottom:12px; border-bottom:2px solid #f3f4f6; }}
+    .period-tag-14 {{ background:#fef3c7; color:#92400e; padding:4px 11px; border-radius:999px; font-size:12px; font-weight:800; }}
+    .period-tag-16 {{ background:#dbeafe; color:#1e40af; padding:4px 11px; border-radius:999px; font-size:12px; font-weight:800; }}
+
+    .kpi-strip {{ display:grid; grid-template-columns:repeat(auto-fit, minmax(145px, 1fr)); gap:10px; margin-bottom:14px; }}
+    .stat-card {{ background:#f9fafb; border:1px solid var(--border); border-radius:12px; padding:12px 13px; }}
     .stat-label {{ font-size:12px; color:var(--muted); font-weight:600; }}
-    .stat-val {{ font-size:20px; font-weight:800; margin-top:3px; }}
+    .stat-val {{ font-size:19px; font-weight:800; margin-top:3px; }}
     .stat-sub {{ font-size:11.5px; color:var(--muted); margin-top:2px; }}
 
     .grid-2 {{ display:grid; grid-template-columns:repeat(auto-fit, minmax(330px, 1fr)); gap:16px; margin-bottom:18px; }}
@@ -953,17 +1011,20 @@ def build_interactive_html(payload: dict) -> str:
     .pos {{ color:#dc2626; }}
     .neg {{ color:#2563eb; }}
     h2 {{ font-size:16.5px; font-weight:800; margin:0 0 12px; }}
-    table {{ width:100%; border-collapse:collapse; font-size:13px; }}
-    th, td {{ padding:9px 8px; border-bottom:1px solid var(--border); text-align:left; }}
-    th {{ font-size:12px; color:var(--muted); font-weight:700; background:#f9fafb; }}
+    table {{ width:100%; border-collapse:collapse; font-size:12.5px; }}
+    th, td {{ padding:8px 7px; border-bottom:1px solid var(--border); text-align:left; white-space:nowrap; }}
+    th {{ font-size:11.5px; color:var(--muted); font-weight:700; background:#f9fafb; }}
+    .col-sep {{ border-left:2px solid #e5e7eb; }}
     tr.clickable {{ cursor:pointer; transition:background 0.12s; }}
     tr.clickable:hover {{ background:#f3f4f6; }}
     tr.selected-row {{ background:#eff6ff !important; font-weight:700; }}
     .section {{ margin-bottom:18px; }}
-    .chart-box {{ height:310px; position:relative; }}
-    .chart-box-sm {{ height:180px; position:relative; margin-top:14px; }}
-    .yr-grid {{ display:grid; grid-template-columns:repeat(auto-fill, minmax(82px, 1fr)); gap:8px; }}
+    .chart-box {{ height:290px; position:relative; }}
+    .chart-box-sm {{ height:165px; position:relative; margin-top:12px; }}
+    .yr-grid {{ display:grid; grid-template-columns:repeat(auto-fill, minmax(84px, 1fr)); gap:8px; }}
     .yr-chip {{ border-radius:10px; padding:8px; text-align:center; border:1px solid var(--border); background:#f9fafb; }}
+    .yr-chip.boxpi-yr {{ border-color:#fcd34d; background:#fffbeb; }}
+    .yr-chip.rally-yr {{ border-color:#93c5fd; background:#eff6ff; }}
     .yr-chip .y {{ font-size:11.5px; color:var(--muted); font-weight:700; }}
     .yr-chip .r {{ font-size:15px; font-weight:800; margin-top:2px; }}
     .rules {{ font-size:13.5px; color:#374151; margin:0; padding-left:18px; }}
@@ -979,7 +1040,7 @@ def build_interactive_html(payload: dict) -> str:
       <div class="meta">기준 거래일: <strong id="asOfDate">-</strong> (KOFIA 공식 종가) · 갱신: <span id="genAt">-</span></div>
     </div>
 
-    <!-- 전략 선택기 (3축: MA 방어선 × 켈리 × 코스닥150 단타 스윙) -->
+    <!-- 전략 선택기 -->
     <div class="selector-card">
       <div class="sel-row">
         <div class="sel-group">
@@ -1040,32 +1101,44 @@ def build_interactive_html(payload: dict) -> str:
       <div class="alloc-grid" id="allocGrid"></div>
     </div>
 
-    <!-- 선택 전략 백테스트 핵심 지표 -->
-    <div class="kpi-strip" id="kpiStrip"></div>
-
     <!-- 2개 지수 실시간 켈리 & 추세 진단 -->
     <div class="grid-2" id="assetCards"></div>
 
-    <!-- 인터랙티브 차트 -->
-    <div class="card section">
-      <h2 id="chartTitle">📊 10.4년 일반계좌 세후 자산 곡선 & 낙폭(DD) 비교</h2>
-      <div class="chart-box"><canvas id="eqChart"></canvas></div>
-      <div class="chart-box-sm"><canvas id="ddChart"></canvas></div>
+    <!-- [검증 1] 2011 ~ 2024 (14년, 박스피 포함 · 25~26 폭등 제외) -->
+    <div class="card section" style="border-top:4px solid #f59e0b;">
+      <div class="period-banner">
+        <h2 id="title14" style="margin:0;">📊 [검증 1] 2011 ~ 2024 (14.0년 · 박스피 6년 포함 · 25~26 폭등 제외)</h2>
+        <span class="period-tag-14">스트레스 검증 구간 (2025~26 대세장 완전 배제)</span>
+      </div>
+      <div class="kpi-strip" id="kpiStrip14"></div>
+      <div class="chart-box"><canvas id="eqChart14"></canvas></div>
+      <div class="chart-box-sm"><canvas id="ddChart14"></canvas></div>
     </div>
 
-    <!-- 연도별 수익률 -->
+    <!-- [검증 2] 2011 ~ 2026 (15.9년, 박스피 + 25~26 전체 풀사이클) -->
+    <div class="card section" style="border-top:4px solid #2563eb;">
+      <div class="period-banner">
+        <h2 id="title16" style="margin:0;">📊 [검증 2] 2011 ~ 2026 (15.9년 · 박스피 + 25~26 풀사이클 전체)</h2>
+        <span class="period-tag-16">장기 전체 구간 (2011.01 ~ 최신 거래일)</span>
+      </div>
+      <div class="kpi-strip" id="kpiStrip16"></div>
+      <div class="chart-box"><canvas id="eqChart16"></canvas></div>
+      <div class="chart-box-sm"><canvas id="ddChart16"></canvas></div>
+    </div>
+
+    <!-- 연도별 수익률 (2011~2026 16년 전체) -->
     <div class="card section">
-      <h2>📅 선택 전략 연도별 세후 수익률 (2016 ~ 2026)</h2>
+      <h2>📅 선택 전략 연도별 세후 수익률 (2011 ~ 2026, 16년 전체) <span style="font-size:12px;color:#6b7280;font-weight:500;">노랑=박스피(11~16) · 파랑=대세랠리(25~26)</span></h2>
       <div class="yr-grid" id="yrGrid"></div>
     </div>
 
-    <!-- 전략 비교표 -->
+    <!-- 전략 비교표 (2011~2024 vs 2011~2026 나란히 비교) -->
     <div class="card section">
       <div class="action-head" style="margin-bottom:10px;">
-        <h2 style="margin:0;">🏆 전략 백테스트 비교 <span style="font-size:12px;color:#6b7280;font-weight:500;">(행 클릭 시 즉시 전환)</span></h2>
+        <h2 style="margin:0;">🏆 전략 백테스트 비교: 2011~2024 (14년) vs 2011~2026 (15.9년) <span style="font-size:12px;color:#6b7280;font-weight:500;">(행 클릭 시 즉시 전환)</span></h2>
         <div class="btn-row" id="cmpFilterBtns">
-          <button class="seg-btn active" data-cmp="featured">핵심 추천 9종 (스윙 모드 비교)</button>
-          <button class="seg-btn" data-cmp="cur_swing">현재 스윙 모드 전체 (12종)</button>
+          <button class="seg-btn active" data-cmp="featured">핵심 추천 9종 (스윙 비교)</button>
+          <button class="seg-btn" data-cmp="cur_swing">현재 스윙 모드 (12종)</button>
           <button class="seg-btn" data-cmp="all">전체 36종</button>
         </div>
       </div>
@@ -1073,7 +1146,16 @@ def build_interactive_html(payload: dict) -> str:
         <table>
           <thead>
             <tr>
-              <th>전략</th><th>오늘 목표 포지션</th><th>오늘 액션</th><th>세후 CAGR</th><th>MDD</th><th>초과샤프</th><th>칼마</th><th>16~24(8.5년)</th><th>평균비중</th><th>연회전</th>
+              <th>전략</th>
+              <th>오늘 포지션</th>
+              <th class="col-sep">11~24 CAGR</th>
+              <th>11~24 MDD</th>
+              <th>11~24 샤프</th>
+              <th>박스피(11~16)</th>
+              <th class="col-sep">11~26 CAGR</th>
+              <th>11~26 MDD</th>
+              <th>11~26 샤프</th>
+              <th>칼마</th>
             </tr>
           </thead>
           <tbody id="compareTbody"></tbody>
@@ -1102,21 +1184,18 @@ def build_interactive_html(payload: dict) -> str:
       </div>
     </div>
 
-    <!-- 규칙 & 박스피 검증 요약 -->
+    <!-- 규칙 & 데이터 안내 -->
     <div class="card section">
-      <h2>📐 옵션 A 매매 규칙 (국내 지수 추세 + 코스닥150 1주일 분할 스윙)</h2>
+      <h2>📐 옵션 A 매매 규칙 & 2011~2026 장기 검증 데이터 기준</h2>
       <ul class="rules">
-        <li><strong>① 추세 엔진 (월말 선정 + 일간 MA 방어):</strong> 매월 말 <code>KODEX 200</code>과 <code>KODEX 코스닥150</code> 중 6개월(120일) 수익률 &gt; 0% &amp; 일간 MA ON 충족 시 1위 지수 보유, 일간 MA 이탈 시 즉시 <code>KOFR</code> 대피. 비중은 축소추정 켈리(<code>f* = μ_shrink / max(σ_20, σ_60)²</code>)로 0~100% 자동 조절.</li>
-        <li><strong>② 코스닥150 극단 과매도 1주일 분할 스윙 (박스피 대응, 최대 25% 캡):</strong> 변동성이 큰 <code>KODEX 코스닥150</code>이 <strong><code>RSI(5) &lt; 20</code></strong>에 진입하면 1차 <strong>12.5%</strong> 매수, 보유 중 <strong><code>RSI(5) &lt; 15</code></strong> 추가 급락 시 2차 <strong>25%</strong>까지 증액합니다. 이후 <strong><code>RSI(5) ≥ 50</code> 반등 시 즉시 익절</strong>하거나 <strong>5영업일(1주일) 만기 시 자동 청산</strong>해 하락장 물림을 원천 차단합니다. (15년 2010~2024 단독 검증: 103회, 승률 63.1%, PF 1.65, 수학적 켈리 최적 비중 <code>f* = 24.9%</code>)</li>
-        <li><strong>③ 결합 방식 선택 가이드:</strong>
-          <strong>유휴현금 25% 스윙</strong>은 대세 상승장 수익을 100% 누리면서 현금 대기 구간에 단타 알파를 얹는 공격형(15년 +6.12% / 17년 +12.2%),
-          <strong>계좌 분리 75:25</strong>는 2010~2016 박스피 7년 구간을 플러스로 방어하고 15년 MDD를 <code>-33% → -22.9%</code>로 낮추는 방어형입니다.</li>
-        <li><strong>④ 일반계좌 세금 우위:</strong> <code>KODEX 200</code>·<code>KODEX 코스닥150</code> 모두 국내주식형 1배수 ETF라 추세 수익뿐 아니라 <strong>1주일 단타 스윙 매매차익까지 0% 완전 비과세</strong>이며 금융소득종합과세 합산 제외입니다.</li>
+        <li><strong>① 추세 엔진:</strong> 매월 말 <code>KODEX 200</code>·<code>코스닥150</code> 중 6M 모멘텀 &gt; 0% &amp; 일간 MA ON 1위 보유, 일간 MA 이탈 시 즉시 <code>KOFR</code> 대피. 축소추정 켈리(<code>f* = μ_shrink / max(σ_20, σ_60)²</code>)로 0~100% 자동 사이징.</li>
+        <li><strong>② 코스닥150 1주일 분할 스윙 (최대 25% 캡):</strong> <code>RSI(5) &lt; 20</code> 시 1차 <strong>12.5%</strong>, <code>RSI(5) &lt; 15</code> 추가 급락 시 2차 <strong>25%</strong> 진입 → <code>RSI(5) ≥ 50</code> 반등 익절 또는 <strong>5영업일(1주일)</strong> 만기 자동 청산.</li>
+        <li><strong>③ 장기 데이터 투명성 고지:</strong> <code>KODEX 200</code>은 2009년부터 전 구간 KOFIA DIS 공식 수정기준가(분배금 재투자·실제 일별 CD91/KOFR 금리)를 사용했고, <code>KODEX 코스닥150</code> 상장(2015-09-30) 이전인 <code>2011-01 ~ 2015-09-29</code> 구간은 금융투자협회 FreeSIS 공식 코스닥 종합지수 일별 수익률을 접합했습니다. (실전 국내 ETF 편도 비용 0.05%, 미래참조 0)</li>
       </ul>
     </div>
 
     <div class="foot">
-      데이터 출처: 금융투자협회 전자공시(KOFIA DIS) 공식 수정기준가 · 평일 오전 08:40 KST GitHub Actions 자동 업데이트 &amp; ntfy 푸시 알림<br/>
+      데이터 출처: 금융투자협회 전자공시(KOFIA DIS) &amp; FreeSIS 공식 데이터 · 평일 오전 08:40 KST GitHub Actions 자동 업데이트 &amp; ntfy 푸시<br/>
       ※ 본 대시보드는 과거 공식 데이터 기반 전략 검증 및 참고용이며 최종 투자 판단과 책임은 투자자 본인에게 있습니다.
     </div>
   </div>
@@ -1128,8 +1207,7 @@ def build_interactive_html(payload: dict) -> str:
     let selSwing = "overlay25";
     let evFilter = "all";
     let cmpFilter = "featured";
-    let eqChartInst = null;
-    let ddChartInst = null;
+    let eq14Inst = null, dd14Inst = null, eq16Inst = null, dd16Inst = null;
 
     document.getElementById("asOfDate").textContent = DATA.as_of_date;
     document.getElementById("genAt").textContent = DATA.generated_at_kst;
@@ -1137,15 +1215,12 @@ def build_interactive_html(payload: dict) -> str:
     function getStrat(ma, kelly, swing) {{
       return DATA.strategies[`ma${{ma}}_${{kelly}}_${{swing}}`];
     }}
-
     function fmtPct(v) {{
       return (v >= 0 ? "+" : "") + v.toFixed(2) + "%";
     }}
-
     function fmtW(v) {{
       return Number(v.toFixed(1)) + "%";
     }}
-
     function fmtDelta(d) {{
       const rd = Math.round(d * 10) / 10;
       if (Math.abs(rd) < 0.05) return '<span style="color:#6b7280;">변동 없음 (0%p)</span>';
@@ -1154,13 +1229,13 @@ def build_interactive_html(payload: dict) -> str:
 
     function renderSwingMonitor(s) {{
       const sw = DATA.live_swing;
-      const st = sw.stats;
+      const st14 = sw.stats_11_24;
+      const st16 = sw.stats_11_26;
       const rsi = sw.rsi5;
       const markerPos = Math.max(2, Math.min(98, rsi));
       let stageBadge = '<span class="pill pill-gray">단타 대기 (0%)</span>';
       if (sw.stage === 1) stageBadge = `<span class="pill pill-purple">⚡ 1차 진입 (12.5% · ${{sw.hold_days}}/${{sw.max_hold_days}}일)</span>`;
       if (sw.stage === 2) stageBadge = `<span class="pill pill-red">🔥 2차 풀캡 (25% · ${{sw.hold_days}}/${{sw.max_hold_days}}일)</span>`;
-
       const modeNote = s.swing_id === "none"
         ? '<span class="pill pill-gray">현재 선택 전략은 스윙 미적용</span>'
         : `<span class="pill pill-purple">현재 전략 단타 적용 비중: ${{fmtW(s.swing_active_pct)}}</span>`;
@@ -1169,7 +1244,7 @@ def build_interactive_html(payload: dict) -> str:
         <div class="card-head" style="margin-bottom:8px;">
           <div>
             <div class="asset-title" style="color:#5b21b6;">⚡ 코스닥150 극단 과매도 1주일 분할 스윙 모니터</div>
-            <div class="sub">${{sw.status_text}} · 10.4년 단독: ${{st.trades}}회 / 승률 ${{st.win_rate_pct}}% / PF ${{st.profit_factor}} / 이론 켈리 f*=${{st.kelly_f_pct}}%</div>
+            <div class="sub">${{sw.status_text}} · <strong>11~24(14년):</strong> ${{st14.trades}}회 / 승률 ${{st14.win_rate_pct}}% / PF ${{st14.profit_factor}} / 켈리 f*=${{st14.kelly_f_pct}}% · <strong>11~26(15.9년):</strong> ${{st16.trades}}회 / 승률 ${{st16.win_rate_pct}}% / PF ${{st16.profit_factor}}</div>
           </div>
           <div class="badges">${{stageBadge}} ${{modeNote}}</div>
         </div>
@@ -1189,7 +1264,8 @@ def build_interactive_html(payload: dict) -> str:
     function renderAll() {{
       const s = getStrat(selMa, selKelly, selSwing);
       const sPure = getStrat(selMa, selKelly, "none");
-      const m = s.metrics;
+      const m14 = s.metrics_11_24;
+      const m16 = s.metrics_11_26;
 
       document.querySelectorAll("#maBtns .seg-btn").forEach(b => b.classList.toggle("active", Number(b.dataset.ma) === selMa));
       document.querySelectorAll("#kellyBtns .seg-btn").forEach(b => b.classList.toggle("active", b.dataset.kelly === selKelly));
@@ -1220,44 +1296,59 @@ def build_interactive_html(payload: dict) -> str:
       document.getElementById("heroMain").textContent = s.pos_summary;
       document.getElementById("heroSub").innerHTML = `
         <span>판정 근거: <strong>${{s.action_detail}}</strong></span>
-        <span>다음 월말 리밸런싱: <strong>${{s.next_rebal_date}}</strong> (D-${{s.bdays_to_rebal}}영업일)</span>
-        <span>10.4년 세후 CAGR: <strong>${{fmtPct(m.cagr_pct)}}</strong> (MDD ${{m.mdd_pct.toFixed(1)}}%)</span>
+        <span>11~24(14년): <strong>${{fmtPct(m14.cagr_pct)}}</strong> (MDD ${{m14.mdd_pct.toFixed(1)}}% / Shp ${{m14.ex_sharpe.toFixed(2)}})</span>
+        <span>11~26(15.9년): <strong>${{fmtPct(m16.cagr_pct)}}</strong> (MDD ${{m16.mdd_pct.toFixed(1)}}% / Shp ${{m16.ex_sharpe.toFixed(2)}})</span>
       `;
 
       renderSwingMonitor(s);
-
       document.getElementById("actionReasonText").textContent = `기준일 ${{s.as_of_date}} 종가 판정: ${{s.action_title}} — ${{s.action_detail}}`;
       renderCalculator(s);
-
-      // KPI Strip
-      const diffCagr = m.cagr_pct - sPure.metrics.cagr_pct;
-      const kpis = [
-        ["10.4년 세후 최종자산", `${{m.final_equity_man.toLocaleString()}}만 원`, "초기 1,000만 원 기준", "pos"],
-        ["세후 연복리 (CAGR)", fmtPct(m.cagr_pct), s.swing_id === "none" ? "순수 추세 기준" : `순수추세 대비 ${{diffCagr >= 0 ? '+' : ''}}${{diffCagr.toFixed(2)}}%p`, "pos"],
-        ["최대낙폭 (MDD)", `${{m.mdd_pct.toFixed(1)}}%`, `순수추세: ${{sPure.metrics.mdd_pct.toFixed(1)}}%`, "neg"],
-        ["초과샤프 / 칼마", `${{m.ex_sharpe.toFixed(2)}} / ${{m.calmar.toFixed(2)}}`, `연 변동성 ${{m.vol_pct.toFixed(1)}}%`, ""],
-        ["2016~24 (폭등제외)", `${{m.p25_cagr_pct >= 0 ? "+" : ""}}${{m.p25_cagr_pct.toFixed(1)}}%`, `8.5년 MDD ${{m.p25_mdd_pct.toFixed(1)}}%`, "pos"],
-        ["평균 주식비중 / 회전", `${{m.avg_weight_pct}}%`, `연 회전율 ${{m.ann_turnover.toFixed(1)}}회 (총 ${{m.total_switches}}회)`, ""],
-      ];
-      document.getElementById("kpiStrip").innerHTML = kpis.map(([l, v, sub, cls]) => `
-        <div class="stat-card">
-          <div class="stat-label">${{l}}</div>
-          <div class="stat-val ${{cls}}">${{v}}</div>
-          <div class="stat-sub">${{sub}}</div>
-        </div>
-      `).join("");
 
       document.getElementById("assetCards").innerHTML = [
         renderAssetCard(s.k200, s.ma_len, s.kelly_label, s.allocation.k200_pct, false),
         renderAssetCard(s.kq, s.ma_len, s.kelly_label, s.allocation.kq_pct, true),
       ].join("");
 
-      document.getElementById("yrGrid").innerHTML = s.yearly.map(y => `
-        <div class="yr-chip">
-          <div class="y">${{y.year}}년</div>
-          <div class="r ${{y.ret_pct >= 0 ? 'pos' : 'neg'}}">${{y.ret_pct >= 0 ? '+' : ''}}${{y.ret_pct.toFixed(1)}}%</div>
-        </div>
+      // [검증 1] 2011~2024 KPI Strip
+      const d14 = m14.cagr_pct - sPure.metrics_11_24.cagr_pct;
+      document.getElementById("title14").textContent = `📊 [검증 1] 2011 ~ 2024 (${{m14.years}}년 · 박스피 6년 포함 · 25~26 폭등 제외) — ${{s.title}}`;
+      const kpis14 = [
+        ["14년 세후 최종자산", `${{m14.final_equity_man.toLocaleString()}}만 원`, "2011.01 1,000만 원 시작", "pos"],
+        ["14년 세후 CAGR", fmtPct(m14.cagr_pct), s.swing_id === "none" ? `KODEX200 B&H: ${{fmtPct(DATA.benchmark.bh_k200_11_24_cagr)}}` : `순수추세 대비 ${{d14 >= 0 ? '+' : ''}}${{d14.toFixed(2)}}%p`, "pos"],
+        ["14년 최대낙폭(MDD)", `${{m14.mdd_pct.toFixed(1)}}%`, `순수추세: ${{sPure.metrics_11_24.mdd_pct.toFixed(1)}}%`, "neg"],
+        ["초과샤프 / 칼마", `${{m14.ex_sharpe.toFixed(2)}} / ${{m14.calmar.toFixed(2)}}`, `연 변동성 ${{m14.vol_pct.toFixed(1)}}%`, ""],
+        ["박스피 (2011~16)", `${{m14.boxpi_cagr_pct >= 0 ? '+' : ''}}${{m14.boxpi_cagr_pct.toFixed(1)}}%`, `박스피 MDD ${{m14.boxpi_mdd_pct.toFixed(1)}}%`, m14.boxpi_cagr_pct >= 0 ? "pos" : "neg"],
+        ["후기장 (2017~24)", `${{m14.post_cagr_pct >= 0 ? '+' : ''}}${{m14.post_cagr_pct.toFixed(1)}}%`, `후기 MDD ${{m14.post_mdd_pct.toFixed(1)}}% · 비중 ${{m14.avg_weight_pct}}%`, "pos"],
+      ];
+      document.getElementById("kpiStrip14").innerHTML = kpis14.map(([l, v, sub, cls]) => `
+        <div class="stat-card"><div class="stat-label">${{l}}</div><div class="stat-val ${{cls}}">${{v}}</div><div class="stat-sub">${{sub}}</div></div>
       `).join("");
+
+      // [검증 2] 2011~2026 KPI Strip
+      const d16 = m16.cagr_pct - sPure.metrics_11_26.cagr_pct;
+      document.getElementById("title16").textContent = `📊 [검증 2] 2011 ~ 2026 (${{m16.years}}년 · 박스피 + 25~26 풀사이클 전체) — ${{s.title}}`;
+      const kpis16 = [
+        ["15.9년 세후 최종자산", `${{m16.final_equity_man.toLocaleString()}}만 원`, "2011.01 1,000만 원 시작", "pos"],
+        ["15.9년 세후 CAGR", fmtPct(m16.cagr_pct), s.swing_id === "none" ? `KODEX200 B&H: ${{fmtPct(DATA.benchmark.bh_k200_11_26_cagr)}}` : `순수추세 대비 ${{d16 >= 0 ? '+' : ''}}${{d16.toFixed(2)}}%p`, "pos"],
+        ["15.9년 최대낙폭(MDD)", `${{m16.mdd_pct.toFixed(1)}}%`, `순수추세: ${{sPure.metrics_11_26.mdd_pct.toFixed(1)}}%`, "neg"],
+        ["초과샤프 / 칼마", `${{m16.ex_sharpe.toFixed(2)}} / ${{m16.calmar.toFixed(2)}}`, `연 변동성 ${{m16.vol_pct.toFixed(1)}}%`, ""],
+        ["2025~26 랠리 구간", `${{m16.rally_cagr_pct >= 0 ? '+' : ''}}${{m16.rally_cagr_pct.toFixed(1)}}%`, `구간 MDD ${{m16.rally_mdd_pct.toFixed(1)}}%`, "pos"],
+        ["평균 비중 / 연회전", `${{m16.avg_weight_pct}}%`, `연 회전 ${{m16.ann_turnover.toFixed(1)}}회 (총 ${{m16.total_switches}}회)`, ""],
+      ];
+      document.getElementById("kpiStrip16").innerHTML = kpis16.map(([l, v, sub, cls]) => `
+        <div class="stat-card"><div class="stat-label">${{l}}</div><div class="stat-val ${{cls}}">${{v}}</div><div class="stat-sub">${{sub}}</div></div>
+      `).join("");
+
+      // Yearly Returns Grid (2011~2026)
+      document.getElementById("yrGrid").innerHTML = s.yearly.map(y => {{
+        const cls = y.year <= 2016 ? "boxpi-yr" : (y.year >= 2025 ? "rally-yr" : "");
+        return `
+          <div class="yr-chip ${{cls}}">
+            <div class="y">${{y.year}}년</div>
+            <div class="r ${{y.ret_pct >= 0 ? 'pos' : 'neg'}}">${{y.ret_pct >= 0 ? '+' : ''}}${{y.ret_pct.toFixed(1)}}%</div>
+          </div>
+        `;
+      }}).join("");
 
       // Compare Table
       document.querySelectorAll("#cmpFilterBtns .seg-btn").forEach(b => b.classList.toggle("active", b.dataset.cmp === cmpFilter));
@@ -1276,20 +1367,21 @@ def build_interactive_html(payload: dict) -> str:
       const tbody = document.getElementById("compareTbody");
       tbody.innerHTML = cmpIds.map(id => {{
         const st = DATA.strategies[id];
-        const sm = st.metrics;
+        const a14 = st.metrics_11_24;
+        const a16 = st.metrics_11_26;
         const isSel = id === s.id;
         return `
           <tr class="clickable ${{isSel ? 'selected-row' : ''}}" data-ma="${{st.ma_len}}" data-kelly="${{st.kelly_id}}" data-swing="${{st.swing_id}}">
             <td>${{isSel ? "▶ " : ""}}<strong>${{st.title}}</strong></td>
             <td>${{st.pos_summary}}</td>
-            <td>${{st.action_code === 'HOLD' ? '유지' : '<strong>' + st.action_title + '</strong>'}}</td>
-            <td class="pos"><strong>${{fmtPct(sm.cagr_pct)}}</strong></td>
-            <td class="neg">${{sm.mdd_pct.toFixed(1)}}%</td>
-            <td>${{sm.ex_sharpe.toFixed(2)}}</td>
-            <td><strong>${{sm.calmar.toFixed(2)}}</strong></td>
-            <td>${{sm.p25_cagr_pct >= 0 ? '+' : ''}}${{sm.p25_cagr_pct.toFixed(1)}}% / ${{sm.p25_mdd_pct.toFixed(0)}}%</td>
-            <td>${{sm.avg_weight_pct}}%</td>
-            <td>${{sm.ann_turnover.toFixed(1)}}회</td>
+            <td class="col-sep pos"><strong>${{fmtPct(a14.cagr_pct)}}</strong></td>
+            <td class="neg">${{a14.mdd_pct.toFixed(1)}}%</td>
+            <td><strong>${{a14.ex_sharpe.toFixed(2)}}</strong></td>
+            <td>${{a14.boxpi_cagr_pct >= 0 ? '+' : ''}}${{a14.boxpi_cagr_pct.toFixed(1)}}%/${{a14.boxpi_mdd_pct.toFixed(0)}}%</td>
+            <td class="col-sep pos"><strong>${{fmtPct(a16.cagr_pct)}}</strong></td>
+            <td class="neg">${{a16.mdd_pct.toFixed(1)}}%</td>
+            <td><strong>${{a16.ex_sharpe.toFixed(2)}}</strong></td>
+            <td>${{a16.calmar.toFixed(2)}}</td>
           </tr>
         `;
       }}).join("");
@@ -1310,7 +1402,7 @@ def build_interactive_html(payload: dict) -> str:
           <div class="stat-card" style="background:#f9fafb;">
             <div class="stat-label">${{b.name}}</div>
             <div class="stat-val" style="font-size:17px;">${{b.days.toLocaleString()}}일 (${{b.pct}}%)</div>
-            <div class="stat-sub">10.4년 보유 일수 비중</div>
+            <div class="stat-sub">15.9년 보유 일수 비중</div>
           </div>
         `;
       }}).join("");
@@ -1331,7 +1423,7 @@ def build_interactive_html(payload: dict) -> str:
           </tr>
         `).join("");
 
-      renderCharts(s, sPure);
+      renderDualCharts(s, sPure);
     }}
 
     function renderCalculator(s) {{
@@ -1384,50 +1476,75 @@ def build_interactive_html(payload: dict) -> str:
       `;
     }}
 
-    function renderCharts(s, sPure) {{
-      document.getElementById("chartTitle").textContent = `📊 10.4년 일반계좌 세후 자산 곡선 & 낙폭(DD) — ${{s.title}}`;
-      const labels = DATA.benchmark.dates;
-
-      if (eqChartInst) eqChartInst.destroy();
-      const datasets = [
-        {{ label: `${{s.title}} (세후 ${{fmtPct(s.metrics.cagr_pct)}})`, data: s.series.strategy, borderColor: "#dc2626", borderWidth: 2.4, pointRadius: 0, tension: 0.1 }},
+    function buildChartPair(eqId, ddId, labels, sData, sDd, pData, pDd, bh2, bhq, sTitle, sCagr, sMdd, pCagr, pMdd, showPure) {{
+      const eqSets = [
+        {{ label: `${{sTitle}} (세후 ${{fmtPct(sCagr)}})`, data: sData, borderColor: "#dc2626", borderWidth: 2.3, pointRadius: 0, tension: 0.1 }},
       ];
-      if (s.swing_id !== "none") {{
-        datasets.push({{ label: `순수 추세 비교 (세후 ${{fmtPct(sPure.metrics.cagr_pct)}})`, data: sPure.series.strategy, borderColor: "#f59e0b", borderWidth: 1.6, borderDash: [5,3], pointRadius: 0, tension: 0.1 }});
+      if (showPure) {{
+        eqSets.push({{ label: `순수 추세 비교 (세후 ${{fmtPct(pCagr)}})`, data: pData, borderColor: "#f59e0b", borderWidth: 1.5, borderDash: [5,3], pointRadius: 0, tension: 0.1 }});
       }}
-      datasets.push(
-        {{ label: "KODEX 200 단순보유 (비과세)", data: DATA.benchmark.bh_k200, borderColor: "#2563eb", borderWidth: 1.4, borderDash: [3,3], pointRadius: 0, tension: 0.1 }},
-        {{ label: "KODEX 코스닥150 단순보유 (비과세)", data: DATA.benchmark.bh_kq, borderColor: "#9ca3af", borderWidth: 1.2, pointRadius: 0, tension: 0.1 }}
+      eqSets.push(
+        {{ label: "KODEX 200 단순보유", data: bh2, borderColor: "#2563eb", borderWidth: 1.3, borderDash: [3,3], pointRadius: 0, tension: 0.1 }},
+        {{ label: "코스닥 단순보유", data: bhq, borderColor: "#9ca3af", borderWidth: 1.1, pointRadius: 0, tension: 0.1 }}
       );
-
-      eqChartInst = new Chart(document.getElementById("eqChart"), {{
+      const eqInst = new Chart(document.getElementById(eqId), {{
         type: "line",
-        data: {{ labels, datasets }},
+        data: {{ labels, datasets: eqSets }},
         options: {{
           responsive: true, maintainAspectRatio: false,
           interaction: {{ mode: "index", intersect: false }},
           plugins: {{ tooltip: {{ callbacks: {{ label: ctx => `${{ctx.dataset.label}}: ${{Number(ctx.parsed.y).toLocaleString()}}만 원` }} }} }},
-          scales: {{ y: {{ type: "logarithmic", ticks: {{ callback: v => Number(v).toLocaleString() + "만" }} }}, x: {{ ticks: {{ maxTicksLimit: 11 }} }} }}
+          scales: {{ y: {{ type: "logarithmic", ticks: {{ callback: v => Number(v).toLocaleString() + "만" }} }}, x: {{ ticks: {{ maxTicksLimit: 12 }} }} }}
         }}
       }});
 
-      if (ddChartInst) ddChartInst.destroy();
       const ddSets = [
-        {{ label: `${{s.title}} 낙폭 (MDD ${{s.metrics.mdd_pct.toFixed(1)}}%)`, data: s.series.dd_pct, borderColor: "#dc2626", backgroundColor: "rgba(220,38,38,0.12)", fill: true, borderWidth: 1.6, pointRadius: 0 }},
+        {{ label: `${{sTitle}} 낙폭 (MDD ${{sMdd.toFixed(1)}}%)`, data: sDd, borderColor: "#dc2626", backgroundColor: "rgba(220,38,38,0.12)", fill: true, borderWidth: 1.5, pointRadius: 0 }},
       ];
-      if (s.swing_id !== "none") {{
-        ddSets.push({{ label: `순수 추세 낙폭 (MDD ${{sPure.metrics.mdd_pct.toFixed(1)}}%)`, data: sPure.series.dd_pct, borderColor: "#f59e0b", borderDash: [4,3], borderWidth: 1.3, pointRadius: 0 }});
+      if (showPure) {{
+        ddSets.push({{ label: `순수 추세 낙폭 (MDD ${{pMdd.toFixed(1)}}%)`, data: pDd, borderColor: "#f59e0b", borderDash: [4,3], borderWidth: 1.2, pointRadius: 0 }});
       }}
-      ddChartInst = new Chart(document.getElementById("ddChart"), {{
+      const ddInst = new Chart(document.getElementById(ddId), {{
         type: "line",
         data: {{ labels, datasets: ddSets }},
         options: {{
           responsive: true, maintainAspectRatio: false,
           interaction: {{ mode: "index", intersect: false }},
           plugins: {{ tooltip: {{ callbacks: {{ label: ctx => `${{ctx.dataset.label}}: ${{Number(ctx.parsed.y).toFixed(2)}}%` }} }} }},
-          scales: {{ y: {{ max: 0, ticks: {{ callback: v => v + "%" }} }}, x: {{ ticks: {{ maxTicksLimit: 11 }} }} }}
+          scales: {{ y: {{ max: 0, ticks: {{ callback: v => v + "%" }} }}, x: {{ ticks: {{ maxTicksLimit: 12 }} }} }}
         }}
       }});
+      return [eqInst, ddInst];
+    }}
+
+    function renderDualCharts(s, sPure) {{
+      if (eq14Inst) eq14Inst.destroy();
+      if (dd14Inst) dd14Inst.destroy();
+      if (eq16Inst) eq16Inst.destroy();
+      if (dd16Inst) dd16Inst.destroy();
+
+      const cut = DATA.benchmark.end_2024_pos + 1;
+      const showPure = s.swing_id !== "none";
+
+      [eq14Inst, dd14Inst] = buildChartPair(
+        "eqChart14", "ddChart14",
+        DATA.benchmark.dates.slice(0, cut),
+        s.series.strategy.slice(0, cut), s.series.dd_pct.slice(0, cut),
+        sPure.series.strategy.slice(0, cut), sPure.series.dd_pct.slice(0, cut),
+        DATA.benchmark.bh_k200.slice(0, cut), DATA.benchmark.bh_kq.slice(0, cut),
+        s.title, s.metrics_11_24.cagr_pct, s.metrics_11_24.mdd_pct,
+        sPure.metrics_11_24.cagr_pct, sPure.metrics_11_24.mdd_pct, showPure
+      );
+
+      [eq16Inst, dd16Inst] = buildChartPair(
+        "eqChart16", "ddChart16",
+        DATA.benchmark.dates,
+        s.series.strategy, s.series.dd_pct,
+        sPure.series.strategy, sPure.series.dd_pct,
+        DATA.benchmark.bh_k200, DATA.benchmark.bh_kq,
+        s.title, s.metrics_11_26.cagr_pct, s.metrics_11_26.mdd_pct,
+        sPure.metrics_11_26.cagr_pct, sPure.metrics_11_26.mdd_pct, showPure
+      );
     }}
 
     document.querySelectorAll("#maBtns .seg-btn").forEach(btn => {{
@@ -1455,9 +1572,6 @@ def build_interactive_html(payload: dict) -> str:
 
 
 def send_ntfy_notification(strategies: dict, live_swing: dict):
-    """
-    ntfy.sh 무료 스마트폰 푸시 알림 발송 (추세 시그널 + 코스닥150 단타 스윙 시그널 통합 감시).
-    """
     topic = os.environ.get("NTFY_TOPIC", "").strip()
     if not topic:
         print("[알림] NTFY_TOPIC 환경변수가 없어 푸시 발송을 건너뜁니다.")
@@ -1465,7 +1579,6 @@ def send_ntfy_notification(strategies: dict, live_swing: dict):
 
     default_id = STRATEGY_CONFIG["default_strategy_id"]
     raw_id = os.environ.get("NTFY_STRATEGY_ID", default_id).strip() or default_id
-    # 구버전 strategy_id 호환 (예: ma100_full -> ma100_full_overlay25)
     if raw_id not in strategies and f"{raw_id}_overlay25" in strategies:
         raw_id = f"{raw_id}_overlay25"
     s = strategies.get(raw_id) or strategies[default_id]
@@ -1473,7 +1586,6 @@ def send_ntfy_notification(strategies: dict, live_swing: dict):
     force_send = os.environ.get("NTFY_FORCE_SEND", "false").lower() in ("1", "true", "yes")
     now_kst = dt.datetime.utcnow() + dt.timedelta(hours=9)
     is_monday = (now_kst.weekday() == 0)
-
     is_signal = (s["action_code"] != "HOLD")
     is_rebal_eve = (s["bdays_to_rebal"] == 1)
 
@@ -1489,7 +1601,7 @@ def send_ntfy_notification(strategies: dict, live_swing: dict):
     elif force_send:
         priority = 3
         tags = ["white_check_mark", "bell"]
-        title = f"[옵션A 업그레이드 완료] {s['title']}"
+        title = f"[2011~2026 장기검증 반영] {s['title']}"
     elif is_rebal_eve:
         priority = 3
         tags = ["calendar", "chart_with_upwards_trend"]
@@ -1519,9 +1631,7 @@ def send_ntfy_notification(strategies: dict, live_swing: dict):
         "priority": priority,
         "tags": tags,
         "click": dashboard_url,
-        "actions": [
-            {"action": "view", "label": "대시보드 열기", "url": dashboard_url}
-        ],
+        "actions": [{"action": "view", "label": "대시보드 열기", "url": dashboard_url}],
     }
     try:
         r = requests.post(
@@ -1537,24 +1647,26 @@ def send_ntfy_notification(strategies: dict, live_swing: dict):
 
 
 def main():
-    print("[1/4] KOFIA 전자공시(DIS) 공식 기준가격 갱신 중...")
+    print("[1/4] KOFIA 전자공시(DIS) 공식 기준가격 갱신 및 2009~2026 장기 시계열 연결 중...")
     s = get_session()
     aligned_data = {}
     for key, meta in ETF_META.items():
         raw = update_csv_data(s, meta)
         aligned_data[key] = reconstruct_total_return_nav(raw)
-        print(f"  - {meta['name']} ({meta['ticker']}): {len(aligned_data[key])}영업일 (최신 거래일: {aligned_data[key].index[-1].strftime('%Y-%m-%d')})")
+        if key == "kq":
+            aligned_data[key] = splice_kosdaq_2009(aligned_data[key])
+        print(f"  - {meta['name']} ({meta['ticker']}): {len(aligned_data[key])}영업일 ({aligned_data[key].index[0].strftime('%Y-%m-%d')} ~ {aligned_data[key].index[-1].strftime('%Y-%m-%d')})")
 
-    print("[2/4] 코스닥150 RSI(5)<20 1주일 분할 스윙 엔진 계산 중...")
+    print("[2/4] 코스닥150 RSI(5)<20 1주일 분할 스윙 엔진 계산 중 (2011~2024 / 2011~2026)...")
     idx_common = aligned_data["k200"].index.intersection(aligned_data["kq"].index).sort_values()
     bt_idx = idx_common[idx_common >= pd.Timestamp(STRATEGY_CONFIG["bt_start"])]
     tax = STRATEGY_CONFIG["tax_rate"]
     r_kq_at_bt = aligned_data["kq"].loc[bt_idx, "total_ret"] - tax * aligned_data["kq"].loc[bt_idx, "div_ret"]
     swing_bundle = compute_kq_swing_signal(aligned_data["kq"]["adj_close"].loc[idx_common], r_kq_at_bt, bt_idx)
     ls = swing_bundle["live"]
-    print(f"  - 코스닥150 RSI(5)={ls['rsi5']} | 상태: {ls['status_text']} | 10.4년 단독: {ls['stats']['trades']}회, 승률 {ls['stats']['win_rate_pct']}%, PF {ls['stats']['profit_factor']}")
+    print(f"  - 11~24(14년): {ls['stats_11_24']} | 11~26(15.9년): {ls['stats_11_26']}")
 
-    print("[3/4] 36개 전략 조합 계산 중 (MA 3종 × 켈리 4종 × 스윙 결합 3종)...")
+    print("[3/4] 36개 전략 조합 계산 중 (2011~2024 & 2011~2026 듀얼 기간)...")
     strategies = {}
     order = []
     bench = None
@@ -1602,22 +1714,24 @@ def main():
 
     send_ntfy_notification(strategies, ls)
 
-    print("\n" + "=" * 102)
-    print(f" [옵션 A: 국내 2지수 추세·켈리 + 코스닥150 1주일 분할 스윙] 기준일: {default_s['as_of_date']}")
-    print("=" * 102)
-    print(f" ▶ 기본 권장({default_s['title']}): {default_s['pos_summary']}")
-    print(f" ▶ 오늘 액션: {default_s['action_title']} ({default_s['action_detail']})")
-    print(f" ▶ 코스닥150 단타 모니터: RSI(5)={ls['rsi5']} | {ls['status_text']}")
-    print("-" * 102)
+    print("\n" + "=" * 116)
+    print(f" [옵션 A 듀얼 장기 검증] 기준일: {default_s['as_of_date']} (검증1: 2011~2024 14년 | 검증2: 2011~2026 15.9년)")
+    print("=" * 116)
     for sid in [
         "ma100_full_overlay25", "ma100_full_split75", "ma100_full_none",
         "ma100_half_overlay25", "ma100_half_split75", "ma100_half_none",
+        "ma100_fixed_overlay25", "ma100_fixed_split75", "ma100_fixed_none",
     ]:
         st = strategies[sid]
-        m = st["metrics"]
-        print(f" - {st['title']:32s} | 세후CAGR {m['cagr_pct']:+6.2f}% | MDD {m['mdd_pct']:5.1f}% | 샤프 {m['ex_sharpe']:.2f} | 칼마 {m['calmar']:.2f} | 16~24 {m['p25_cagr_pct']:+5.1f}%/{m['p25_mdd_pct']:.0f}% | {st['pos_summary']}")
-    print("=" * 102)
-    print(f"[완료] {html_path} ({os.path.getsize(html_path)//1024}KB) 및 {json_path} 발행 완료.")
+        a14 = st["metrics_11_24"]
+        a16 = st["metrics_11_26"]
+        print(
+            f" - {st['title']:32s} | "
+            f"11~24: {a14['cagr_pct']:+5.2f}% / {a14['mdd_pct']:5.1f}% / Shp {a14['ex_sharpe']:.2f} (박스 {a14['boxpi_cagr_pct']:+.1f}%) | "
+            f"11~26: {a16['cagr_pct']:+5.2f}% / {a16['mdd_pct']:5.1f}% / Shp {a16['ex_sharpe']:.2f}"
+        )
+    print("=" * 116)
+    print(f"[완료] {html_path} ({os.path.getsize(html_path)//1024}KB) 발행 완료.")
 
 
 if __name__ == "__main__":
