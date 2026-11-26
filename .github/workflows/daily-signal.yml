@@ -1,4 +1,4 @@
-name: Daily Signal Update (Option A: Trend + KOSDAQ150 Swing)
+name: "Daily Signal Update (Option A - Trend + KOSDAQ150 Swing)"
 
 on:
   schedule:
