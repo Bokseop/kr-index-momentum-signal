@@ -1,4 +1,4 @@
-name: Daily Signal Update (Solution 1)
+name: Daily Signal Update (Option A: Trend + KOSDAQ150 Swing)
 
 on:
   schedule:
@@ -11,16 +11,17 @@ on:
         type: boolean
         default: true
       strategy_id:
-        description: "알림 기준 전략 (기본: ma100_full)"
+        description: "알림 기준 전략 (기본: ma100_full_overlay25)"
         type: choice
-        default: "ma100_full"
+        default: "ma100_full_overlay25"
         options:
-          - ma100_full
-          - ma100_half
-          - ma100_quarter
-          - ma100_fixed
-          - ma80_full
-          - ma60_full
+          - ma100_full_overlay25
+          - ma100_full_split75
+          - ma100_full_none
+          - ma100_half_overlay25
+          - ma100_half_split75
+          - ma80_full_overlay25
+          - ma60_full_overlay25
 
 permissions:
   contents: write
@@ -42,10 +43,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Solution 1 Live Signal Engine & ntfy Notification
+      - name: Run Option A Live Signal Engine & ntfy Notification
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
-          NTFY_STRATEGY_ID: ${{ github.event.inputs.strategy_id || 'ma100_full' }}
+          NTFY_STRATEGY_ID: ${{ github.event.inputs.strategy_id || 'ma100_full_overlay25' }}
           NTFY_FORCE_SEND: ${{ github.event.inputs.test_notify || 'false' }}
         run: python signal_domestic_2index.py
 
@@ -53,10 +54,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/ data/
+          git add docs/ data/kodex_200_nav.csv data/kodex_kosdaq150_nav.csv data/kodex_kofr_nav.csv
           if git diff --staged --quiet; then
             echo "No signal changes to commit."
           else
-            git commit -m "chore: update daily domestic 2-index signal ($(TZ=Asia/Seoul date +'%Y-%m-%d'))"
+            git commit -m "chore: update daily Option A signal ($(TZ=Asia/Seoul date +'%Y-%m-%d'))"
             git push
           fi
