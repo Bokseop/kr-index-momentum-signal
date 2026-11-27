@@ -1,5 +1,5 @@
 {
-  "generated_at_kst": "2026-11-27 16:50:34 KST",
+  "generated_at_kst": "2026-11-27 17:23:35 KST",
   "as_of_date": "2026-11-26",
   "default_strategy_id": "ma100_full_overlay25",
   "live_swing": {
@@ -17,6 +17,13 @@
       "avg_ret_pct": 0.48,
       "profit_factor": 1.52,
       "kelly_f_pct": 21.1
+    },
+    "stats_15_24": {
+      "trades": 66,
+      "win_rate_pct": 65.2,
+      "avg_ret_pct": 0.56,
+      "profit_factor": 1.58,
+      "kelly_f_pct": 23.9
     },
     "stats_11_26": {
       "trades": 107,
@@ -149,6 +156,24 @@
         "boxpi_mdd_pct": -32.5,
         "post_cagr_pct": 13.0,
         "post_mdd_pct": -24.6
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 3213.6,
+        "cagr_pct": 12.39,
+        "mdd_pct": -24.58,
+        "vol_pct": 13.82,
+        "ex_sharpe": 0.81,
+        "calmar": 0.5,
+        "avg_weight_pct": 48.4,
+        "ann_turnover": 5.08,
+        "total_switches": 161,
+        "first5_cagr_pct": 15.9,
+        "first5_mdd_pct": -14.9,
+        "last5_cagr_pct": 9.0,
+        "last5_mdd_pct": -24.6
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -1098,6 +1123,24 @@
         "post_cagr_pct": 10.7,
         "post_mdd_pct": -19.6
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2705.3,
+        "cagr_pct": 10.47,
+        "mdd_pct": -19.55,
+        "vol_pct": 10.79,
+        "ex_sharpe": 0.84,
+        "calmar": 0.54,
+        "avg_weight_pct": 37.4,
+        "ann_turnover": 5.15,
+        "total_switches": 211,
+        "first5_cagr_pct": 13.1,
+        "first5_mdd_pct": -11.3,
+        "last5_cagr_pct": 7.9,
+        "last5_mdd_pct": -19.6
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -2045,6 +2088,24 @@
         "boxpi_mdd_pct": -24.9,
         "post_cagr_pct": 12.1,
         "post_mdd_pct": -24.6
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 3209.4,
+        "cagr_pct": 12.37,
+        "mdd_pct": -24.58,
+        "vol_pct": 13.34,
+        "ex_sharpe": 0.83,
+        "calmar": 0.5,
+        "avg_weight_pct": 48.5,
+        "ann_turnover": 6.48,
+        "total_switches": 193,
+        "first5_cagr_pct": 15.8,
+        "first5_mdd_pct": -14.9,
+        "last5_cagr_pct": 9.1,
+        "last5_mdd_pct": -24.6
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -2994,6 +3055,24 @@
         "post_cagr_pct": 12.5,
         "post_mdd_pct": -23.6
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 3101.3,
+        "cagr_pct": 11.99,
+        "mdd_pct": -23.63,
+        "vol_pct": 13.5,
+        "ex_sharpe": 0.8,
+        "calmar": 0.51,
+        "avg_weight_pct": 46.8,
+        "ann_turnover": 3.38,
+        "total_switches": 61,
+        "first5_cagr_pct": 16.1,
+        "first5_mdd_pct": -13.9,
+        "last5_cagr_pct": 8.1,
+        "last5_mdd_pct": -23.6
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -3700,6 +3779,24 @@
         "boxpi_mdd_pct": -32.4,
         "post_cagr_pct": 12.1,
         "post_mdd_pct": -18.5
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 3116.0,
+        "cagr_pct": 12.04,
+        "mdd_pct": -18.52,
+        "vol_pct": 11.42,
+        "ex_sharpe": 0.93,
+        "calmar": 0.65,
+        "avg_weight_pct": 42.5,
+        "ann_turnover": 5.46,
+        "total_switches": 206,
+        "first5_cagr_pct": 16.2,
+        "first5_mdd_pct": -10.7,
+        "last5_cagr_pct": 8.0,
+        "last5_mdd_pct": -18.5
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -4649,6 +4746,24 @@
         "post_cagr_pct": 9.8,
         "post_mdd_pct": -14.5
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2562.9,
+        "cagr_pct": 9.87,
+        "mdd_pct": -14.47,
+        "vol_pct": 8.88,
+        "ex_sharpe": 0.94,
+        "calmar": 0.68,
+        "avg_weight_pct": 32.7,
+        "ann_turnover": 5.17,
+        "total_switches": 237,
+        "first5_cagr_pct": 13.2,
+        "first5_mdd_pct": -7.9,
+        "last5_cagr_pct": 6.7,
+        "last5_mdd_pct": -14.5
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -5596,6 +5711,24 @@
         "boxpi_mdd_pct": -25.6,
         "post_cagr_pct": 11.2,
         "post_mdd_pct": -18.5
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 3002.1,
+        "cagr_pct": 11.63,
+        "mdd_pct": -18.52,
+        "vol_pct": 10.98,
+        "ex_sharpe": 0.92,
+        "calmar": 0.63,
+        "avg_weight_pct": 42.8,
+        "ann_turnover": 6.77,
+        "total_switches": 233,
+        "first5_cagr_pct": 15.3,
+        "first5_mdd_pct": -10.6,
+        "last5_cagr_pct": 8.1,
+        "last5_mdd_pct": -18.5
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -6545,6 +6678,24 @@
         "post_cagr_pct": 11.3,
         "post_mdd_pct": -17.1
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2904.4,
+        "cagr_pct": 11.26,
+        "mdd_pct": -17.07,
+        "vol_pct": 10.89,
+        "ex_sharpe": 0.9,
+        "calmar": 0.66,
+        "avg_weight_pct": 40.6,
+        "ann_turnover": 3.46,
+        "total_switches": 89,
+        "first5_cagr_pct": 16.2,
+        "first5_mdd_pct": -10.7,
+        "last5_cagr_pct": 6.5,
+        "last5_mdd_pct": -17.1
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -7251,6 +7402,24 @@
         "boxpi_mdd_pct": -31.4,
         "post_cagr_pct": 9.4,
         "post_mdd_pct": -11.6
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2520.3,
+        "cagr_pct": 9.69,
+        "mdd_pct": -11.59,
+        "vol_pct": 8.36,
+        "ex_sharpe": 0.97,
+        "calmar": 0.84,
+        "avg_weight_pct": 33.2,
+        "ann_turnover": 5.33,
+        "total_switches": 240,
+        "first5_cagr_pct": 13.4,
+        "first5_mdd_pct": -8.1,
+        "last5_cagr_pct": 6.1,
+        "last5_mdd_pct": -11.6
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -8200,6 +8369,24 @@
         "post_cagr_pct": 7.8,
         "post_mdd_pct": -8.9
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2170.7,
+        "cagr_pct": 8.06,
+        "mdd_pct": -8.91,
+        "vol_pct": 6.59,
+        "ex_sharpe": 0.98,
+        "calmar": 0.9,
+        "avg_weight_pct": 25.7,
+        "ann_turnover": 4.82,
+        "total_switches": 254,
+        "first5_cagr_pct": 10.8,
+        "first5_mdd_pct": -6.8,
+        "last5_cagr_pct": 5.4,
+        "last5_mdd_pct": -8.9
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -9147,6 +9334,24 @@
         "boxpi_mdd_pct": -26.1,
         "post_cagr_pct": 8.5,
         "post_mdd_pct": -9.5
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2381.4,
+        "cagr_pct": 9.07,
+        "mdd_pct": -10.73,
+        "vol_pct": 8.02,
+        "ex_sharpe": 0.93,
+        "calmar": 0.84,
+        "avg_weight_pct": 34.0,
+        "ann_turnover": 6.39,
+        "total_switches": 253,
+        "first5_cagr_pct": 12.2,
+        "first5_mdd_pct": -10.7,
+        "last5_cagr_pct": 6.0,
+        "last5_mdd_pct": -9.5
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -10096,6 +10301,24 @@
         "post_cagr_pct": 8.7,
         "post_mdd_pct": -10.7
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2340.8,
+        "cagr_pct": 8.88,
+        "mdd_pct": -10.69,
+        "vol_pct": 7.7,
+        "ex_sharpe": 0.95,
+        "calmar": 0.83,
+        "avg_weight_pct": 31.1,
+        "ann_turnover": 3.06,
+        "total_switches": 113,
+        "first5_cagr_pct": 13.1,
+        "first5_mdd_pct": -8.1,
+        "last5_cagr_pct": 4.9,
+        "last5_mdd_pct": -10.7
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -10802,6 +11025,24 @@
         "boxpi_mdd_pct": -33.0,
         "post_cagr_pct": 14.1,
         "post_mdd_pct": -25.4
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 3482.3,
+        "cagr_pct": 13.29,
+        "mdd_pct": -25.4,
+        "vol_pct": 15.51,
+        "ex_sharpe": 0.79,
+        "calmar": 0.52,
+        "avg_weight_pct": 51.0,
+        "ann_turnover": 4.7,
+        "total_switches": 121,
+        "first5_cagr_pct": 16.3,
+        "first5_mdd_pct": -18.2,
+        "last5_cagr_pct": 10.4,
+        "last5_mdd_pct": -25.4
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -11751,6 +11992,24 @@
         "post_cagr_pct": 11.7,
         "post_mdd_pct": -20.2
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2898.1,
+        "cagr_pct": 11.23,
+        "mdd_pct": -20.19,
+        "vol_pct": 12.09,
+        "ex_sharpe": 0.82,
+        "calmar": 0.56,
+        "avg_weight_pct": 39.4,
+        "ann_turnover": 4.96,
+        "total_switches": 182,
+        "first5_cagr_pct": 13.6,
+        "first5_mdd_pct": -13.3,
+        "last5_cagr_pct": 9.0,
+        "last5_mdd_pct": -20.2
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -12698,6 +12957,24 @@
         "boxpi_mdd_pct": -24.8,
         "post_cagr_pct": 13.2,
         "post_mdd_pct": -25.4
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 3462.3,
+        "cagr_pct": 13.23,
+        "mdd_pct": -25.4,
+        "vol_pct": 15.04,
+        "ex_sharpe": 0.81,
+        "calmar": 0.52,
+        "avg_weight_pct": 51.0,
+        "ann_turnover": 6.14,
+        "total_switches": 157,
+        "first5_cagr_pct": 16.1,
+        "first5_mdd_pct": -18.6,
+        "last5_cagr_pct": 10.4,
+        "last5_mdd_pct": -25.4
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -13647,6 +13924,24 @@
         "post_cagr_pct": 13.7,
         "post_mdd_pct": -24.5
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 3380.4,
+        "cagr_pct": 12.96,
+        "mdd_pct": -24.5,
+        "vol_pct": 15.29,
+        "ex_sharpe": 0.78,
+        "calmar": 0.53,
+        "avg_weight_pct": 49.5,
+        "ann_turnover": 3.1,
+        "total_switches": 31,
+        "first5_cagr_pct": 16.6,
+        "first5_mdd_pct": -16.7,
+        "last5_cagr_pct": 9.4,
+        "last5_mdd_pct": -24.5
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -14353,6 +14648,24 @@
         "boxpi_mdd_pct": -26.9,
         "post_cagr_pct": 9.3,
         "post_mdd_pct": -28.2
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2411.4,
+        "cagr_pct": 9.21,
+        "mdd_pct": -28.25,
+        "vol_pct": 13.28,
+        "ex_sharpe": 0.62,
+        "calmar": 0.33,
+        "avg_weight_pct": 43.9,
+        "ann_turnover": 5.88,
+        "total_switches": 170,
+        "first5_cagr_pct": 15.0,
+        "first5_mdd_pct": -15.9,
+        "last5_cagr_pct": 3.7,
+        "last5_mdd_pct": -28.2
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -15302,6 +15615,24 @@
         "post_cagr_pct": 8.0,
         "post_mdd_pct": -22.2
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2156.9,
+        "cagr_pct": 7.99,
+        "mdd_pct": -22.19,
+        "vol_pct": 10.32,
+        "ex_sharpe": 0.65,
+        "calmar": 0.36,
+        "avg_weight_pct": 34.0,
+        "ann_turnover": 5.64,
+        "total_switches": 216,
+        "first5_cagr_pct": 12.3,
+        "first5_mdd_pct": -12.0,
+        "last5_cagr_pct": 3.8,
+        "last5_mdd_pct": -22.2
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -16249,6 +16580,24 @@
         "boxpi_mdd_pct": -17.9,
         "post_cagr_pct": 8.0,
         "post_mdd_pct": -29.3
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2375.2,
+        "cagr_pct": 9.04,
+        "mdd_pct": -29.34,
+        "vol_pct": 12.9,
+        "ex_sharpe": 0.62,
+        "calmar": 0.31,
+        "avg_weight_pct": 44.1,
+        "ann_turnover": 7.24,
+        "total_switches": 202,
+        "first5_cagr_pct": 15.2,
+        "first5_mdd_pct": -16.2,
+        "last5_cagr_pct": 3.2,
+        "last5_mdd_pct": -29.3
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -17198,6 +17547,24 @@
         "post_cagr_pct": 8.8,
         "post_mdd_pct": -27.8
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2292.1,
+        "cagr_pct": 8.65,
+        "mdd_pct": -27.83,
+        "vol_pct": 12.97,
+        "ex_sharpe": 0.59,
+        "calmar": 0.31,
+        "avg_weight_pct": 42.2,
+        "ann_turnover": 4.2,
+        "total_switches": 70,
+        "first5_cagr_pct": 15.0,
+        "first5_mdd_pct": -14.9,
+        "last5_cagr_pct": 2.6,
+        "last5_mdd_pct": -27.8
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -17904,6 +18271,24 @@
         "boxpi_mdd_pct": -28.2,
         "post_cagr_pct": 8.6,
         "post_mdd_pct": -22.9
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2346.4,
+        "cagr_pct": 8.91,
+        "mdd_pct": -22.92,
+        "vol_pct": 10.9,
+        "ex_sharpe": 0.7,
+        "calmar": 0.39,
+        "avg_weight_pct": 38.3,
+        "ann_turnover": 6.04,
+        "total_switches": 210,
+        "first5_cagr_pct": 15.5,
+        "first5_mdd_pct": -10.7,
+        "last5_cagr_pct": 2.7,
+        "last5_mdd_pct": -22.9
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -18853,6 +19238,24 @@
         "post_cagr_pct": 7.1,
         "post_mdd_pct": -17.6
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2059.1,
+        "cagr_pct": 7.49,
+        "mdd_pct": -17.59,
+        "vol_pct": 8.47,
+        "ex_sharpe": 0.71,
+        "calmar": 0.43,
+        "avg_weight_pct": 29.6,
+        "ann_turnover": 5.56,
+        "total_switches": 239,
+        "first5_cagr_pct": 12.5,
+        "first5_mdd_pct": -7.9,
+        "last5_cagr_pct": 2.7,
+        "last5_mdd_pct": -17.6
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -19800,6 +20203,24 @@
         "boxpi_mdd_pct": -17.8,
         "post_cagr_pct": 7.2,
         "post_mdd_pct": -24.1
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2241.8,
+        "cagr_pct": 8.41,
+        "mdd_pct": -24.09,
+        "vol_pct": 10.56,
+        "ex_sharpe": 0.67,
+        "calmar": 0.35,
+        "avg_weight_pct": 38.7,
+        "ann_turnover": 7.34,
+        "total_switches": 237,
+        "first5_cagr_pct": 15.0,
+        "first5_mdd_pct": -10.2,
+        "last5_cagr_pct": 2.2,
+        "last5_mdd_pct": -24.1
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -20749,6 +21170,24 @@
         "post_cagr_pct": 7.7,
         "post_mdd_pct": -22.0
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2169.2,
+        "cagr_pct": 8.05,
+        "mdd_pct": -22.04,
+        "vol_pct": 10.39,
+        "ex_sharpe": 0.65,
+        "calmar": 0.37,
+        "avg_weight_pct": 36.4,
+        "ann_turnover": 4.08,
+        "total_switches": 93,
+        "first5_cagr_pct": 15.4,
+        "first5_mdd_pct": -11.1,
+        "last5_cagr_pct": 1.2,
+        "last5_mdd_pct": -22.0
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -21455,6 +21894,24 @@
         "boxpi_mdd_pct": -28.0,
         "post_cagr_pct": 7.2,
         "post_mdd_pct": -12.8
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2115.2,
+        "cagr_pct": 7.78,
+        "mdd_pct": -12.79,
+        "vol_pct": 8.03,
+        "ex_sharpe": 0.78,
+        "calmar": 0.61,
+        "avg_weight_pct": 30.3,
+        "ann_turnover": 5.58,
+        "total_switches": 233,
+        "first5_cagr_pct": 13.0,
+        "first5_mdd_pct": -8.1,
+        "last5_cagr_pct": 2.8,
+        "last5_mdd_pct": -12.8
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -22404,6 +22861,24 @@
         "post_cagr_pct": 6.2,
         "post_mdd_pct": -9.4
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 1902.8,
+        "cagr_pct": 6.65,
+        "mdd_pct": -9.36,
+        "vol_pct": 6.34,
+        "ex_sharpe": 0.8,
+        "calmar": 0.71,
+        "avg_weight_pct": 23.5,
+        "ann_turnover": 4.99,
+        "total_switches": 248,
+        "first5_cagr_pct": 10.5,
+        "first5_mdd_pct": -6.8,
+        "last5_cagr_pct": 2.9,
+        "last5_mdd_pct": -9.4
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -23351,6 +23826,24 @@
         "boxpi_mdd_pct": -18.8,
         "post_cagr_pct": 6.1,
         "post_mdd_pct": -13.8
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2002.6,
+        "cagr_pct": 7.19,
+        "mdd_pct": -13.85,
+        "vol_pct": 7.73,
+        "ex_sharpe": 0.74,
+        "calmar": 0.52,
+        "avg_weight_pct": 30.8,
+        "ann_turnover": 6.64,
+        "total_switches": 251,
+        "first5_cagr_pct": 12.1,
+        "first5_mdd_pct": -9.6,
+        "last5_cagr_pct": 2.5,
+        "last5_mdd_pct": -13.8
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -24300,6 +24793,24 @@
         "post_cagr_pct": 6.5,
         "post_mdd_pct": -11.4
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 1962.7,
+        "cagr_pct": 6.98,
+        "mdd_pct": -11.38,
+        "vol_pct": 7.4,
+        "ex_sharpe": 0.74,
+        "calmar": 0.61,
+        "avg_weight_pct": 28.2,
+        "ann_turnover": 3.4,
+        "total_switches": 109,
+        "first5_cagr_pct": 12.6,
+        "first5_mdd_pct": -8.3,
+        "last5_cagr_pct": 1.7,
+        "last5_mdd_pct": -11.4
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -25006,6 +25517,24 @@
         "boxpi_mdd_pct": -26.5,
         "post_cagr_pct": 10.4,
         "post_mdd_pct": -28.8
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2595.7,
+        "cagr_pct": 10.01,
+        "mdd_pct": -28.78,
+        "vol_pct": 14.99,
+        "ex_sharpe": 0.61,
+        "calmar": 0.35,
+        "avg_weight_pct": 46.5,
+        "ann_turnover": 5.65,
+        "total_switches": 137,
+        "first5_cagr_pct": 15.2,
+        "first5_mdd_pct": -20.0,
+        "last5_cagr_pct": 5.1,
+        "last5_mdd_pct": -28.8
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -25955,6 +26484,24 @@
         "post_cagr_pct": 8.8,
         "post_mdd_pct": -22.7
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2285.6,
+        "cagr_pct": 8.62,
+        "mdd_pct": -22.72,
+        "vol_pct": 11.61,
+        "ex_sharpe": 0.64,
+        "calmar": 0.38,
+        "avg_weight_pct": 35.9,
+        "ann_turnover": 5.51,
+        "total_switches": 187,
+        "first5_cagr_pct": 12.6,
+        "first5_mdd_pct": -15.0,
+        "last5_cagr_pct": 4.8,
+        "last5_mdd_pct": -22.7
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -26902,6 +27449,24 @@
         "boxpi_mdd_pct": -17.9,
         "post_cagr_pct": 9.0,
         "post_mdd_pct": -29.9
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2560.9,
+        "cagr_pct": 9.86,
+        "mdd_pct": -29.87,
+        "vol_pct": 14.64,
+        "ex_sharpe": 0.61,
+        "calmar": 0.33,
+        "avg_weight_pct": 46.5,
+        "ann_turnover": 7.01,
+        "total_switches": 171,
+        "first5_cagr_pct": 15.5,
+        "first5_mdd_pct": -20.1,
+        "last5_cagr_pct": 4.6,
+        "last5_mdd_pct": -29.9
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -27851,6 +28416,24 @@
         "post_cagr_pct": 9.7,
         "post_mdd_pct": -28.5
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2462.6,
+        "cagr_pct": 9.43,
+        "mdd_pct": -28.55,
+        "vol_pct": 14.76,
+        "ex_sharpe": 0.58,
+        "calmar": 0.33,
+        "avg_weight_pct": 44.8,
+        "ann_turnover": 4.0,
+        "total_switches": 40,
+        "first5_cagr_pct": 15.3,
+        "first5_mdd_pct": -18.9,
+        "last5_cagr_pct": 3.9,
+        "last5_mdd_pct": -28.5
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -28557,6 +29140,24 @@
         "boxpi_mdd_pct": -21.4,
         "post_cagr_pct": 8.2,
         "post_mdd_pct": -24.7
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2464.7,
+        "cagr_pct": 9.44,
+        "mdd_pct": -24.72,
+        "vol_pct": 12.71,
+        "ex_sharpe": 0.66,
+        "calmar": 0.38,
+        "avg_weight_pct": 40.1,
+        "ann_turnover": 6.27,
+        "total_switches": 175,
+        "first5_cagr_pct": 16.4,
+        "first5_mdd_pct": -11.7,
+        "last5_cagr_pct": 3.0,
+        "last5_mdd_pct": -24.7
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -29506,6 +30107,24 @@
         "post_cagr_pct": 7.1,
         "post_mdd_pct": -19.3
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2187.6,
+        "cagr_pct": 8.15,
+        "mdd_pct": -19.29,
+        "vol_pct": 9.86,
+        "ex_sharpe": 0.69,
+        "calmar": 0.42,
+        "avg_weight_pct": 31.1,
+        "ann_turnover": 5.86,
+        "total_switches": 215,
+        "first5_cagr_pct": 13.1,
+        "first5_mdd_pct": -8.7,
+        "last5_cagr_pct": 3.4,
+        "last5_mdd_pct": -19.3
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -30453,6 +31072,24 @@
         "boxpi_mdd_pct": -14.3,
         "post_cagr_pct": 7.0,
         "post_mdd_pct": -25.9
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2336.1,
+        "cagr_pct": 8.86,
+        "mdd_pct": -25.87,
+        "vol_pct": 12.47,
+        "ex_sharpe": 0.62,
+        "calmar": 0.34,
+        "avg_weight_pct": 40.1,
+        "ann_turnover": 7.47,
+        "total_switches": 205,
+        "first5_cagr_pct": 16.5,
+        "first5_mdd_pct": -11.7,
+        "last5_cagr_pct": 1.7,
+        "last5_mdd_pct": -25.9
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -31402,6 +32039,24 @@
         "post_cagr_pct": 7.7,
         "post_mdd_pct": -24.2
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2337.9,
+        "cagr_pct": 8.87,
+        "mdd_pct": -24.22,
+        "vol_pct": 12.39,
+        "ex_sharpe": 0.63,
+        "calmar": 0.37,
+        "avg_weight_pct": 38.3,
+        "ann_turnover": 4.54,
+        "total_switches": 71,
+        "first5_cagr_pct": 16.1,
+        "first5_mdd_pct": -11.2,
+        "last5_cagr_pct": 2.1,
+        "last5_mdd_pct": -24.2
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -32108,6 +32763,24 @@
         "boxpi_mdd_pct": -21.1,
         "post_cagr_pct": 7.4,
         "post_mdd_pct": -20.0
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2356.6,
+        "cagr_pct": 8.95,
+        "mdd_pct": -20.0,
+        "vol_pct": 10.42,
+        "ex_sharpe": 0.73,
+        "calmar": 0.45,
+        "avg_weight_pct": 35.4,
+        "ann_turnover": 6.36,
+        "total_switches": 204,
+        "first5_cagr_pct": 16.2,
+        "first5_mdd_pct": -8.9,
+        "last5_cagr_pct": 2.2,
+        "last5_mdd_pct": -20.0
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -33057,6 +33730,24 @@
         "post_cagr_pct": 6.4,
         "post_mdd_pct": -15.2
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2082.3,
+        "cagr_pct": 7.61,
+        "mdd_pct": -15.24,
+        "vol_pct": 8.11,
+        "ex_sharpe": 0.76,
+        "calmar": 0.5,
+        "avg_weight_pct": 27.5,
+        "ann_turnover": 5.77,
+        "total_switches": 232,
+        "first5_cagr_pct": 13.0,
+        "first5_mdd_pct": -7.0,
+        "last5_cagr_pct": 2.5,
+        "last5_mdd_pct": -15.2
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -34004,6 +34695,24 @@
         "boxpi_mdd_pct": -13.5,
         "post_cagr_pct": 6.2,
         "post_mdd_pct": -21.2
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2209.5,
+        "cagr_pct": 8.25,
+        "mdd_pct": -21.22,
+        "vol_pct": 10.17,
+        "ex_sharpe": 0.68,
+        "calmar": 0.39,
+        "avg_weight_pct": 35.5,
+        "ann_turnover": 7.53,
+        "total_switches": 231,
+        "first5_cagr_pct": 16.1,
+        "first5_mdd_pct": -7.2,
+        "last5_cagr_pct": 0.9,
+        "last5_mdd_pct": -21.2
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -34953,6 +35662,24 @@
         "post_cagr_pct": 6.7,
         "post_mdd_pct": -19.0
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2202.9,
+        "cagr_pct": 8.22,
+        "mdd_pct": -19.04,
+        "vol_pct": 9.93,
+        "ex_sharpe": 0.69,
+        "calmar": 0.43,
+        "avg_weight_pct": 33.5,
+        "ann_turnover": 4.42,
+        "total_switches": 88,
+        "first5_cagr_pct": 16.1,
+        "first5_mdd_pct": -7.7,
+        "last5_cagr_pct": 0.9,
+        "last5_mdd_pct": -19.0
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -35659,6 +36386,24 @@
         "boxpi_mdd_pct": -22.1,
         "post_cagr_pct": 6.5,
         "post_mdd_pct": -11.1
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2159.9,
+        "cagr_pct": 8.01,
+        "mdd_pct": -11.13,
+        "vol_pct": 7.61,
+        "ex_sharpe": 0.85,
+        "calmar": 0.72,
+        "avg_weight_pct": 28.1,
+        "ann_turnover": 5.73,
+        "total_switches": 230,
+        "first5_cagr_pct": 13.4,
+        "first5_mdd_pct": -7.4,
+        "last5_cagr_pct": 2.8,
+        "last5_mdd_pct": -11.1
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -36608,6 +37353,24 @@
         "post_cagr_pct": 5.6,
         "post_mdd_pct": -8.1
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 1931.9,
+        "cagr_pct": 6.81,
+        "mdd_pct": -8.09,
+        "vol_pct": 6.03,
+        "ex_sharpe": 0.86,
+        "calmar": 0.84,
+        "avg_weight_pct": 21.8,
+        "ann_turnover": 5.1,
+        "total_switches": 244,
+        "first5_cagr_pct": 10.8,
+        "first5_mdd_pct": -5.3,
+        "last5_cagr_pct": 3.0,
+        "last5_mdd_pct": -8.1
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -37555,6 +38318,24 @@
         "boxpi_mdd_pct": -14.7,
         "post_cagr_pct": 5.5,
         "post_mdd_pct": -12.2
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2002.7,
+        "cagr_pct": 7.19,
+        "mdd_pct": -12.21,
+        "vol_pct": 7.39,
+        "ex_sharpe": 0.77,
+        "calmar": 0.59,
+        "avg_weight_pct": 28.4,
+        "ann_turnover": 6.79,
+        "total_switches": 249,
+        "first5_cagr_pct": 12.8,
+        "first5_mdd_pct": -7.4,
+        "last5_cagr_pct": 1.9,
+        "last5_mdd_pct": -12.2
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -38504,6 +39285,24 @@
         "post_cagr_pct": 5.8,
         "post_mdd_pct": -9.7
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2003.5,
+        "cagr_pct": 7.2,
+        "mdd_pct": -9.72,
+        "vol_pct": 6.97,
+        "ex_sharpe": 0.81,
+        "calmar": 0.74,
+        "avg_weight_pct": 25.9,
+        "ann_turnover": 3.57,
+        "total_switches": 104,
+        "first5_cagr_pct": 13.1,
+        "first5_mdd_pct": -7.4,
+        "last5_cagr_pct": 1.7,
+        "last5_mdd_pct": -9.7
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -39210,6 +40009,24 @@
         "boxpi_mdd_pct": -22.0,
         "post_cagr_pct": 9.2,
         "post_mdd_pct": -25.3
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2661.4,
+        "cagr_pct": 10.29,
+        "mdd_pct": -25.3,
+        "vol_pct": 14.46,
+        "ex_sharpe": 0.65,
+        "calmar": 0.41,
+        "avg_weight_pct": 42.5,
+        "ann_turnover": 6.01,
+        "total_switches": 145,
+        "first5_cagr_pct": 16.6,
+        "first5_mdd_pct": -15.8,
+        "last5_cagr_pct": 4.4,
+        "last5_mdd_pct": -25.3
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
@@ -40159,6 +40976,24 @@
         "post_cagr_pct": 8.0,
         "post_mdd_pct": -19.7
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2327.8,
+        "cagr_pct": 8.82,
+        "mdd_pct": -19.7,
+        "vol_pct": 11.19,
+        "ex_sharpe": 0.68,
+        "calmar": 0.45,
+        "avg_weight_pct": 32.9,
+        "ann_turnover": 5.7,
+        "total_switches": 188,
+        "first5_cagr_pct": 13.4,
+        "first5_mdd_pct": -11.8,
+        "last5_cagr_pct": 4.5,
+        "last5_mdd_pct": -19.7
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -41107,6 +41942,24 @@
         "post_cagr_pct": 8.0,
         "post_mdd_pct": -26.4
       },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2522.6,
+        "cagr_pct": 9.7,
+        "mdd_pct": -26.44,
+        "vol_pct": 14.25,
+        "ex_sharpe": 0.62,
+        "calmar": 0.37,
+        "avg_weight_pct": 42.5,
+        "ann_turnover": 7.22,
+        "total_switches": 175,
+        "first5_cagr_pct": 16.7,
+        "first5_mdd_pct": -15.8,
+        "last5_cagr_pct": 3.1,
+        "last5_mdd_pct": -26.4
+      },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
         "bt_end": "2026-11-26",
@@ -42054,6 +42907,24 @@
         "boxpi_mdd_pct": -23.6,
         "post_cagr_pct": 8.7,
         "post_mdd_pct": -24.8
+      },
+      "metrics_15_24": {
+        "bt_start": "2015-01-02",
+        "bt_end": "2024-12-31",
+        "years": 10.0,
+        "final_equity_man": 2526.0,
+        "cagr_pct": 9.71,
+        "mdd_pct": -24.79,
+        "vol_pct": 14.22,
+        "ex_sharpe": 0.62,
+        "calmar": 0.39,
+        "avg_weight_pct": 40.7,
+        "ann_turnover": 4.3,
+        "total_switches": 43,
+        "first5_cagr_pct": 16.4,
+        "first5_mdd_pct": -14.7,
+        "last5_cagr_pct": 3.4,
+        "last5_mdd_pct": -24.8
       },
       "metrics_11_26": {
         "bt_start": "2011-01-03",
