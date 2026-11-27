@@ -77,6 +77,17 @@ STRATEGY_CONFIG = {
             "desc": "추세 엔진 75% + 코스닥150 1주일 분할 단타 25% 분리 운용 (2011~16 박스피 방어 · MDD -10%p 축소)",
         },
         {
+            "id": "pair60",
+            "label": "차별화 페어 롱숏 60/40 (CAGR·MDD 최강)",
+            "short_label": "페어 롱숏 60/40",
+            "cap": 0.25,
+            "carve_out": False,
+            "pair_ls": True,
+            "pair_long_cap": 0.60,
+            "pair_short_cap": 0.40,
+            "desc": "차별화 장세(한쪽 추세ON + 반대쪽 MA OFF & 6M<0%)일 때만 강한 지수 60% 롱 + 반대 인버스(114800/251340) 40% 숏 동시 보유 (하락장 맨몸 숏 금지 · 인버스 차익 15.4% 세후 반영)",
+        },
+        {
             "id": "none",
             "label": "스윙 미사용 (순수 추세)",
             "short_label": "순수 추세",
@@ -85,6 +96,7 @@ STRATEGY_CONFIG = {
             "desc": "기존 국내 2지수 MA 추세 + 켈리 전략만 단독 실행 (비교 기준)",
         },
     ],
+    "inv_drag_ann": 0.0080,    # 인버스 1x ETF 연 보수·선물 롤오버 보수적 차감 (0.80%/yr)
     "swing_rsi_len": 5,
     "swing_entry_1": 20.0,
     "swing_entry_2": 15.0,
@@ -466,10 +478,12 @@ def compute_kq_swing_signal(kq_close: pd.Series, kq_ret_at: pd.Series, bt_idx: p
     }
 
 
-def fmt_pos_label(w_k2: float, w_kq: float) -> str:
+def fmt_pos_label(w_k2: float, w_kq: float, w_k2s: float = 0.0, w_kqs: float = 0.0) -> str:
     p2 = round(w_k2 * 100, 1)
     pq = round(w_kq * 100, 1)
-    pc = round(max(0.0, 100.0 - p2 - pq), 1)
+    p2s = round(w_k2s * 100, 1)
+    pqs = round(w_kqs * 100, 1)
+    pc = round(max(0.0, 100.0 - p2 - pq - p2s - pqs), 1)
     def fp(v):
         return f"{int(v)}%" if abs(v - round(v)) < 0.05 else f"{v:.1f}%"
     parts = []
@@ -477,6 +491,10 @@ def fmt_pos_label(w_k2: float, w_kq: float) -> str:
         parts.append(f"KODEX 200 {fp(p2)}")
     if pq >= 0.5:
         parts.append(f"코스닥150 {fp(pq)}")
+    if p2s >= 0.5:
+        parts.append(f"KODEX인버스 {fp(p2s)}")
+    if pqs >= 0.5:
+        parts.append(f"코스닥인버스 {fp(pqs)}")
     if pc >= 0.5 or not parts:
         parts.append(f"KOFR {fp(pc)}")
     return " + ".join(parts)
@@ -574,9 +592,17 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
 
     fee = STRATEGY_CONFIG["fee_oneway"]
     tax = STRATEGY_CONFIG["tax_rate"]
+    inv_drag = STRATEGY_CONFIG["inv_drag_ann"] / 252.0
+    pair_ls = bool(swing_opt.get("pair_ls", False))
+    pair_long_cap = float(swing_opt.get("pair_long_cap", 0.60))
+    pair_short_cap = float(swing_opt.get("pair_short_cap", 0.40))
+
     r_k2_at = data["k200"].loc[bt_idx, "total_ret"] - tax * data["k200"].loc[bt_idx, "div_ret"]
     r_kq_at = data["kq"].loc[bt_idx, "total_ret"] - tax * data["kq"].loc[bt_idx, "div_ret"]
     r_kofr_at = kofr_ret.loc[bt_idx] * (1.0 - tax)
+    # 1x 인버스 ETF 일간 세전 수익률 (매도 시 실현차익에 15.4% 배당소득세 별도 원천징수!)
+    r_k2s_gr = (-data["k200"].loc[bt_idx, "price_ret"] + 0.5 * kofr_ret.loc[bt_idx] - inv_drag).clip(lower=-0.30)
+    r_kqs_gr = (-data["kq"].loc[bt_idx, "price_ret"] + 0.5 * kofr_ret.loc[bt_idx] - inv_drag).clip(lower=-0.30)
 
     init_cap = 10_000_000.0
     eq = np.zeros(n); eq[0] = init_cap
@@ -586,9 +612,14 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
     w_hist = np.zeros(n)
     turn_arr = np.zeros(n)
 
+    # 숏(인버스 ETF) 이동평균단가 추적용 가상 가격지수 & 평가원가 (실현이익 15.4% 과세 정확 계산)
+    px_inv_k2, px_inv_kq = 1.0, 1.0
+    avg_inv_k2, avg_inv_kq = 0.0, 0.0
+    short_tax_paid = 0.0
+
     tr_asset = "kofr"
     tr_w = 0.0
-    prev_wk2, prev_wkq = 0.0, 0.0
+    prev_wk2, prev_wkq, prev_wk2s, prev_wkqs = 0.0, 0.0, 0.0, 0.0
     prev_sw_w = 0.0
 
     events = []
@@ -601,11 +632,17 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
 
     for i in range(n):
         d = bt_idx[i]
+        r2s_i = float(r_k2s_gr.iloc[i])
+        rqs_i = float(r_kqs_gr.iloc[i])
         if i > 0:
-            prev_wkofr = max(0.0, 1.0 - prev_wk2 - prev_wkq)
+            px_inv_k2 *= (1.0 + r2s_i)
+            px_inv_kq *= (1.0 + rqs_i)
+            prev_wkofr = max(0.0, 1.0 - prev_wk2 - prev_wkq - prev_wk2s - prev_wkqs)
             gross = (
                 prev_wk2 * float(r_k2_at.iloc[i])
                 + prev_wkq * float(r_kq_at.iloc[i])
+                + prev_wk2s * r2s_i
+                + prev_wkqs * rqs_i
                 + prev_wkofr * float(r_kofr_at.iloc[i])
             )
         else:
@@ -653,7 +690,29 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
                     n_tr_asset = "kofr"
                     tr_reason = f"켈리 기대우위 소멸(f*={raw_f:.2f}) → KOFR 대피"
 
-        if sw_cap > 0:
+        new_wk2s, new_wkqs = 0.0, 0.0
+        pair_reason = ""
+        if pair_ls:
+            # 4번째 옵션: 차별화 페어 롱숏 (60/40) + 유휴25% 코스닥150 단타 스윙
+            if n_tr_asset == "k200" and on_kq == 0 and (not np.isnan(mkq)) and mkq < 0:
+                long_w = min(n_tr_w, pair_long_cap)
+                short_w = round(min(1.0 - long_w, pair_short_cap * min(1.0, n_tr_w / pair_long_cap)) * 20) / 20.0
+                new_wk2, new_wkq, new_wk2s, new_wkqs = long_w, 0.0, 0.0, short_w
+                sw_w = 0.0
+                pair_reason = f"차별화 페어 롱숏 (K200 {int(round(long_w*100))}% 롱 + 코스닥인버스 {int(round(short_w*100))}% 숏)"
+            elif n_tr_asset == "kq" and on_k2 == 0 and (not np.isnan(mk2)) and mk2 < 0:
+                long_w = min(n_tr_w, pair_long_cap)
+                short_w = round(min(1.0 - long_w, pair_short_cap * min(1.0, n_tr_w / pair_long_cap)) * 20) / 20.0
+                new_wk2, new_wkq, new_wk2s, new_wkqs = 0.0, long_w, short_w, 0.0
+                sw_w = 0.0
+                pair_reason = f"차별화 페어 롱숏 (코스닥 {int(round(long_w*100))}% 롱 + KODEX인버스 {int(round(short_w*100))}% 숏)"
+            else:
+                new_wk2 = n_tr_w if n_tr_asset == "k200" else 0.0
+                new_wkq_tr = n_tr_w if n_tr_asset == "kq" else 0.0
+                idle_cash = max(0.0, 1.0 - new_wk2 - new_wkq_tr)
+                sw_w = min(idle_cash, float(sw_frac_arr[i] * sw_cap))
+                new_wkq = new_wkq_tr + sw_w
+        elif sw_cap > 0:
             if sw_carve:
                 tr_scale = 1.0 - sw_cap
                 new_wk2 = (n_tr_w * tr_scale) if n_tr_asset == "k200" else 0.0
@@ -673,49 +732,95 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
 
         sw_changed = abs(sw_w - prev_sw_w) >= 0.01
         tr_changed = (n_tr_asset != p_tr_asset) or (abs(n_tr_w - p_tr_w) >= 0.01)
-        if tr_changed and sw_changed:
+        pair_changed = (abs(new_wk2s - prev_wk2s) >= 0.01) or (abs(new_wkqs - prev_wkqs) >= 0.01)
+
+        if pair_changed:
+            if new_wk2s > 0 or new_wkqs > 0:
+                reason = f"{tr_reason + ' · ' if tr_changed and tr_reason else ''}{pair_reason}"
+            else:
+                reason = f"{tr_reason or '차별화 해소'} → 페어 인버스 숏 청산"
+        elif tr_changed and sw_changed:
             reason = f"{tr_reason or '추세 조정'} + {sw_reasons[i]}"
         elif tr_changed:
             reason = tr_reason or "추세 비중 조정"
         elif sw_changed:
             reason = sw_reasons[i]
         else:
-            reason = "기존 포지션 유지" if sw_w == 0 else f"추세 유지 · {sw_reasons[i]}"
+            if new_wk2s > 0 or new_wkqs > 0:
+                reason = f"유지 · {pair_reason}"
+            else:
+                reason = "기존 포지션 유지" if sw_w == 0 else f"추세 유지 · {sw_reasons[i]}"
 
+        # 인버스 숏 매도 실현차익 15.4% 세금 원천징수 (이동평균단가 기준)
+        tax_drag_pct = 0.0
         if i > 0:
-            new_wkofr = max(0.0, 1.0 - new_wk2 - new_wkq)
-            prev_wkofr = max(0.0, 1.0 - prev_wk2 - prev_wkq)
-            t = 0.5 * (abs(new_wk2 - prev_wk2) + abs(new_wkq - prev_wkq) + abs(new_wkofr - prev_wkofr))
+            if new_wk2s < prev_wk2s and prev_wk2s > 0:
+                sold_w = prev_wk2s - new_wk2s
+                if avg_inv_k2 > 0 and px_inv_k2 > avg_inv_k2:
+                    gain_ratio = (px_inv_k2 - avg_inv_k2) / px_inv_k2
+                    tax_drag_pct += sold_w * gain_ratio * tax
+            if new_wk2s > prev_wk2s:
+                add_w = new_wk2s - prev_wk2s
+                avg_inv_k2 = ((prev_wk2s * avg_inv_k2) + (add_w * px_inv_k2)) / new_wk2s if prev_wk2s > 0 else px_inv_k2
+            elif new_wk2s == 0:
+                avg_inv_k2 = 0.0
+
+            if new_wkqs < prev_wkqs and prev_wkqs > 0:
+                sold_w = prev_wkqs - new_wkqs
+                if avg_inv_kq > 0 and px_inv_kq > avg_inv_kq:
+                    gain_ratio = (px_inv_kq - avg_inv_kq) / px_inv_kq
+                    tax_drag_pct += sold_w * gain_ratio * tax
+            if new_wkqs > prev_wkqs:
+                add_w = new_wkqs - prev_wkqs
+                avg_inv_kq = ((prev_wkqs * avg_inv_kq) + (add_w * px_inv_kq)) / new_wkqs if prev_wkqs > 0 else px_inv_kq
+            elif new_wkqs == 0:
+                avg_inv_kq = 0.0
+
+            new_wkofr = max(0.0, 1.0 - new_wk2 - new_wkq - new_wk2s - new_wkqs)
+            prev_wkofr = max(0.0, 1.0 - prev_wk2 - prev_wkq - prev_wk2s - prev_wkqs)
+            t = 0.5 * (
+                abs(new_wk2 - prev_wk2)
+                + abs(new_wkq - prev_wkq)
+                + abs(new_wk2s - prev_wk2s)
+                + abs(new_wkqs - prev_wkqs)
+                + abs(new_wkofr - prev_wkofr)
+            )
         else:
             t = 0.0
 
         turn_arr[i] = t
-        rets[i] = gross - t * fee
+        rets[i] = gross - t * fee - tax_drag_pct
         if i > 0:
+            short_tax_paid += eq[i - 1] * tax_drag_pct
             eq[i] = eq[i - 1] * (1.0 + rets[i])
             bh_k200[i] = bh_k200[i - 1] * (1.0 + float(r_k2_at.iloc[i]))
             bh_kq[i] = bh_kq[i - 1] * (1.0 + float(r_kq_at.iloc[i]))
 
-        w_hist[i] = new_wk2 + new_wkq
-        alloc_hist.append((new_wk2, new_wkq, n_tr_asset, n_tr_w, sw_w))
+        w_hist[i] = new_wk2 + new_wkq + new_wk2s + new_wkqs
+        alloc_hist.append((new_wk2, new_wkq, new_wk2s, new_wkqs, n_tr_asset, n_tr_w, sw_w))
         reasons.append(reason)
 
-        if i > 0 and (abs(new_wk2 - prev_wk2) >= 0.005 or abs(new_wkq - prev_wkq) >= 0.005):
+        if i > 0 and (
+            abs(new_wk2 - prev_wk2) >= 0.005
+            or abs(new_wkq - prev_wkq) >= 0.005
+            or abs(new_wk2s - prev_wk2s) >= 0.005
+            or abs(new_wkqs - prev_wkqs) >= 0.005
+        ):
             events.append({
                 "date": d.strftime("%Y-%m-%d"),
-                "from": fmt_pos_label(prev_wk2, prev_wkq),
-                "to": fmt_pos_label(new_wk2, new_wkq),
+                "from": fmt_pos_label(prev_wk2, prev_wkq, prev_wk2s, prev_wkqs),
+                "to": fmt_pos_label(new_wk2, new_wkq, new_wk2s, new_wkqs),
                 "reason": reason,
                 "k200_mom6m": round(float(mk2) * 100, 1) if not np.isnan(mk2) else None,
                 "kq_mom6m": round(float(mkq) * 100, 1) if not np.isnan(mkq) else None,
                 "kq_rsi5": round(float(rsi5_s.loc[d]), 1),
                 "kelly_f": round(raw_f, 2),
-                "is_asset_switch": bool(n_tr_asset != p_tr_asset),
+                "is_asset_switch": bool(n_tr_asset != p_tr_asset or pair_changed),
                 "is_swing_event": bool(sw_changed),
             })
 
         tr_asset, tr_w = n_tr_asset, n_tr_w
-        prev_wk2, prev_wkq, prev_sw_w = new_wk2, new_wkq, sw_w
+        prev_wk2, prev_wkq, prev_wk2s, prev_wkqs, prev_sw_w = new_wk2, new_wkq, new_wk2s, new_wkqs, sw_w
 
     eq_s = pd.Series(eq, index=bt_idx)
     ret_s = pd.Series(rets, index=bt_idx)
@@ -750,21 +855,37 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
 
     # 최신일 스냅샷 & 오늘 액션 판정
     ld = bt_idx[-1]
-    lk2, lkq, ltr_a, ltr_w, lsw_w = alloc_hist[-1]
-    pk2, pkq, ptr_a, ptr_w, psw_w = alloc_hist[-2] if n >= 2 else alloc_hist[-1]
+    lk2, lkq, lk2s, lkqs, ltr_a, ltr_w, lsw_w = alloc_hist[-1]
+    pk2, pkq, pk2s, pkqs, ptr_a, ptr_w, psw_w = alloc_hist[-2] if n >= 2 else alloc_hist[-1]
 
     k2_pct = round(lk2 * 100, 1)
     kq_pct = round(lkq * 100, 1)
-    kofr_pct = round(max(0.0, 100.0 - k2_pct - kq_pct), 1)
+    k2s_pct = round(lk2s * 100, 1)
+    kqs_pct = round(lkqs * 100, 1)
+    kofr_pct = round(max(0.0, 100.0 - k2_pct - kq_pct - k2s_pct - kqs_pct), 1)
+
     pk2_pct = round(pk2 * 100, 1)
     pkq_pct = round(pkq * 100, 1)
-    pkofr_pct = round(max(0.0, 100.0 - pk2_pct - pkq_pct), 1)
+    pk2s_pct = round(pk2s * 100, 1)
+    pkqs_pct = round(pkqs * 100, 1)
+    pkofr_pct = round(max(0.0, 100.0 - pk2_pct - pkq_pct - pk2s_pct - pkqs_pct), 1)
 
     sw_diff = round((lsw_w - psw_w) * 100, 1)
+    sh_diff = round(((lk2s + lkqs) - (pk2s + pkqs)) * 100, 1)
     tr_diff_asset = (ltr_a != ptr_a)
     tr_diff_w = abs(ltr_w - ptr_w) >= 0.01
 
-    if tr_diff_asset:
+    if abs(sh_diff) >= 0.5:
+        if (k2s_pct + kqs_pct) > 0 and (pk2s_pct + pkqs_pct) == 0:
+            action_code = "PAIR_SHORT_ENTRY"
+            action_title = f"⚖️ 차별화 페어 롱숏 진입 (인버스 {k2s_pct + kqs_pct:g}%)"
+        elif (k2s_pct + kqs_pct) == 0:
+            action_code = "PAIR_SHORT_EXIT"
+            action_title = "⚖️ 차별화 페어 인버스 숏 청산"
+        else:
+            action_code = "PAIR_REBALANCE"
+            action_title = f"⚖️ 페어 롱숏 비중 조정 ({sh_diff:+g}%p)"
+    elif tr_diff_asset:
         if ltr_a == "kofr" and lsw_w == 0:
             action_code = "EXIT_TO_CASH"
             action_title = "즉시 전량 매도 → KOFR 대피"
@@ -800,10 +921,20 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
         month_end_bday = ld + pd.offsets.BMonthEnd(1)
     bdays_to_me = int(len(pd.bdate_range(ld, month_end_bday)) - 1)
 
-    alloc = {"k200_pct": k2_pct, "kq_pct": kq_pct, "kofr_pct": kofr_pct}
-    prev_alloc = {"k200_pct": pk2_pct, "kq_pct": pkq_pct, "kofr_pct": pkofr_pct}
+    alloc = {
+        "k200_pct": k2_pct, "kq_pct": kq_pct,
+        "k200_short_pct": k2s_pct, "kq_short_pct": kqs_pct,
+        "kofr_pct": kofr_pct,
+    }
+    prev_alloc = {
+        "k200_pct": pk2_pct, "kq_pct": pkq_pct,
+        "k200_short_pct": pk2s_pct, "kq_short_pct": pkqs_pct,
+        "kofr_pct": pkofr_pct,
+    }
 
-    if k2_pct > 0 and kq_pct > 0:
+    if (k2s_pct + kqs_pct) > 0:
+        holding_key, holding_name, holding_ticker = "pair", "차별화 페어 롱숏", "롱60/인버스40"
+    elif k2_pct > 0 and kq_pct > 0:
         holding_key, holding_name, holding_ticker = "both", "KODEX 200 + 코스닥150", "069500/229200"
     elif k2_pct > 0:
         holding_key, holding_name, holding_ticker = "k200", ETF_META["k200"]["name"], ETF_META["k200"]["ticker"]
@@ -843,11 +974,12 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
             info["rsi5"] = round(float(rsi5_s.loc[ld]), 1)
         return info
 
-    asset_days = {"k200": 0, "kq": 0, "kofr": 0, "swing": 0}
-    for wk2_i, wkq_i, _, _, sw_i in alloc_hist:
+    asset_days = {"k200": 0, "kq": 0, "kofr": 0, "swing": 0, "pair_short": 0}
+    for wk2_i, wkq_i, wk2s_i, wkqs_i, _, _, sw_i in alloc_hist:
         if wk2_i >= 0.005: asset_days["k200"] += 1
         if wkq_i >= 0.005: asset_days["kq"] += 1
-        if (1.0 - wk2_i - wkq_i) >= 0.005: asset_days["kofr"] += 1
+        if (wk2s_i + wkqs_i) >= 0.005: asset_days["pair_short"] += 1
+        if (1.0 - wk2_i - wkq_i - wk2s_i - wkqs_i) >= 0.005: asset_days["kofr"] += 1
         if sw_i >= 0.005: asset_days["swing"] += 1
 
     switch_only_events = [ev for ev in events if ev.get("is_asset_switch")]
@@ -879,8 +1011,8 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
         "holding_key": holding_key,
         "holding_name": holding_name,
         "holding_ticker": holding_ticker,
-        "pos_summary": fmt_pos_label(lk2, lkq),
-        "equity_weight_pct": round(k2_pct + kq_pct, 1),
+        "pos_summary": fmt_pos_label(lk2, lkq, lk2s, lkqs),
+        "equity_weight_pct": round(k2_pct + kq_pct + k2s_pct + kqs_pct, 1),
         "allocation": alloc,
         "prev_allocation": prev_alloc,
         "action_code": action_code,
@@ -892,9 +1024,10 @@ def run_strategy_variant(data: dict, ma_len: int, kelly_opt: dict, swing_opt: di
         "kq": asset_live_info("kq", kq_c, m_kq, st_kq, mu_kq, vol_kq, fstar_kq),
         "kofr_nav": round(float(data["kofr"].loc[ld, "nav_close"]), 1) if ld in data["kofr"].index else 110000.0,
         "asset_days": {
-            "k200": {"name": "KODEX 200", "days": asset_days["k200"], "pct": round(asset_days["k200"] / n * 100, 1)},
-            "kq": {"name": "코스닥150 (추세+스윙)", "days": asset_days["kq"], "pct": round(asset_days["kq"] / n * 100, 1)},
+            "k200": {"name": "KODEX 200 롱", "days": asset_days["k200"], "pct": round(asset_days["k200"] / n * 100, 1)},
+            "kq": {"name": "코스닥150 롱 (추세+스윙)", "days": asset_days["kq"], "pct": round(asset_days["kq"] / n * 100, 1)},
             "swing": {"name": "코스닥150 단타 스윙", "days": asset_days["swing"], "pct": round(asset_days["swing"] / n * 100, 1)},
+            "pair_short": {"name": "페어 인버스 숏", "days": asset_days["pair_short"], "pct": round(asset_days["pair_short"] / n * 100, 1)},
             "kofr": {"name": "KOFR 현금 보유일", "days": asset_days["kofr"], "pct": round(asset_days["kofr"] / n * 100, 1)},
         },
         "metrics_11_24": m_11_24,
@@ -1063,10 +1196,11 @@ def build_interactive_html(payload: dict) -> str:
         </div>
       </div>
       <div class="sel-group" style="border-top:1px solid #f3f4f6; padding-top:12px;">
-        <div class="sel-label" style="color:#6d28d9;">3. ⚡ 박스피 대응 코스닥150 단타 스윙 결합 (RSI(5)&lt;20 1주일 분할)</div>
+        <div class="sel-label" style="color:#6d28d9;">3. ⚡ 박스피 단타 스윙 / 차별화 페어 롱숏 선택</div>
         <div class="btn-row" id="swingBtns">
           <button class="seg-btn" data-swing="overlay25">유휴현금 25% 스윙 (공격 권장)</button>
-          <button class="seg-btn" data-swing="split75">계좌 분리 75:25 (박스피 방어 권장)</button>
+          <button class="seg-btn" data-swing="split75">계좌 분리 75:25 (박스피 방어)</button>
+          <button class="seg-btn" data-swing="pair60">차별화 페어 롱숏 60/40 (CAGR·MDD 최강)</button>
           <button class="seg-btn" data-swing="none">스윙 미사용 (순수 추세)</button>
         </div>
         <div class="sel-desc" id="swingDesc">-</div>
@@ -1137,9 +1271,9 @@ def build_interactive_html(payload: dict) -> str:
       <div class="action-head" style="margin-bottom:10px;">
         <h2 style="margin:0;">🏆 전략 백테스트 비교: 2011~2024 (14년) vs 2011~2026 (15.9년) <span style="font-size:12px;color:#6b7280;font-weight:500;">(행 클릭 시 즉시 전환)</span></h2>
         <div class="btn-row" id="cmpFilterBtns">
-          <button class="seg-btn active" data-cmp="featured">핵심 추천 9종 (스윙 비교)</button>
-          <button class="seg-btn" data-cmp="cur_swing">현재 스윙 모드 (12종)</button>
-          <button class="seg-btn" data-cmp="all">전체 36종</button>
+          <button class="seg-btn active" data-cmp="featured">핵심 추천 12종 (4가지 모드 비교)</button>
+          <button class="seg-btn" data-cmp="cur_swing">현재 모드 전체 (12종)</button>
+          <button class="seg-btn" data-cmp="all">전체 48종</button>
         </div>
       </div>
       <div style="overflow-x:auto;">
@@ -1190,7 +1324,8 @@ def build_interactive_html(payload: dict) -> str:
       <ul class="rules">
         <li><strong>① 추세 엔진:</strong> 매월 말 <code>KODEX 200</code>·<code>코스닥150</code> 중 6M 모멘텀 &gt; 0% &amp; 일간 MA ON 1위 보유, 일간 MA 이탈 시 즉시 <code>KOFR</code> 대피. 축소추정 켈리(<code>f* = μ_shrink / max(σ_20, σ_60)²</code>)로 0~100% 자동 사이징.</li>
         <li><strong>② 코스닥150 1주일 분할 스윙 (최대 25% 캡):</strong> <code>RSI(5) &lt; 20</code> 시 1차 <strong>12.5%</strong>, <code>RSI(5) &lt; 15</code> 추가 급락 시 2차 <strong>25%</strong> 진입 → <code>RSI(5) ≥ 50</code> 반등 익절 또는 <strong>5영업일(1주일)</strong> 만기 자동 청산.</li>
-        <li><strong>③ 장기 데이터 투명성 고지:</strong> <code>KODEX 200</code>은 2009년부터 전 구간 KOFIA DIS 공식 수정기준가(분배금 재투자·실제 일별 CD91/KOFR 금리)를 사용했고, <code>KODEX 코스닥150</code> 상장(2015-09-30) 이전인 <code>2011-01 ~ 2015-09-29</code> 구간은 금융투자협회 FreeSIS 공식 코스닥 종합지수 일별 수익률을 접합했습니다. (실전 국내 ETF 편도 비용 0.05%, 미래참조 0)</li>
+        <li><strong>③ 차별화 페어 롱숏 60/40 (4번째 옵션):</strong> 하락장 맨몸 숏은 절대 치지 않고, <strong>한쪽 지수는 추세 ON 롱 + 반대 지수는 <code>MA OFF &amp; 6M &lt; 0%</code> 약세인 차별화 장세</strong>에서만 강한 지수 <strong>60% 롱</strong> + 반대 1x 인버스 ETF(<code>KODEX 인버스 114800</code> / <code>KODEX 코스닥150선물인버스 251340</code>) <strong>40% 숏</strong>을 동시 보유합니다. 인버스 ETF의 파생상품 <strong>매매차익 15.4% 과세</strong>와 연 0.8% 롤오버·보수를 전부 차감한 세후 수치입니다.</li>
+        <li><strong>④ 장기 데이터 투명성 고지:</strong> <code>KODEX 200</code>은 2009년부터 전 구간 KOFIA DIS 공식 수정기준가(분배금 재투자·실제 일별 CD91/KOFR 금리)를 사용했고, <code>KODEX 코스닥150</code> 상장(2015-09-30) 이전인 <code>2011-01 ~ 2015-09-29</code> 구간은 금융투자협회 FreeSIS 공식 코스닥 종합지수 일별 수익률을 접합했습니다. (실전 국내 ETF 편도 비용 0.05%, 미래참조 0)</li>
       </ul>
     </div>
 
@@ -1276,7 +1411,10 @@ def build_interactive_html(payload: dict) -> str:
       // Hero Banner
       const hero = document.getElementById("heroBox");
       let bg = "linear-gradient(135deg, #4b5563 0%, #374151 100%)", regTxt = `🛡️ 방어 국면 · KOFR 100% 대피 (${{s.title}})`;
-      if (s.holding_key === "both") {{
+      if (s.holding_key === "pair") {{
+        bg = "linear-gradient(135deg, #0f766e 0%, #991b1b 100%)";
+        regTxt = `⚖️ 차별화 페어 롱/숏 발동 (${{s.title}})`;
+      }} else if (s.holding_key === "both") {{
         bg = "linear-gradient(135deg, #4f46e5 0%, #0e7490 100%)";
         regTxt = `⚡ 복합 국면 · 추세 + 코스닥150 단타 동시 보유 (${{s.title}})`;
       }} else if (s.holding_key === "k200") {{
@@ -1355,9 +1493,9 @@ def build_interactive_html(payload: dict) -> str:
       let cmpIds = [];
       if (cmpFilter === "featured") {{
         cmpIds = [
-          "ma100_full_overlay25", "ma100_full_split75", "ma100_full_none",
-          "ma100_half_overlay25", "ma100_half_split75", "ma100_half_none",
-          "ma100_fixed_overlay25", "ma100_fixed_split75", "ma100_fixed_none",
+          "ma100_full_pair60", "ma100_full_overlay25", "ma100_full_split75", "ma100_full_none",
+          "ma100_half_pair60", "ma100_half_overlay25", "ma100_half_split75", "ma100_half_none",
+          "ma100_fixed_pair60", "ma100_fixed_overlay25", "ma100_fixed_split75", "ma100_fixed_none",
         ];
       }} else if (cmpFilter === "cur_swing") {{
         cmpIds = DATA.strategy_order.filter(id => id.endsWith(`_${{selSwing}}`));
@@ -1396,7 +1534,8 @@ def build_interactive_html(payload: dict) -> str:
 
       // Breakdown & Events
       const ad = s.asset_days;
-      document.getElementById("breakdownStrip").innerHTML = ["k200", "kq", "swing", "kofr"].map(k => {{
+      const bdKeys = s.swing_id === "pair60" ? ["k200", "kq", "pair_short", "swing", "kofr"] : ["k200", "kq", "swing", "kofr"];
+      document.getElementById("breakdownStrip").innerHTML = bdKeys.map(k => {{
         const b = ad[k];
         return `
           <div class="stat-card" style="background:#f9fafb;">
@@ -1432,18 +1571,25 @@ def build_interactive_html(payload: dict) -> str:
       const items = [
         {{ key: "k200", name: "KODEX 200", ticker: "069500", pct: s.allocation.k200_pct, prev: s.prev_allocation.k200_pct, price: s.k200.nav_close }},
         {{ key: "kq", name: "KODEX 코스닥150", ticker: "229200", pct: s.allocation.kq_pct, prev: s.prev_allocation.kq_pct, price: s.kq.nav_close }},
-        {{ key: "kofr", name: "KODEX KOFR금리액티브", ticker: "423160", pct: s.allocation.kofr_pct, prev: s.prev_allocation.kofr_pct, price: s.kofr_nav }},
       ];
+      if (s.swing_id === "pair60" || s.allocation.k200_short_pct > 0 || s.allocation.kq_short_pct > 0) {{
+        items.push(
+          {{ key: "k200s", name: "KODEX 인버스 (1x 숏)", ticker: "114800", pct: s.allocation.k200_short_pct || 0, prev: s.prev_allocation.k200_short_pct || 0, price: 0 }},
+          {{ key: "kqs", name: "코스닥150선물인버스 (1x 숏)", ticker: "251340", pct: s.allocation.kq_short_pct || 0, prev: s.prev_allocation.kq_short_pct || 0, price: 0 }}
+        );
+      }}
+      items.push({{ key: "kofr", name: "KODEX KOFR금리액티브", ticker: "423160", pct: s.allocation.kofr_pct, prev: s.prev_allocation.kofr_pct, price: s.kofr_nav }});
+
       document.getElementById("allocGrid").innerHTML = items.map(it => {{
         const amtWon = Math.round(capWon * it.pct / 100);
-        const shares = it.price > 0 ? Math.floor(amtWon / it.price) : 0;
+        const sharesTxt = it.price > 0 ? `(약 ${{Math.floor(amtWon / it.price).toLocaleString()}}주)` : `(1x 인버스 · 세후 15.4%)`;
         const delta = it.pct - it.prev;
         return `
           <div class="alloc-box ${{it.pct > 0 ? 'active-alloc' : ''}}">
             <div class="alloc-name">${{it.name}} <span class="ticker">${{it.ticker}}</span></div>
             <div class="alloc-pct">${{fmtW(it.pct)}}</div>
             <div class="alloc-delta">${{fmtDelta(delta)}}</div>
-            <div class="alloc-krw">${{(amtWon / 10000).toLocaleString(undefined, {{maximumFractionDigits:1}})}}만 원 (약 ${{shares.toLocaleString()}}주)</div>
+            <div class="alloc-krw">${{(amtWon / 10000).toLocaleString(undefined, {{maximumFractionDigits:1}})}}만 원 ${{sharesTxt}}</div>
           </div>
         `;
       }}).join("");
@@ -1666,7 +1812,7 @@ def main():
     ls = swing_bundle["live"]
     print(f"  - 11~24(14년): {ls['stats_11_24']} | 11~26(15.9년): {ls['stats_11_26']}")
 
-    print("[3/4] 36개 전략 조합 계산 중 (2011~2024 & 2011~2026 듀얼 기간)...")
+    print("[3/4] 48개 전략 조합 계산 중 (MA 3종 × 켈리 4종 × 스윙·페어롱숏 4종, 2011~2024 & 2011~2026)...")
     strategies = {}
     order = []
     bench = None
@@ -1718,9 +1864,9 @@ def main():
     print(f" [옵션 A 듀얼 장기 검증] 기준일: {default_s['as_of_date']} (검증1: 2011~2024 14년 | 검증2: 2011~2026 15.9년)")
     print("=" * 116)
     for sid in [
-        "ma100_full_overlay25", "ma100_full_split75", "ma100_full_none",
-        "ma100_half_overlay25", "ma100_half_split75", "ma100_half_none",
-        "ma100_fixed_overlay25", "ma100_fixed_split75", "ma100_fixed_none",
+        "ma100_full_pair60", "ma100_full_overlay25", "ma100_full_split75", "ma100_full_none",
+        "ma100_half_pair60", "ma100_half_overlay25", "ma100_half_split75", "ma100_half_none",
+        "ma100_fixed_pair60", "ma100_fixed_overlay25", "ma100_fixed_split75", "ma100_fixed_none",
     ]:
         st = strategies[sid]
         a14 = st["metrics_11_24"]

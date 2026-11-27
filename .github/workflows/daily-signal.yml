@@ -16,12 +16,15 @@ on:
         default: "ma100_full_overlay25"
         options:
           - ma100_full_overlay25
+          - ma100_full_pair60
           - ma100_full_split75
           - ma100_full_none
           - ma100_half_overlay25
+          - ma100_half_pair60
           - ma100_half_split75
           - ma80_full_overlay25
           - ma60_full_overlay25
+          - ma60_full_pair60
 
 permissions:
   contents: write
